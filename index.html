@@ -306,6 +306,28 @@
     .hint{display:none}
   }
   @media print{ .term{display:none!important} }
+
+  /* ---------- auditoría ---------- */
+  .scan{font:400 12px var(--mono);color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:8px 15px;background:rgba(23,20,43,.6);white-space:nowrap}
+  .scan b{color:var(--ok);font-weight:500}
+  .audit{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(12,10,20,.6)}
+  .chk{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:22px;align-items:start;padding:20px 22px;border-bottom:1px solid var(--line);transition:background .2s}
+  .chk:last-child{border-bottom:0}
+  .chk:hover{background:rgba(23,20,43,.6)}
+  .chk .st{font:500 11.5px var(--mono);color:var(--ok);padding-top:3px;white-space:nowrap}
+  .chk .st.info{color:var(--warn)}
+  .chk h3{font:600 16px/1.35 var(--sans);margin:0 0 4px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .chk h3 small{font:400 10.5px var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+  .chk p{margin:0;color:var(--muted);font-size:14.5px;max-width:72ch}
+  .chk .act{font:400 12px var(--mono);color:var(--vio-2);background:none;border:1px solid var(--line-2);border-radius:6px;padding:7px 11px;cursor:pointer;text-decoration:none;white-space:nowrap;margin-top:1px}
+  .chk .act:hover{border-color:var(--vio);color:var(--text)}
+  .try{display:flex;gap:8px;margin-top:12px;max-width:520px;flex-wrap:wrap}
+  .try input{flex:1;min-width:180px;background:var(--ink);border:1px solid var(--line-2);border-radius:6px;color:var(--text);font:400 13px var(--mono);padding:8px 11px}
+  .try input:focus{outline:none;border-color:var(--vio)}
+  .try button{font:500 13px var(--sans);background:var(--vio);color:#130F2A;border:0;border-radius:6px;padding:8px 14px;cursor:pointer}
+  .try-out{font:400 12px var(--mono);color:var(--dim);margin-top:8px;min-height:1.2em}
+  .try-out b{color:var(--ok);font-weight:400}
+  @media (max-width:680px){ .chk{grid-template-columns:1fr;gap:8px} .chk .act{justify-self:start} .scan{white-space:normal} }
 </style>
 </head>
 <body>
@@ -318,6 +340,7 @@
     <nav class="main" aria-label="Secciones">
       <a href="#proyectos">Proyectos</a>
       <a href="#despliegue">Despliegue</a>
+      <a href="#auditoria">Auditoría</a>
       <a href="#stack">Stack</a>
       <a href="#trayectoria">Trayectoria</a>
       <a href="#contacto">Contacto</a>
@@ -393,6 +416,21 @@
           <p>Los datos los mide tu propio navegador al cargar la página. Nada se envía a ningún servidor.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+
+  <section class="block" id="auditoria" aria-labelledby="a-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="path">~/auditoria</p>
+          <h2 class="title" id="a-title" data-scramble>Auditoría de esta web</h2>
+          <p class="lead">Detalles que no se ven a simple vista, pero que cualquier técnico revisaría. Cada uno tiene su porqué.</p>
+        </div>
+        <div class="scan" id="scan-sum"></div>
+      </div>
+      <div class="audit" id="audit"></div>
     </div>
   </section>
 
@@ -650,6 +688,8 @@ const STATIC = [
  ["#proyectos .path","~/proyectos","~/projects"],["#p-title","Proyectos","Projects"],
  ["#proyectos .lead","Cada servicio lo he desplegado desde cero. Abre uno para ver el problema que resuelve, cómo lo monté y su arquitectura.","I deployed every service from scratch. Open one to see the problem it solves, how I built it and its architecture."],
  [".svc-head","<span>Servicio</span><span>Stack</span><span>Área</span><span>Estado</span>","<span>Service</span><span>Stack</span><span>Area</span><span>Status</span>",1],
+ ['nav.main a[href="#auditoria"]',"Auditoría","Audit"],["#auditoria .path","~/auditoria","~/audit"],["#a-title","Auditoría de esta web","Auditing this site"],
+ ["#auditoria .lead","Detalles que no se ven a simple vista, pero que cualquier técnico revisaría. Cada uno tiene su porqué.","Details you don't notice at first glance but any engineer would check. Each one has a reason."],
  ["#despliegue .path","~/despliegue","~/deployment"],["#d-title","Cómo está desplegada esta web","How this site is deployed"],
  ["#despliegue .lead","Un portfolio de sistemas también es un sistema. Este es el camino que ha seguido tu petición para llegar hasta aquí.","A sysadmin portfolio is a system too. This is the path your request took to get here."],
  [".live h3",'<span class="led" aria-hidden="true"></span>Esta visita, medida en tu navegador','<span class="led" aria-hidden="true"></span>This visit, measured in your browser',1],
@@ -697,7 +737,8 @@ const act=PROJECTS.filter(p=>p.status==="ok").length;
 const sumBase=()=>t("sumBase")(PROJECTS.length,act,PROJECTS.length-act);
 
 /* =================== saludo por empresa (?empresa=Nombre o ?company=Name) =================== */
-const EMPRESA = (()=>{ try{ const q=new URLSearchParams(location.search); const v=q.get("empresa")||q.get("company"); return v ? v.replace(/[^\p{L}\p{N} .&'-]/gu,"").trim().slice(0,40) : ""; }catch(e){ return ""; } })();
+const sanitizeCo = v => String(v||"").replace(/<(script|style)[\s\S]*?(<\/\1>|$)/gi," ").replace(/<[^>]*>?/g," ").replace(/[^\p{L}\p{N} .&'-]/gu,"").replace(/\s+/g," ").trim().slice(0,40);
+let EMPRESA = (()=>{ try{ const q=new URLSearchParams(location.search); return sanitizeCo(q.get("empresa")||q.get("company")); }catch(e){ return ""; } })();
 if(EMPRESA){ $("#hello").classList.add("show"); $("#hello-x").onclick=()=>$("#hello").classList.remove("show"); }
 
 /* =================== consola =================== */
@@ -1030,6 +1071,67 @@ function printCV(){
     <h2>${en?"LANGUAGES":"IDIOMAS"}</h2><p>${en?"Spanish native · Valencian C1 · English B2 · French A1 · Driving licence":"Español nativo · Valenciano C1 · Inglés B2 · Francés A1 · Permiso B"}</p>`;
 }
 
+/* =================== auditoría de esta web =================== */
+const AUDIT=[
+ {tag:"TLS", live:"https", es:["HTTPS con certificado de Let's Encrypt","El certificado se emite y se renueva solo cada 90 días. Mira el candado de tu navegador: está emitido para jasancho.com."],
+   en:["HTTPS with a Let's Encrypt certificate","The certificate is issued and renewed automatically every 90 days. Check your browser's padlock: it's issued for jasancho.com."]},
+ {tag:"DNS", es:["DNS dual stack: IPv4 e IPv6","Registros A y AAAA hacia GitHub Pages, y www como alias CNAME. La web también es accesible desde redes solo IPv6."],
+   en:["Dual-stack DNS: IPv4 and IPv6","A and AAAA records pointing to GitHub Pages, with www as a CNAME alias. The site is reachable from IPv6-only networks too."]},
+ {tag:"RFC 9116", act:{href:"/.well-known/security.txt",es:"ver archivo",en:"view file"}, es:["security.txt","Indica a los investigadores de seguridad cómo avisarme de un fallo, con fecha de caducidad y URL canónica, como pide el estándar."],
+   en:["security.txt","Tells security researchers how to report a vulnerability to me, with an expiry date and canonical URL, as the standard requires."]},
+ {tag:"OWASP", tryit:true, es:["Entrada saneada contra XSS","El saludo personalizado (?empresa=Nombre) solo acepta letras, números y algunos signos, y se inserta como texto, nunca como HTML. Pruébalo, incluso con código:"],
+   en:["Input sanitised against XSS","The personalised greeting (?company=Name) only accepts letters, numbers and a few symbols, and it's inserted as text, never as HTML. Try it, even with code:"]},
+ {tag:"UX", act:{href:"/esta-ruta-no-existe",es:"provocar un 404",en:"trigger a 404"}, es:["Página 404 propia","Si una ruta no existe, lanzo un traceroute que termina en «Destination host unreachable» y te devuelve al inicio."],
+   en:["Custom 404 page","If a route doesn't exist, a traceroute ends in “Destination host unreachable” and takes you back home."]},
+ {tag:"web", act:{href:"/humans.txt",es:"ver humans.txt",en:"view humans.txt"}, es:["humans.txt y robots.txt","Créditos para las personas y reglas para los buscadores: los dos archivos clásicos de la raíz de una web."],
+   en:["humans.txt and robots.txt","Credits for humans and rules for search engines: the two classic files at the root of a website."]},
+ {tag:"CLI", act:{fn:"term",es:"abrir terminal",en:"open terminal"}, es:["Terminal integrada","Toda la web se puede recorrer con comandos: ls, cat, open, status, journalctl -f, incident…"],
+   en:["Built-in terminal","The whole site can be explored with commands: ls, cat, open, status, journalctl -f, incident…"]},
+ {tag:"CSS", act:{fn:"print",es:"imprimir",en:"print"}, es:["Se imprime como un CV","Con Ctrl+P la web se convierte en un currículum limpio, en blanco y negro, listo para guardar en PDF."],
+   en:["Prints as a résumé","Press Ctrl+P and the site turns into a clean black-and-white résumé, ready to save as PDF."]},
+ {tag:"i18n", act:{fn:"lang",es:"switch to English",en:"cambiar a español"}, es:["Bilingüe automática","Detecta el idioma de tu navegador, recuerda tu elección y se puede forzar con ?lang=en."],
+   en:["Automatically bilingual","Detects your browser language, remembers your choice and can be forced with ?lang=es."]},
+ {tag:"a11y", live:"a11y", es:["Accesible","Se recorre entera con el teclado, respeta la opción de «reducir movimiento» del sistema y mantiene buen contraste."],
+   en:["Accessible","Fully keyboard-navigable, honours the system's “reduce motion” setting and keeps good contrast throughout."]},
+ {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. No se envía nada a terceros."],
+   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Nothing is sent to third parties."]},
+ {tag:"F12", es:["Mensajes para curiosos","Abre las herramientas de desarrollador (F12) o el código fuente: hay un saludo esperándote."],
+   en:["Messages for the curious","Open the developer tools (F12) or view the source: there's a greeting waiting for you."]}
+];
+function auditStatus(c){
+  if(c.live==="https") return location.protocol==="https:" ? ["PASS",""] : ["LOCAL","info"];
+  if(c.live==="a11y" && reduce) return ["PASS*",""];
+  return ["PASS",""];
+}
+function drawAudit(){
+  const box=$("#audit"); box.innerHTML=""; let pass=0;
+  AUDIT.forEach(c=>{ const [st,cls]=auditStatus(c); if(cls!=="info") pass++;
+    const [title,desc]=c[LANG];
+    const row=document.createElement("div"); row.className="chk";
+    let act="";
+    if(c.act&&c.act.href) act=`<a class="act" href="${c.act.href}">${esc(c.act[LANG])}</a>`;
+    else if(c.act&&c.act.fn) act=`<button type="button" class="act" data-fn="${c.act.fn}">${esc(c.act[LANG])}</button>`;
+    row.innerHTML=`<span class="st ${cls}">[ ${st} ]</span><div><h3>${esc(title)} <small>${esc(c.tag)}</small></h3><p>${esc(desc)}</p>${c.tryit?`<form class="try" id="try-form"><input id="try-in" type="text" maxlength="120" placeholder="${LANG==="en"?"Your company":"Tu empresa"}" aria-label="${LANG==="en"?"Company name":"Nombre de la empresa"}"><button type="submit">${LANG==="en"?"Test greeting":"Probar saludo"}</button></form><div class="try-out" id="try-out" aria-live="polite"></div>`:""}</div>${act}`;
+    box.appendChild(row); });
+  $("#scan-sum").innerHTML=`scan jasancho.com · <b>${pass}/${AUDIT.length}</b> ${LANG==="en"?"checks passed":"checks superados"}`;
+  box.querySelectorAll("[data-fn]").forEach(b=>b.addEventListener("click",()=>{
+    const f=b.dataset.fn;
+    if(f==="term" && window.openTerminal) window.openTerminal();
+    else if(f==="print"){ try{ window.print(); }catch(e){} }
+    else if(f==="lang") $("#btn-lang").click();
+  }));
+  const tf=$("#try-form");
+  if(tf) tf.addEventListener("submit",e=>{ e.preventDefault();
+    const raw=$("#try-in").value, clean=sanitizeCo(raw), out=$("#try-out");
+    if(!clean){ out.innerHTML = LANG==="en" ? "Nothing left after sanitising. Try a company name." : "No queda nada tras el saneado. Prueba con el nombre de una empresa."; return; }
+    EMPRESA=clean; $("#hello-t").textContent=t("hello")(EMPRESA); $("#hello").classList.add("show");
+    $("#hello-x").onclick=()=>$("#hello").classList.remove("show");
+    const removed=raw.length-clean.length;
+    out.innerHTML=(LANG==="en"?"Received: ":"Recibido: ")+`<code>${esc(raw.slice(0,60))}</code> → `+(LANG==="en"?"shown: ":"mostrado: ")+`<b>${esc(clean)}</b>`+(removed>0?(LANG==="en"?` · ${removed} characters removed`:` · ${removed} caracteres eliminados`):"")+(LANG==="en"?" · look at the top of the page":" · mira arriba del todo");
+    try{ const u=new URL(location.href); u.searchParams.set(LANG==="en"?"company":"empresa",clean); history.replaceState(null,"",u.pathname+u.search+u.hash); }catch(err){}
+  });
+}
+
 /* =================== cambio de idioma =================== */
 function setLang(l, save){
   LANG=l; document.documentElement.lang=l; document.title=t("title");
@@ -1037,7 +1139,7 @@ function setLang(l, save){
   const b=$("#btn-lang"); b.textContent=t("langBtn"); b.setAttribute("aria-label",t("langLabel")); b.title=t("langLabel");
   $("#btn-term").title=t("termBtnLabel"); $("#btn-term").setAttribute("aria-label",t("termBtnLabel"));
   if(EMPRESA) $("#hello-t").textContent=t("hello")(EMPRESA);
-  tickClock(); mapTexts(); renderFilters(); renderList(); drawPipe(); fillLive(); drawCourse(); printCV();
+  tickClock(); mapTexts(); renderFilters(); renderList(); drawPipe(); fillLive(); drawCourse(); drawAudit(); printCV();
   if(curProj) fillProject(curProj);
   if(save){ try{ localStorage.setItem("lang",l); }catch(e){} }
 }
@@ -1088,9 +1190,9 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     ["cat <file>",tr("muestra un archivo","print a file")],[tr("open <proyecto>","open <project>"),tr("abre la ficha con su diagrama","open the project card")],["projects",tr("lista los proyectos","list projects")],
     ["status",tr("estado de los servicios","service status")],["journalctl [-f]",tr("últimos eventos del syslog","latest syslog events")],["incident [id]",tr("simula una caída en el mapa","simulate an outage")],
     ["ping <host>","ping"],["email",tr("copia mi email","copy my email")],["cv",tr("descarga el CV","download résumé")],[tr("goto <sección>","goto <section>"),tr("va a una sección de la web","jump to a section")],
-    ["lang es|en",tr("cambia el idioma","switch language")],["fastfetch",tr("info del sistema","system info")],["history · clear · date · exit",""]
+    ["lang es|en",tr("cambia el idioma","switch language")],["fastfetch",tr("info del sistema","system info")],["audit",tr("auditoría de esta web","audit this site")],["history · clear · date · exit",""]
   ].map(([c,d])=>`<span class="tc" style="display:inline-block;min-width:24ch">${esc(c)}</span>${esc(d)}`).join("<br>");
-  const SECTIONS={proyectos:"#proyectos",projects:"#proyectos",despliegue:"#despliegue",deployment:"#despliegue",stack:"#stack",trayectoria:"#trayectoria",background:"#trayectoria",contacto:"#contacto",contact:"#contacto",inicio:"#inicio",home:"#inicio"};
+  const SECTIONS={proyectos:"#proyectos",projects:"#proyectos",despliegue:"#despliegue",deployment:"#despliegue",stack:"#stack",trayectoria:"#trayectoria",background:"#trayectoria",contacto:"#contacto",contact:"#contacto",auditoria:"#auditoria",audit:"#auditoria",inicio:"#inicio",home:"#inicio"};
   const CMDS={
     help:()=>line(HELP()),
     man:a=>CMDS.help(a),
@@ -1124,6 +1226,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     cv:()=>{ txt(tr("Abriendo el CV…","Opening résumé…")); location.href=$(".btn-cv").getAttribute("href"); },
     goto:a=>{ const s=SECTIONS[(a[0]||"").toLowerCase()]; if(!s) return txt(tr("goto: secciones: proyectos, despliegue, stack, trayectoria, contacto","goto: sections: projects, deployment, stack, background, contact"),"err"); close(); location.hash=s; },
     lang:a=>{ if(a[0]!=="es"&&a[0]!=="en") return txt("lang es | lang en","err"); setLang(a[0],true); window.termLang(); txt(tr("Idioma: español","Language: English"),"tok"); },
+    audit:()=>{ line(AUDIT.map(c=>{ const [st,cls]=auditStatus(c); return `<span class="${cls?"twarn":"tok"}">[ ${st} ]</span> ${esc(c[LANG][0])} <span class="dim">(${esc(c.tag)})</span>`; }).join("<br>")); },
     date:()=>txt(new Date().toString()),
     echo:a=>txt(a.join(" ")),
     uname:()=>txt("soc-sh 1.0 jasancho.com asir-2027 x86_64 GNU/Linux"),
