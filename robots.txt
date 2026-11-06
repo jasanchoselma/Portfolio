@@ -1,0 +1,7 @@
+# robots.txt de jasancho.com
+# Bienvenidos, crawlers. Aquí no hay nada que esconder: es un portfolio.
+User-agent: *
+Allow: /
+
+# Humano curioso: si has llegado hasta aquí, probablemente nos entendamos.
+# Escríbeme: sanchoselmajoseantonio@gmail.com

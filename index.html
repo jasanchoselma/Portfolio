@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<!--
+     _                            _
+    (_) __ _ ___  __ _ _ __   ___| |__   ___
+    | |/ _` / __|/ _` | '_ \ / __| '_ \ / _ \
+    | | (_| \__ \ (_| | | | | (__| | | | (_) |
+   _/ |\__,_|___/\__,_|_| |_|\___|_| |_|\___/
+  |__/
+
+  ¿Mirando el código fuente? Buena señal: eres de los míos.
+  Sin frameworks, sin plantillas. HTML, CSS y JavaScript escritos a mano.
+  Si buscas alumno de FCT para sistemas o ciberseguridad:
+  sanchoselmajoseantonio@gmail.com
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>José Antonio Sancho Selma · Sistemas y ciberseguridad</title>
+<meta name="description" content="Portfolio de José Antonio Sancho Selma, estudiante de ASIR. Administración de sistemas, soporte técnico y ciberseguridad.">
+<meta name="theme-color" content="#0C0A14">
+<meta name="author" content="José Antonio Sancho Selma">
+<meta property="og:title" content="José Antonio Sancho Selma · Sistemas y ciberseguridad">
+<meta property="og:description" content="Mi laboratorio monitorizado nodo a nodo: Docker, AWS, Samba AD, Teleport, MinIO.">
+<meta property="og:url" content="https://jasancho.com/">
+<link rel="author" href="/humans.txt">
+<link rel="icon" id="fav" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315122A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%234FE0A6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Martian+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C0A14; --ink-2:#121022; --panel:#17142B; --panel-2:#201C3A;
+    --line:#2A2544; --line-2:#3A3360;
+    --text:#ECE9FA; --soft:#CFCAE8; --muted:#9A93BC; --dim:#6A6390;
+    --vio:#9B8CFF; --vio-2:#C3B9FF; --alert:#FF5C7A; --ok:#4FE0A6; --warn:#FFC56B;
+    --mono:"Martian Mono", ui-monospace, monospace; --sans:"Geist", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scrollbar-color:var(--line-2) var(--ink)}
+  ::-webkit-scrollbar{width:11px} ::-webkit-scrollbar-track{background:var(--ink)}
+  ::-webkit-scrollbar-thumb{background:var(--line-2);border:3px solid var(--ink);border-radius:8px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--vio)}
+  ::selection{background:var(--vio);color:var(--ink)}
+  body{margin:0;background:var(--ink);color:var(--text);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:-3;background:
+     radial-gradient(900px 600px at 85% -10%,rgba(155,140,255,.13),transparent 60%),
+     radial-gradient(700px 500px at -10% 110%,rgba(255,92,122,.06),transparent 60%)}
+  body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:
+     linear-gradient(rgba(154,147,188,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(154,147,188,.05) 1px,transparent 1px);
+     background-size:48px 48px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%)}
+  .spot{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(480px circle at var(--mx,50%) var(--my,30%),rgba(155,140,255,.09),transparent 60%)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--warn);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+  .print-only{display:none}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* ---------- arranque ---------- */
+  #boot{position:fixed;inset:0;z-index:100;background:#08070F;color:#C5C0E0;font:400 13px/1.75 var(--mono);padding:40px 48px;overflow:hidden;cursor:pointer;transition:opacity .45s ease,visibility .45s}
+  #boot.off{opacity:0;visibility:hidden}
+  #boot .ok{color:var(--ok)} #boot .hl{color:#fff} #boot .v{color:var(--vio)}
+  #boot .skip{position:absolute;right:28px;bottom:24px;color:var(--dim);font-size:12px}
+  #boot .bar{display:inline-block;width:220px;height:8px;border:1px solid var(--line-2);vertical-align:middle;margin-left:8px}
+  #boot .bar i{display:block;height:100%;width:0;background:var(--vio);transition:width 1.1s linear}
+
+  /* ---------- barra superior ---------- */
+  header.top{position:sticky;top:0;z-index:30;background:rgba(12,10,20,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:28px;height:64px}
+  .host{font:500 13px var(--mono);text-decoration:none;white-space:nowrap}
+  .host b{color:var(--vio);font-weight:500}
+  nav.main{display:flex;gap:24px;font-size:15px}
+  nav.main a{text-decoration:none;color:var(--muted);position:relative}
+  nav.main a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--vio);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+  nav.main a:hover{color:var(--text)} nav.main a:hover::after,nav.main a.on::after{transform:none}
+  nav.main a.on{color:var(--text)}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:18px}
+  .meter{font:400 11px var(--mono);color:var(--dim);white-space:nowrap;text-align:right;line-height:1.5}
+  .meter b{color:var(--muted);font-weight:400}
+  .btn-cv{font:500 14px var(--sans);text-decoration:none;background:var(--text);color:var(--ink);padding:9px 15px;border-radius:7px;white-space:nowrap}
+  .btn-cv:hover{background:#fff}
+  .rx{position:absolute;left:0;bottom:-1px;height:2px;width:100%;transform-origin:left;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--vio),var(--alert))}
+
+  /* banner empresa */
+  .hello{display:none;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(155,140,255,.16),rgba(155,140,255,.04))}
+  .hello.show{display:block}
+  .hello .wrap{display:flex;gap:14px;align-items:center;min-height:46px;font-size:14px}
+  .hello code{font:400 11.5px var(--mono);color:var(--vio-2)}
+  .hello button{margin-left:auto;background:none;border:1px solid var(--line-2);color:var(--muted);border-radius:6px;padding:4px 10px;font:400 12px var(--sans);cursor:pointer}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px;align-items:center;padding:52px 0 44px;min-height:calc(100vh - 64px)}
+  .prompt{font:400 13px var(--mono);color:var(--muted);margin:0 0 20px}
+  .prompt span{color:var(--vio)}
+  .prompt .cur{display:inline-block;width:8px;height:15px;background:var(--vio);vertical-align:-2px;margin-left:4px;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  h1{font:700 clamp(38px,4.6vw,64px)/1.02 var(--mono);letter-spacing:-.045em;margin:0 0 24px}
+  h1 span{display:block}
+  h1 .l2{color:transparent;-webkit-text-stroke:1.2px var(--vio-2)}
+  .role{font-size:19px;line-height:1.55;color:var(--soft);max-width:36ch;margin:0 0 26px}
+  .status{display:inline-flex;align-items:center;gap:10px;font:400 12px var(--mono);color:var(--text);border:1px solid var(--line-2);background:rgba(23,20,43,.6);border-radius:999px;padding:8px 15px;margin-bottom:30px}
+  .led{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(79,224,166,.55)}70%{box-shadow:0 0 0 9px rgba(79,224,166,0)}100%{box-shadow:0 0 0 0 rgba(79,224,166,0)}}
+  .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{font:500 15px var(--sans);text-decoration:none;padding:13px 19px;border-radius:7px;border:1px solid var(--line-2);background:rgba(23,20,43,.5);transition:border-color .2s,transform .2s}
+  .btn.primary{background:var(--vio);color:#130F2A;border-color:var(--vio)}
+  .btn:hover{border-color:var(--text);transform:translateY(-1px)}
+
+  /* mapa */
+  .map{margin:0;position:relative;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(23,20,43,.8),rgba(12,10,20,.6));padding:14px 14px 0;overflow:hidden}
+  .map::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:14px;box-shadow:inset 0 1px 0 rgba(195,185,255,.08)}
+  .map-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:2px 6px 10px;border-bottom:1px solid var(--line);font:400 11px var(--mono);color:var(--dim)}
+  .map-bar .dots{display:flex;gap:6px}.map-bar .dots i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+  .map-bar b{color:var(--muted);font-weight:400}
+  .map-bar .sev{color:var(--ok)} .map-bar .sev.bad{color:var(--alert)}
+  .map svg{display:block;width:100%;height:auto;overflow:visible}
+  .link{stroke:var(--line-2);stroke-width:1.4;transition:stroke .25s}
+  .link.hot{stroke:var(--vio)} .link.down{stroke:var(--alert);stroke-dasharray:3 4}
+  .link.wan{stroke-dasharray:4 5}
+  .node rect{fill:var(--panel);stroke:var(--line-2);stroke-width:1.2;transition:stroke .25s,fill .25s}
+  .node text{font-family:var(--mono);pointer-events:none}
+  .node .n1{font-size:11.5px;fill:var(--text);font-weight:500}
+  .node .n2{font-size:9.5px;fill:var(--muted)}
+  .node.proj{cursor:pointer}
+  .node.proj:hover rect,.node.sel rect{stroke:var(--vio);fill:var(--panel-2)}
+  .node:focus{outline:none} .node.proj:focus-visible rect{stroke:var(--warn);stroke-width:2}
+  .node.alert rect{stroke:var(--alert);fill:#2A1426}
+  .node.alert .lamp{animation:lamp .5s steps(1) infinite}
+  @keyframes lamp{50%{opacity:.15}}
+  .zone{fill:none;stroke:var(--line);stroke-dasharray:3 4}
+  .zone-l{font:400 9.5px var(--mono);fill:var(--dim)}
+  .tip{position:absolute;pointer-events:none;background:var(--ink-2);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;width:232px;font-size:13px;line-height:1.45;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:3}
+  .tip.show{opacity:1;transform:none}
+  .tip b{display:block;font-size:14px;margin-bottom:3px}
+  .tip span{color:var(--muted)}
+  .tip em{display:block;font:normal 400 11px var(--mono);color:var(--vio);margin-top:7px}
+  .syslog{margin:0 -14px;border-top:1px solid var(--line);background:rgba(8,7,15,.75);height:130px;overflow:hidden;padding:10px 16px;font:400 10.5px/1.75 var(--mono);color:var(--muted);position:relative}
+  .syslog::before{content:"";position:absolute;inset:0 0 auto;height:26px;background:linear-gradient(rgba(8,7,15,.95),transparent);z-index:1;pointer-events:none}
+  .syslog div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:in .3s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(4px)}}
+  .syslog .ts{color:var(--dim)} .syslog .h{color:var(--vio-2)}
+  .syslog .crit{color:var(--alert)} .syslog .okk{color:var(--ok)} .syslog .wrn{color:var(--warn)}
+  .map-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 6px 12px;font:400 11px var(--mono);color:var(--dim);border-top:1px solid var(--line);margin:0 -14px;padding-left:20px;padding-right:20px}
+  .map-foot .lg{display:flex;gap:14px}
+  .map-foot i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
+
+  /* ---------- secciones ---------- */
+  section.block{padding:100px 0;position:relative}
+  .sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+  .path{font:400 12px var(--mono);color:var(--vio);margin:0 0 10px}
+  h2.title{font:700 clamp(28px,3vw,38px)/1.1 var(--mono);letter-spacing:-.035em;margin:0}
+  .sec-head p.lead{margin:10px 0 0;color:var(--muted);max-width:58ch}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;font:400 12px var(--mono)}
+  .filters button{font:inherit;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer;transition:border-color .2s,color .2s}
+  .filters button:hover{color:var(--text);border-color:var(--line-2)}
+  .filters button[aria-pressed="true"]{background:var(--panel-2);color:var(--text);border-color:var(--vio)}
+
+  .services{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(12,10,20,.6)}
+  .svc-head,.svc{display:grid;grid-template-columns:1.7fr 1.4fr .7fr 100px;gap:18px;align-items:center;padding:18px 22px}
+  .svc-head{font:400 11px var(--mono);color:var(--dim);background:var(--ink-2);border-bottom:1px solid var(--line)}
+  .svc{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);color:inherit;font:inherit;cursor:pointer;position:relative}
+  .svc:last-child{border-bottom:0}
+  .svc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--vio);transform:scaleY(0);transition:transform .2s}
+  .svc:hover{background:rgba(23,20,43,.75)} .svc:hover::before{transform:none}
+  .svc .t{font-weight:600;font-size:17px}
+  .svc .d{display:block;font-size:14px;color:var(--muted);margin-top:2px}
+  .svc .stk{font:400 11.5px/1.8 var(--mono);color:var(--muted)}
+  .svc .cat{font-size:14px;color:var(--muted)}
+  .pill{font:500 11px var(--mono);display:inline-flex;align-items:center;gap:7px}
+  .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+  .pill.ok{color:var(--ok)} .pill.wip{color:var(--warn)}
+
+  dialog{width:min(880px,calc(100% - 32px));max-height:calc(100vh - 48px);padding:0;background:var(--ink-2);color:var(--text);border:1px solid var(--line-2);border-radius:14px}
+  dialog::backdrop{background:rgba(6,5,12,.8);backdrop-filter:blur(3px)}
+  dialog[open]{animation:pop .22s ease-out}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}}
+  .dlg-head{display:flex;justify-content:space-between;gap:16px;align-items:start;padding:22px 28px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ink-2);z-index:2}
+  .dlg-head .path{margin:0 0 6px}
+  .dlg-head h3{font:700 24px/1.2 var(--mono);margin:4px 0 0;letter-spacing:-.03em}
+  .close{background:transparent;border:1px solid var(--line-2);color:var(--text);border-radius:7px;padding:7px 12px;font:500 13px var(--sans);cursor:pointer}
+  .dlg-body{padding:22px 28px 30px}
+  .dlg-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:20px}
+  .dlg-body h4{font:500 12px var(--mono);color:var(--vio);margin:0 0 8px}
+  .dlg-body p,.dlg-body li{color:var(--soft);font-size:16px}
+  .dlg-body p{margin:0 0 20px} .dlg-body ul{padding-left:18px;margin:0 0 20px} .dlg-body li{margin-bottom:6px}
+  .diagram{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;background-image:radial-gradient(rgba(154,147,188,.12) 1px,transparent 1.2px);background-size:18px 18px}
+  .diagram svg{display:block;min-width:600px;width:100%;height:auto}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tags span{font:400 11.5px var(--mono);border:1px solid var(--line-2);border-radius:5px;padding:4px 9px;color:var(--muted)}
+  .side-box{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:rgba(23,20,43,.5)}
+  .side-box + .side-box{margin-top:14px}
+
+  .deploy{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:stretch}
+  .pipeline{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(12,10,20,.6)}
+  .pipeline svg{display:block;width:100%;height:auto}
+  .live{border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:rgba(23,20,43,.5);font:400 13px/2 var(--mono)}
+  .live h3{font:500 14px var(--sans);margin:0 0 12px;display:flex;align-items:center;gap:10px}
+  .live dl{display:grid;grid-template-columns:auto 1fr;gap:0 18px;margin:0}
+  .live dt{color:var(--dim)} .live dd{margin:0;color:var(--text);overflow-wrap:anywhere}
+  .live dd.good{color:var(--ok)}
+  .live p{font:400 14px/1.6 var(--sans);color:var(--muted);margin:16px 0 0}
+
+  .stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .stack-grid div{border:1px solid var(--line);border-radius:12px;padding:22px;background:rgba(12,10,20,.6);transition:border-color .25s}
+  .stack-grid div:hover{border-color:var(--line-2)}
+  .stack-grid h3{font:600 16px var(--sans);margin:0 0 12px;display:flex;justify-content:space-between}
+  .stack-grid h3 small{font:400 11px var(--mono);color:var(--dim)}
+  .stack-grid p{margin:0;font:400 12.5px/2 var(--mono);color:var(--muted)}
+
+  .about{display:grid;grid-template-columns:1fr 1.15fr;gap:56px}
+  .bio p{margin:0 0 16px;max-width:52ch;color:var(--soft)}
+  .facts{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:24px 0 30px;font-size:15px}
+  .facts dt{font:400 12px/2 var(--mono);color:var(--dim)} .facts dd{margin:0}
+  .course{border:1px solid var(--line);border-radius:12px;padding:18px 18px 14px;background:rgba(12,10,20,.6)}
+  .course-h{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:12px}
+  .course-h b{font:700 22px var(--mono);color:var(--vio)}
+  .row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;margin-bottom:8px}
+  .row .nm{font:400 11px var(--mono);color:var(--muted);white-space:nowrap}
+  .ticks{display:grid;grid-template-columns:repeat(var(--w),1fr);gap:2px}
+  .tick{height:16px;border-radius:2px}
+  .tick.idle{background:var(--line);opacity:.55} .tick.done{background:var(--vio)}
+  .tick.plan{box-shadow:inset 0 0 0 1px var(--warn)} .tick.now{outline:1px solid var(--text);outline-offset:1px}
+  .log{list-style:none;margin:0;padding:0;border-left:1px solid var(--line-2)}
+  .log li{position:relative;padding:0 0 26px 26px}
+  .log li::before{content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--ink);border:1px solid var(--muted)}
+  .log li.next::before{border-color:var(--warn)} .log li.now::before{background:var(--vio);border-color:var(--vio)}
+  .log time{font:400 11.5px var(--mono);color:var(--dim)}
+  .log strong{display:block;font-weight:600;margin-top:2px}
+  .log span{color:var(--muted);font-size:15px}
+
+  .contact{border:1px solid var(--line);border-radius:16px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:40px;background:linear-gradient(135deg,rgba(155,140,255,.12),rgba(23,20,43,.4) 50%)}
+  .contact p{color:var(--soft);margin:14px 0 0;max-width:42ch}
+  .links{display:grid;gap:10px}
+  .links a,.links button{display:flex;justify-content:space-between;gap:16px;align-items:center;text-decoration:none;padding:16px 18px;border:1px solid var(--line-2);border-radius:9px;background:rgba(12,10,20,.75);color:inherit;font:inherit;cursor:pointer;text-align:left;transition:border-color .2s}
+  .links a:hover,.links button:hover{border-color:var(--vio)}
+  .links small{font:400 11.5px var(--mono);color:var(--muted)}
+  footer{padding:30px 0 44px;font:400 11.5px/1.8 var(--mono);color:var(--dim)}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px}
+  footer a{color:var(--muted)}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:60;background:var(--ink-2);border:1px solid var(--line-2);border-radius:8px;padding:11px 16px;font:400 12.5px var(--mono);transition:opacity .2s,transform .2s;pointer-events:none}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast b{color:var(--ok);font-weight:400}
+
+  @media (max-width:1040px){
+    nav.main,.meter{display:none}
+    .hero{grid-template-columns:1fr;min-height:0;padding-top:40px}
+    .deploy,.about,.contact,.dlg-grid{grid-template-columns:1fr}
+    .stack-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:680px){
+    .wrap{padding-left:18px;padding-right:18px}
+    .svc-head{display:none}
+    .svc{grid-template-columns:1fr auto;gap:8px 12px}
+    .svc .stk{grid-column:1/-1}.svc .cat{display:none}
+    .stack-grid{grid-template-columns:1fr}
+    .contact{padding:26px}
+    #boot{padding:24px;font-size:11px}
+    .map{padding:8px 8px 0} .syslog,.map-foot{margin:0 -8px} .map-bar #map-cap{display:none}
+    .syslog{font-size:9.5px;height:120px}
+  }
+  @media (prefers-reduced-motion:reduce){.led,.prompt .cur,.node.alert .lamp{animation:none}dialog[open],.syslog div{animation:none}}
+
+  /* ---------- impresión: la web se imprime como CV ---------- */
+  @media print{
+    @page{margin:16mm 16mm}
+    body{background:#fff;color:#111;font:10.5pt/1.5 var(--sans)}
+    body::before,body::after,.spot,#boot,header,main,footer,dialog,.toast,.hello{display:none!important}
+    .print-only{display:block!important}
+    .pcv h1{font:700 22pt/1.1 var(--mono);letter-spacing:-.03em;margin:0 0 4pt;color:#111}
+    .pcv .sub{font:500 10pt var(--sans);color:#4b3fb8;margin:0 0 4pt}
+    .pcv .ct{font:9pt var(--mono);color:#444;margin:0 0 14pt}
+    .pcv h2{font:600 9pt var(--mono);color:#4b3fb8;border-bottom:1px solid #ccc;padding-bottom:2pt;margin:14pt 0 6pt}
+    .pcv h3{font:600 10.5pt var(--sans);margin:8pt 0 1pt}
+    .pcv p,.pcv li{margin:0 0 3pt;color:#222} .pcv ul{margin:2pt 0 4pt 14pt;padding:0}
+    .pcv .tg{font:8.5pt var(--mono);color:#555}
+    .pcv .proj{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="spot" id="spot"></div>
+<div id="boot" role="presentation" aria-hidden="true"><div id="boot-out"></div><span class="skip">Pulsa cualquier tecla para saltar</span></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="host" href="#inicio"><b>jasancho</b>@soc:~</a>
+    <nav class="main" aria-label="Secciones">
+      <a href="#proyectos">Proyectos</a>
+      <a href="#despliegue">Despliegue</a>
+      <a href="#stack">Stack</a>
+      <a href="#trayectoria">Trayectoria</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="top-right">
+      <span class="meter"><span id="uptime">uptime <b>--</b></span><br><span id="rxl">rx <b>0.0</b> KB</span></span>
+      <a class="btn-cv" href="cv-jose-antonio-sancho-selma.pdf">Descargar CV</a>
+    </div>
+  </div>
+  <div class="rx" id="rx" aria-hidden="true"></div>
+</header>
+
+<div class="hello" id="hello" role="status">
+  <div class="wrap"><code>conexión entrante</code><span id="hello-t"></span><button type="button" id="hello-x">Cerrar</button></div>
+</div>
+
+<main id="inicio">
+  <div class="wrap hero">
+    <div>
+      <p class="prompt"><span>jasancho@soc</span>:~$ whoami<i class="cur" aria-hidden="true"></i></p>
+      <h1 aria-label="José Antonio Sancho Selma"><span class="l1" data-scramble aria-hidden="true">José Antonio</span><span class="l2" data-scramble aria-hidden="true">Sancho Selma</span></h1>
+      <p class="role">Monto, conecto y protejo servicios: Linux, Docker, AWS y Active Directory. Este es mi laboratorio, monitorizado nodo a nodo.</p>
+      <div class="status"><span class="led" aria-hidden="true"></span>Buscando FCT · marzo a julio de 2027</div>
+      <div class="actions">
+        <a class="btn primary" href="#proyectos">Ver proyectos</a>
+        <a class="btn" href="#contacto">Contactar</a>
+      </div>
+    </div>
+
+    <figure class="map" id="map" aria-labelledby="map-cap">
+      <div class="map-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="map-cap"><b>soc · topología del laboratorio</b></span><span class="sev" id="sev">0 incidentes</span></div>
+      <svg id="net" viewBox="0 0 700 480" role="group" aria-label="Mapa de red con mis proyectos. Pulsa un nodo para abrir su ficha."></svg>
+      <div class="tip" id="tip"></div>
+      <div class="syslog" id="syslog" aria-label="Registro de eventos simulado" role="log" aria-live="off"></div>
+      <div class="map-foot">
+        <span class="lg"><span><i style="background:var(--ok)"></i>activo</span><span><i style="background:var(--warn)"></i>en curso</span><span><i style="background:var(--alert)"></i>incidente</span></span>
+        <span id="map-sum"></span>
+      </div>
+    </figure>
+  </div>
+
+  <section class="block" id="proyectos" aria-labelledby="p-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="path">~/proyectos</p>
+          <h2 class="title" id="p-title" data-scramble>Proyectos</h2>
+          <p class="lead">Cada servicio lo he desplegado desde cero. Abre uno para ver el problema que resuelve, cómo lo monté y su arquitectura.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filtrar proyectos" id="filters"></div>
+      </div>
+      <div class="services" id="services">
+        <div class="svc-head" aria-hidden="true"><span>Servicio</span><span>Stack</span><span>Área</span><span>Estado</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="despliegue" aria-labelledby="d-title">
+    <div class="wrap">
+      <div class="sec-head"><div>
+        <p class="path">~/despliegue</p>
+        <h2 class="title" id="d-title" data-scramble>Cómo está desplegada esta web</h2>
+        <p class="lead">Un portfolio de sistemas también es un sistema. Este es el camino que ha seguido tu petición para llegar hasta aquí.</p>
+      </div></div>
+      <div class="deploy">
+        <div class="pipeline"><svg id="pipe" viewBox="0 0 640 300" role="img" aria-label="Navegador, DNS en IONOS, GitHub Pages con HTTPS y repositorio en GitHub"></svg></div>
+        <div class="live" aria-live="polite">
+          <h3><span class="led" aria-hidden="true"></span>Esta visita, medida en tu navegador</h3>
+          <dl id="live"></dl>
+          <p>Los datos los mide tu propio navegador al cargar la página. Nada se envía a ningún servidor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="stack" aria-labelledby="s-title">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="path">~/stack</p><h2 class="title" id="s-title" data-scramble>Stack</h2><p class="lead">Lo que he configurado con mis manos en prácticas, no una lista de palabras clave.</p></div></div>
+      <div class="stack-grid" id="stackgrid">
+        <div><h3>Sistemas y directorio <small>/etc</small></h3><p>Ubuntu Server · Debian · Windows<br>Samba 4 AD DC · RSAT<br>RAID 1 · NAS · Clonezilla</p></div>
+        <div><h3>Redes <small>/net</small></h3><p>DHCP + DDNS · DHCP en 2 VLAN<br>nftables: filtrado, DNAT, DMZ<br>Proxy inverso Nginx</p></div>
+        <div><h3>Contenedores <small>/var/lib/docker</small></h3><p>Docker · Docker Compose<br>Nextcloud · OnlyOffice · Odoo<br>WordPress · LAMP · Moodle</p></div>
+        <div><h3>Servicios de red <small>/srv</small></h3><p>Apache y Nginx con HTTPS<br>Mailcow · Carbonio<br>SFTP · FTPS · streaming</p></div>
+        <div><h3>Seguridad <small>/sec</small></h3><p>Teleport · Vaultwarden<br>MinIO Object Lock + Kopia<br>Duplicity · TLS · MFA</p></div>
+        <div><h3>Cloud y datos <small>/cloud</small></h3><p>AWS EC2 · Ubuntu Server<br>MySQL · PostgreSQL · MariaDB<br>GLPI para inventario</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="trayectoria" aria-labelledby="t-title">
+    <div class="wrap about">
+      <div class="bio">
+        <p class="path">~/sobre-mi</p>
+        <h2 class="title" id="t-title" data-scramble style="margin-bottom:22px">Trayectoria</h2>
+        <p>Empecé por las ciencias de la salud y acabé en sistemas. Lo que me engancha es entender cómo encaja cada pieza y dejarla funcionando sola.</p>
+        <p>Antes de ASIR di clases particulares y trabajé de cara al público. De ahí me viene algo que en soporte cuenta mucho: explicar las cosas con paciencia a quien no es técnico.</p>
+        <dl class="facts">
+          <dt>busco</dt><dd>Sistemas, soporte técnico, ciberseguridad</dd>
+          <dt>idiomas</dt><dd>Español, valenciano C1, inglés B2</dd>
+          <dt>base</dt><dd>Valencia · carnet B</dd>
+        </dl>
+        <div class="course" aria-label="Prácticas del curso 2026/27, semana a semana">
+          <div class="course-h"><span>Curso 2026/27, semana a semana</span><span><b id="count">0</b> prácticas</span></div>
+          <div id="rows"></div>
+        </div>
+      </div>
+      <ol class="log" reversed id="timeline">
+        <li class="next"><time>mar – jul 2027</time><strong>Formación en empresa (FCT)</strong><span>Buscando empresa de sistemas o ciberseguridad</span></li>
+        <li class="now"><time>2025 – 2027</time><strong>CFGS Administración de Sistemas Informáticos en Red</strong><span>CEP Sorolla, Valencia</span></li>
+        <li><time>may 2026</time><strong>Computer Hardware Basics</strong><span>Cisco Networking Academy</span></li>
+        <li><time>jun – sep 2025</time><strong>Atención al cliente</strong><span>Consum Cooperativa Valenciana</span></li>
+        <li><time>2022 – 2024</time><strong>Bachillerato de Ciencias de la Salud</strong><span>Maristas Valencia</span></li>
+        <li><time>2022 – 2023</time><strong>Profesor particular</strong><span>Matemáticas, física, química y biología</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="contacto" aria-labelledby="c-title">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <p class="path">~/contacto</p>
+          <h2 class="title" id="c-title" data-scramble>¿Hablamos?</h2>
+          <p>Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.</p>
+        </div>
+        <div class="links">
+          <button type="button" id="copy-mail"><span>Email</span><small>sanchoselmajoseantonio@gmail.com · copiar</small></button>
+          <a href="https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368" target="_blank" rel="noopener"><span>LinkedIn</span><small>jose-antonio-sancho-selma</small></a>
+          <a href="https://github.com/jasanchoselma" target="_blank" rel="noopener"><span>GitHub</span><small>jasanchoselma</small></a>
+          <a href="cv-jose-antonio-sancho-selma.pdf"><span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 José Antonio Sancho Selma · <a href="/.well-known/security.txt">security.txt</a> · <a href="/humans.txt">humans.txt</a></span>
+    <span>HTML, CSS y JS sin frameworks · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a></span>
+  </div>
+</footer>
+
+<section class="print-only pcv" id="pcv" aria-hidden="true"></section>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <div class="dlg-head">
+    <div><p class="path" id="dlg-path"></p><span id="dlg-status"></span><h3 id="dlg-title"></h3></div>
+    <button class="close" id="dlg-close">Cerrar</button>
+  </div>
+  <div class="dlg-body" id="dlg-body"></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =================== DATOS: edita aquí =================== */
+const PROJECTS = [
+  { id:"teleport", host:"bastion01", title:"Bastión SSH con Teleport",
+    short:"Acceso SSH centralizado, con doble factor y sesiones auditadas",
+    cats:["Seguridad","Docker"], area:"Seguridad", status:"ok",
+    stack:["Teleport","Docker Compose","Ubuntu Server","MFA OTP"],
+    problem:"El acceso por SSH dependía de claves sueltas repartidas entre personas y del puerto 22 abierto en cada servidor. Si alguien se va, nadie sabe qué claves quedan vivas ni quién entró a qué.",
+    did:["Desplegué Teleport con Docker Compose como bastión: autoridad certificadora, proxy y punto único de acceso.","Uní un segundo Ubuntu Server como nodo con un agente que conecta hacia fuera, así que ese servidor no expone ningún puerto.","Creé usuarios nominales con segundo factor por OTP y dejé registrada cada sesión."],
+    learned:"La diferencia entre claves SSH estáticas y certificados de vida corta, que caducan solos y hacen que retirar un acceso sea inmediato.",
+    flow:[["Administrador","web / tsh + OTP"],["Teleport","bastión en Docker"],["Servidor prod.","agente · 0 puertos"]], dir:[1,-1] },
+  { id:"minio", host:"s3-backup", title:"Copias inmutables contra ransomware",
+    short:"Almacenamiento S3 propio con Object Lock y restauración probada",
+    cats:["Seguridad","Docker","Sistemas"], area:"Seguridad", status:"ok",
+    stack:["MinIO","Kopia","Nginx","OpenSSL","systemd"],
+    problem:"El ransomware busca primero las copias de seguridad, y si el agente de copia puede borrar en el destino, el atacante también. Una copia solo sirve si sobrevive al ataque.",
+    did:["Monté un almacenamiento de objetos compatible con S3 con MinIO y Docker Compose, servido por HTTPS tras un proxy Nginx.","Creé un depósito con Object Lock en modo Compliance: nada se puede modificar ni borrar hasta que vence la retención, ni siquiera el administrador.","Programé copias con Kopia en un Ubuntu Server (systemd) y un Windows 11 (Programador de tareas).","Simulé un ataque de ransomware completo y restauré los datos."],
+    learned:"Una copia no está hecha hasta que has probado a restaurarla, y la inmutabilidad es la única defensa que no depende de que el cliente siga limpio.",
+    flow:[["Ubuntu + Win 11","Kopia cifrado"],["Nginx","HTTPS"],["MinIO","Object Lock"]], dir:[1,1] },
+  { id:"glpi", host:"helpdesk", title:"Inventario y mesa de ayuda con GLPI",
+    short:"Equipos que se inventarían solos y tickets ligados a cada activo",
+    cats:["Sistemas","Docker"], area:"Soporte", status:"ok",
+    stack:["GLPI","MariaDB","Nginx","GLPI-Agent","Docker Compose"],
+    problem:"Sin un departamento de IT organizado, nadie sabe cuántos equipos hay, qué llevan instalado ni qué incidencias han dado. La información vive en una hoja de cálculo vieja y en el correo.",
+    did:["Desplegué GLPI y MariaDB con Docker Compose, con credenciales aisladas en un archivo .env.","Puse Nginx delante como único punto de entrada con HTTPS, para el navegador y para los agentes.","Instalé GLPI-Agent en un equipo Ubuntu y otro Windows, resolviendo la validación del certificado, para que envíen su inventario solos."],
+    learned:"Cómo enlazar inventario y soporte: cuando entra un ticket, ya sabes qué equipo es y qué tiene.",
+    flow:[["Equipos","GLPI-Agent"],["Nginx","HTTPS"],["GLPI + MariaDB","Docker"]], dir:[1,1] },
+  { id:"samba", host:"dc01", title:"Dominio corporativo con Samba AD DC",
+    short:"Controlador de dominio Linux con clientes Windows y Ubuntu",
+    cats:["Sistemas","Redes"], area:"Sistemas", status:"ok",
+    stack:["Samba 4","Windows","Ubuntu Desktop","RSAT","DHCP"],
+    problem:"Una red con equipos Windows y Linux necesita usuarios y permisos centralizados, sin pagar licencias de Windows Server.",
+    did:["Configuré Samba 4 como controlador de dominio de Active Directory.","Uní al dominio clientes Windows y Ubuntu Desktop.","Administré usuarios y grupos desde Windows con RSAT.","Monté un servidor DHCP que reparte direcciones en dos VLAN."],
+    learned:"Cómo funciona un dominio por dentro (DNS, Kerberos, unión de equipos) y que Linux puede sustituir a Windows Server en este papel.",
+    flow:[["Clientes","Windows · Ubuntu"],["Samba AD DC","DNS + Kerberos"],["Admin","RSAT"]], dir:[1,-1] },
+  { id:"vault", host:"vault", title:"Gestor de contraseñas autoalojado",
+    short:"Vaultwarden en un único contenedor, con HTTPS y registro cerrado",
+    cats:["Seguridad","Docker"], area:"Seguridad", status:"ok",
+    stack:["Vaultwarden","Docker","OpenSSL","Argon2"],
+    problem:"Las credenciales de un equipo no deberían vivir en la nube de un tercero.",
+    did:["Desplegué Vaultwarden en un único contenedor, compatible con los clientes oficiales de Bitwarden.","Generé un certificado y lo serví por HTTPS desde el propio contenedor.","Protegí el panel de administración con un token cifrado con Argon2 en vez de texto plano.","Creé la primera cuenta y cerré el registro público."],
+    learned:"Que la seguridad de un servicio depende tanto de su configuración inicial como del software: un panel con la contraseña en texto plano lo tira todo.",
+    flow:[["Apps Bitwarden","navegador · móvil"],["Vaultwarden","HTTPS · Docker"]], dir:[1] },
+  { id:"aws", host:"ec2-web", title:"Servidor en la nube con AWS",
+    short:"Instancia EC2 con SSH por usuarios, web HTTPS, SFTP, FTPS y MySQL",
+    cats:["Cloud","Docker"], area:"Cloud", status:"wip",
+    stack:["AWS EC2","Ubuntu Server","Apache","MySQL","Docker"],
+    problem:"Llevar a una nube pública lo aprendido en local: un servidor accesible desde internet tiene que estar bien cerrado desde el primer minuto.",
+    did:["Creé una instancia EC2 con Ubuntu Server y acceso SSH con usuarios propios.","Configuré Apache con HTTPS, SFTP, FTPS y MySQL.","En curso: Docker, WordPress, Nginx Proxy Manager y Moodle sobre la misma instancia."],
+    learned:"Grupos de seguridad, límites de la capa gratuita y la diferencia entre probar en una VM y exponer algo a internet.",
+    flow:[["Internet","HTTPS · SSH"],["Security Group","AWS"],["EC2 Ubuntu","Apache · Docker"]], dir:[1,1] },
+  { id:"nft", host:"fw01", title:"Cortafuegos con nftables y DMZ",
+    short:"Filtrado y DNAT para publicar servicios desde una DMZ",
+    cats:["Redes","Seguridad"], area:"Redes", status:"ok",
+    stack:["nftables","Linux","DNAT"],
+    problem:"Publicar servicios a internet sin exponer la red interna.",
+    did:["Escribí reglas de filtrado con nftables.","Configuré DNAT para redirigir el tráfico entrante a servidores situados en una DMZ."],
+    learned:"Cómo segmentar una red para que, si cae un servicio público, el atacante no llegue a la red interna.",
+    flow:[["Internet",""],["fw01","nftables · DNAT"],["DMZ","servicios"]], dir:[1,1] }
+];
+
+const NODES = [
+  {k:"inet", x:350, y:42,  t:"internet", s:"WAN", cloud:true},
+  {k:"aws",  x:590, y:42,  p:"aws"},
+  {k:"nft",  x:350, y:140, p:"nft"},
+  {k:"sw",   x:350, y:240, t:"core-sw", s:"VLAN 10 · 20"},
+  {k:"samba",x:140, y:330, p:"samba"},
+  {k:"cli",  x:140, y:432, t:"clientes", s:"win11 · ubuntu"},
+  {k:"dock", x:470, y:330, t:"docker01", s:"Compose host"},
+  {k:"teleport",x:620,y:240,p:"teleport"},
+  {k:"minio",x:350, y:432, p:"minio"},
+  {k:"glpi", x:470, y:432, p:"glpi"},
+  {k:"vault",x:590, y:432, p:"vault"}
+];
+const LINKS = [["inet","nft",1],["inet","aws",1],["nft","sw"],["sw","samba"],["samba","cli"],["sw","dock"],["sw","teleport"],["teleport","dock"],["dock","minio"],["dock","glpi"],["dock","vault"]];
+const COURSE = { start:"2026-09-07", end:"2027-07-02", blocks:[
+  {name:"Servicios", weeks:[["2026-09-07",2],["2026-09-14",4]]},
+  {name:"Samba AD", weeks:[["2026-09-21",5],["2026-09-28",5],["2026-10-05",3]]},
+  {name:"Docker", weeks:[["2026-10-12",6],["2026-10-19",5],["2026-10-26",6]]},
+  {name:"AWS", weeks:[["2026-11-02",6],["2026-11-09",4]]},
+  {name:"FCT", fct:["2027-03-01","2027-07-02"]}
+]};
+const ASIR_START = new Date("2025-09-15T08:00:00");
+const EMAIL = "sanchoselmajoseantonio@gmail.com";
+
+/* =================== utilidades =================== */
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const el = (n,a={},p) => { const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(p) p.appendChild(e); return e; };
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const P = id => PROJECTS.find(p=>p.id===id);
+const pill = s => s==="ok" ? `<span class="pill ok">activo</span>` : `<span class="pill wip">en curso</span>`;
+const C = {panel:"#17142B",line:"#3A3360",text:"#ECE9FA",muted:"#9A93BC",dim:"#6A6390",vio:"#9B8CFF",ok:"#4FE0A6",warn:"#FFC56B",alert:"#FF5C7A"};
+function toast(html){ const t=$("#toast"); t.innerHTML=html; t.classList.add("show"); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove("show"),2400); }
+
+/* =================== saludo por empresa (?empresa=Nombre) =================== */
+const EMPRESA = (()=>{ try{ const v=new URLSearchParams(location.search).get("empresa"); return v ? v.replace(/[^\p{L}\p{N} .&'-]/gu,"").trim().slice(0,40) : ""; }catch(e){ return ""; } })();
+if(EMPRESA){
+  $("#hello-t").textContent = `Hola, equipo de ${EMPRESA}. Gracias por revisar mi candidatura para la FCT.`;
+  $("#hello").classList.add("show");
+  $("#hello-x").onclick=()=>$("#hello").classList.remove("show");
+}
+
+/* =================== consola =================== */
+console.log("%c jasancho@soc ","background:#9B8CFF;color:#0C0A14;font:700 14px monospace;padding:4px 8px;border-radius:4px");
+console.log("%c¿Abriendo las DevTools? Me caes bien.\nSin frameworks: todo esto es HTML, CSS y JS escrito a mano.\nCódigo: https://github.com/jasanchoselma/Portfolio\nSi buscas alumno de FCT para sistemas o ciberseguridad: "+EMAIL,"color:#CFCAE8;font:12px/1.6 monospace");
+
+/* =================== arranque =================== */
+(function boot(){
+  const box=$("#boot"); let seen=false;
+  try{ seen = sessionStorage.getItem("booted")==="1"; }catch(e){}
+  if(seen || reduce){ box.classList.add("off"); return; }
+  const lines=[
+    '<span class="hl">JASANCHO-BIOS v27.06</span>  ·  SOC Edition',
+    'CPU: curiosidad @ 3.2 GHz   Memoria: 16384 MB OK',
+    'Detectando unidades… <span class="hl">/dev/sda</span> experiencia.img  <span class="hl">/dev/sdb</span> proyectos.img',
+    'Cargando kernel asir-2027 <span class="bar"><i id="bb"></i></span>',
+    '[ <span class="ok">OK</span> ] Started nftables.service',
+    '[ <span class="ok">OK</span> ] Started docker.service',
+    '[ <span class="ok">OK</span> ] Started teleport.service',
+    '[ <span class="ok">OK</span> ] Started soc-monitor.service',
+    EMPRESA ? `[ <span class="v">INFO</span> ] Conexión entrante desde <span class="hl"></span>` : null,
+    '[ <span class="ok">OK</span> ] Reached target <span class="hl">portfolio.target</span>'
+  ].filter(Boolean);
+  const out=$("#boot-out"); let i=0, done=false;
+  const finish=()=>{ if(done) return; done=true; box.classList.add("off"); try{sessionStorage.setItem("booted","1")}catch(e){} };
+  const step=()=>{ if(done) return; if(i<lines.length){ const d=document.createElement("div"); d.innerHTML=lines[i];
+      if(lines[i].includes("Conexión entrante")) d.querySelector(".hl").textContent=EMPRESA;
+      out.appendChild(d); if(i===3) requestAnimationFrame(()=>{const b=$("#bb"); if(b) b.style.width="100%";}); i++; setTimeout(step, i===4?1150:i<4?170:120); } else setTimeout(finish,380); };
+  box.addEventListener("click",finish); addEventListener("keydown",finish,{once:true});
+  step();
+})();
+
+/* =================== texto que se descifra =================== */
+const GLYPHS="!<>-_\\/[]{}=+*^?#01ABCDEF";
+function scramble(node){
+  if(node.dataset.done) return; node.dataset.done="1";
+  const final=node.textContent; if(!node.getAttribute("aria-hidden")) node.setAttribute("aria-label",final);
+  if(reduce) return;
+  const len=final.length, start=performance.now(), dur=900;
+  const frame=t=>{ const p=Math.min(1,(t-start)/dur), rev=Math.floor(p*len); let s="";
+    for(let i=0;i<len;i++){ const ch=final[i]; s += (i<rev||ch===" ") ? ch : GLYPHS[Math.floor(Math.random()*GLYPHS.length)]; }
+    node.textContent=s; if(p<1) requestAnimationFrame(frame); else node.textContent=final; };
+  requestAnimationFrame(frame);
+}
+const sio = "IntersectionObserver" in window ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ scramble(e.target); sio.unobserve(e.target);} }),{threshold:.6}) : null;
+document.querySelectorAll("[data-scramble]").forEach(n=>{ if(n.closest(".hero")) return; sio ? sio.observe(n) : scramble(n); });
+const heroScramble=()=>document.querySelectorAll(".hero [data-scramble]").forEach((n,i)=>setTimeout(()=>scramble(n),i*220));
+if($("#boot").classList.contains("off")) setTimeout(heroScramble,150);
+else new MutationObserver((m,o)=>{ if($("#boot").classList.contains("off")){ o.disconnect(); setTimeout(heroScramble,250);} }).observe($("#boot"),{attributes:true});
+
+/* =================== foco del cursor =================== */
+if(!reduce && matchMedia("(pointer:fine)").matches){
+  const sp=$("#spot"); let raf=0, mx=0, my=0;
+  addEventListener("pointermove",e=>{ mx=e.clientX; my=e.clientY; if(!raf) raf=requestAnimationFrame(()=>{ sp.style.setProperty("--mx",mx+"px"); sp.style.setProperty("--my",my+"px"); raf=0; }); });
+}
+
+/* =================== uptime =================== */
+function tickClock(){
+  const ms=Date.now()-ASIR_START, d=Math.floor(ms/864e5), h=Math.floor(ms/36e5)%24, m=Math.floor(ms/6e4)%60;
+  $("#uptime").innerHTML=`uptime <b>${d} días, ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}</b>`;
+}
+tickClock(); setInterval(tickClock,30000);
+
+/* =================== scroll como transferencia =================== */
+(function rx(){
+  let total=0; try{ total=new Blob([document.documentElement.outerHTML]).size/1024; }catch(e){ total=60; }
+  const bar=$("#rx"), lab=$("#rxl"); let raf=0;
+  const upd=()=>{ raf=0; const h=document.documentElement.scrollHeight-innerHeight, p=h>0?Math.min(1,scrollY/h):1;
+    bar.style.setProperty("--p",p); lab.innerHTML=`rx <b>${(total*p).toFixed(1)}</b> / ${total.toFixed(1)} KB`; };
+  addEventListener("scroll",()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); upd();
+})();
+
+/* =================== nav activa =================== */
+(function navOn(){
+  const links=[...document.querySelectorAll("nav.main a")];
+  if(!("IntersectionObserver" in window)) return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id)); } }),{rootMargin:"-45% 0px -50% 0px"});
+  document.querySelectorAll("section.block").forEach(s=>io.observe(s));
+})();
+
+/* =================== pestaña viva (favicon LED + título) =================== */
+const favSVG = c => "data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='#15122A'/><circle cx='16' cy='16' r='7' fill='${c}'/></svg>`);
+const TITLE=document.title;
+function setFav(c){ $("#fav").href=favSVG(c); }
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){ document.title="[!] Conexión perdida · vuelve"; setFav(C.alert); }
+  else { document.title="[ OK ] Reconectado"; setFav(C.ok); setTimeout(()=>{ document.title=TITLE; },1600); }
+});
+
+/* =================== mapa de red =================== */
+const svg=$("#net"), tip=$("#tip"), mapBox=$("#map");
+const N = Object.fromEntries(NODES.map(n=>[n.k,n]));
+const W=118, H=44;
+// radar
+const rad=el("g",{opacity:.9},svg);
+[90,180,270].forEach(r=>el("circle",{cx:350,cy:250,r,fill:"none",stroke:"#211C38","stroke-width":1},rad));
+el("path",{d:"M350 250 H70",stroke:"#211C38"},rad); el("path",{d:"M350 250 V-30",stroke:"#211C38"},rad);
+const defs=el("defs",{},svg);
+const lg=el("linearGradient",{id:"sweep",x1:"0",y1:"0",x2:"1",y2:"0"},defs);
+el("stop",{offset:"0","stop-color":"#9B8CFF","stop-opacity":"0"},lg); el("stop",{offset:"1","stop-color":"#9B8CFF","stop-opacity":".16"},lg);
+const sw=el("path",{d:"M350 250 L620 250 A270 270 0 0 0 583.8 115 Z",fill:"url(#sweep)"},rad);
+if(!reduce) el("animateTransform",{attributeName:"transform",type:"rotate",from:"0 350 250",to:"-360 350 250",dur:"9s",repeatCount:"indefinite"},sw);
+// zonas
+el("rect",{x:52,y:290,width:176,height:180,rx:10,class:"zone"},svg); el("text",{x:62,y:304,class:"zone-l"},svg).textContent="LAN · dominio";
+el("rect",{x:286,y:290,width:372,height:180,rx:10,class:"zone"},svg); el("text",{x:296,y:304,class:"zone-l"},svg).textContent="DMZ · servicios";
+const linkEls = LINKS.map(([a,b,wan])=>{ const l=el("line",{x1:N[a].x,y1:N[a].y,x2:N[b].x,y2:N[b].y,class:"link"+(wan?" wan":"")},svg); l.dataset.a=a; l.dataset.b=b; return l; });
+const pktLayer = el("g",{},svg);
+const nodeEl={}, lampEl={};
+NODES.forEach(n=>{
+  const pr = n.p && P(n.p);
+  const g=el("g",{class:"node"+(pr?" proj":""),transform:`translate(${n.x-W/2},${n.y-H/2})`},svg); nodeEl[n.k]=g;
+  if(n.cloud){
+    el("path",{d:"M22 40 h76 a16 16 0 0 0 0-32 a22 22 0 0 0-40-6 a18 18 0 0 0-36 14 a12 12 0 0 0 0 24z",fill:C.panel,stroke:C.line,"stroke-width":1.2},g);
+    el("text",{x:W/2,y:28,"text-anchor":"middle",class:"n1"},g).textContent=n.t; return;
+  }
+  el("rect",{width:W,height:H,rx:8},g);
+  lampEl[n.k]=el("circle",{cx:14,cy:H/2,r:4,class:"lamp",fill: pr ? (pr.status==="ok"?C.ok:C.warn) : C.dim},g);
+  el("text",{x:26,y:19,class:"n1"},g).textContent = pr ? pr.host : n.t;
+  el("text",{x:26,y:33,class:"n2"},g).textContent = pr ? pr.stack[0] : n.s;
+  if(pr){
+    g.setAttribute("tabindex","0"); g.setAttribute("role","button"); g.setAttribute("aria-label",`${pr.title}. Abrir ficha`);
+    const show=()=>{ g.classList.add("sel"); hot(n.k,true);
+      const inc = g.classList.contains("alert");
+      tip.innerHTML=`<b>${pr.title}</b><span>${pr.short}</span><em>${inc?'<span style="color:#FF5C7A">● incidente en curso</span>':(pr.status==="ok"?"● activo":"● en curso")} · pulsa para abrir</em>`;
+      const r=svg.getBoundingClientRect(), mb=mapBox.getBoundingClientRect(), sc=r.width/700;
+      let x=r.left-mb.left+n.x*sc-116, y=r.top-mb.top+(n.y-H/2)*sc-10;
+      x=Math.max(8,Math.min(x,mb.width-240)); tip.style.left=x+"px";
+      tip.style.top=(y-tip.offsetHeight<0 ? r.top-mb.top+(n.y+H/2)*sc+10 : y-tip.offsetHeight)+"px";
+      tip.classList.add("show"); };
+    const hide=()=>{ g.classList.remove("sel"); hot(n.k,false); tip.classList.remove("show"); };
+    g.addEventListener("pointerenter",show); g.addEventListener("pointerleave",hide);
+    g.addEventListener("focus",show); g.addEventListener("blur",hide);
+    g.addEventListener("click",()=>{ hide(); openProject(pr); });
+    g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); hide(); openProject(pr);} });
+  }
+});
+function hot(k,on){ linkEls.forEach(l=>{ if(l.dataset.a===k||l.dataset.b===k) l.classList.toggle("hot",on); }); }
+const act=PROJECTS.filter(p=>p.status==="ok").length;
+const sumBase=`${PROJECTS.length} servicios · ${act} activos · ${PROJECTS.length-act} en curso`;
+$("#map-sum").textContent=sumBase;
+
+// paquetes
+if(!reduce){
+  const pk=[];
+  const spawn=()=>{ const [a,b]=LINKS[Math.floor(Math.random()*LINKS.length)]; const fwd=Math.random()<.6;
+    const c=el("circle",{r:2.6,fill:C.vio},pktLayer); pk.push({c,a:fwd?N[a]:N[b],b:fwd?N[b]:N[a],t:0,v:.006+Math.random()*.008}); };
+  for(let i=0;i<6;i++) spawn();
+  let last=0;
+  const loop=ts=>{ if(ts-last>420){ spawn(); last=ts; }
+    for(let i=pk.length-1;i>=0;i--){ const p=pk[i]; p.t+=p.v; if(p.t>=1){ p.c.remove(); pk.splice(i,1); continue; }
+      p.c.setAttribute("cx",p.a.x+(p.b.x-p.a.x)*p.t); p.c.setAttribute("cy",p.a.y+(p.b.y-p.a.y)*p.t); p.c.setAttribute("opacity",Math.sin(p.t*Math.PI)); }
+    requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+
+/* =================== syslog e incidentes simulados =================== */
+(function syslog(){
+  const box=$("#syslog"), sev=$("#sev"), sum=$("#map-sum");
+  const ip=()=>["203.0.113.","198.51.100.","192.0.2."][Math.floor(Math.random()*3)]+(2+Math.floor(Math.random()*250));
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const now=()=>{ const d=new Date(); return d.toLocaleString("en-US",{month:"short"})+" "+String(d.getDate()).padStart(2,"0")+" "+d.toLocaleTimeString("es-ES"); };
+  const add=(host,msg,cls="")=>{ const d=document.createElement("div");
+    d.innerHTML=`<span class="ts">${now()}</span> <span class="h">${host}</span> <span class="${cls}"></span>`; d.lastChild.textContent=msg;
+    box.appendChild(d); while(box.children.length>6) box.firstChild.remove(); };
+  const EVENTS=[
+    ()=>["fw01",`nftables: DROP IN=eth0 SRC=${ip()} DPT=${pick([22,23,3389,445,5900])} PROTO=TCP`],
+    ()=>["fw01",`nftables: DNAT ${ip()}:443 -> 10.0.20.${pick([11,12,13])}:443`],
+    ()=>["bastion01",`teleport: session.start user=jasancho mfa=otp node=prod01`],
+    ()=>["bastion01",`teleport: auth.failure user=admin src=${ip()} reason=no_certificate`,"wrn"],
+    ()=>["dc01",`samba: kerberos TGT issued to ${pick(["alumno01","profe","jasancho"])}@LAB.LOCAL`],
+    ()=>["dc01",`dhcpd: DHCPACK 10.0.${pick([10,20])}.${50+Math.floor(Math.random()*90)} vlan=${pick([10,20])}`],
+    ()=>["s3-backup",`kopia: snapshot ok host=${pick(["ubuntu-srv","win11-pc"])} retention=compliance`,"okk"],
+    ()=>["helpdesk",`glpi-agent: inventory received from ${pick(["PC-AULA-07","UBU-LAB-02","WIN11-03"])}`],
+    ()=>["vault",`vaultwarden: login ok user=jasancho 2fa=true`],
+    ()=>["ec2-web",`sshd: Invalid user ${pick(["oracle","test","pi","ubnt"])} from ${ip()}`,"wrn"],
+    ()=>["ec2-web",`apache: 200 GET / TLSv1.3 ${ip()}`]
+  ];
+  let incident=null;
+  const fire=()=>{
+    const cands=NODES.filter(n=>n.p && P(n.p).status==="ok");
+    const n=pick(cands), pr=P(n.p), g=nodeEl[n.k];
+    incident=n.k; g.classList.add("alert"); lampEl[n.k].setAttribute("fill",C.alert);
+    linkEls.forEach(l=>{ if(l.dataset.a===n.k||l.dataset.b===n.k) l.classList.add("down"); });
+    sev.textContent="1 incidente abierto"; sev.classList.add("bad"); sum.textContent=`${pr.host}: healthcheck fallido`;
+    add(pr.host,`CRIT healthcheck failed: HTTP 502 after 3 retries`,"crit");
+    setTimeout(()=>add("soc",`alerta enviada a on-call: jasancho (severidad alta)`,"wrn"),900);
+    setTimeout(()=>add(pr.host,`systemd: restarting ${pr.stack[0].toLowerCase().replace(/\s.*/,"")}.service`),2600);
+    setTimeout(()=>{ g.classList.remove("alert"); lampEl[n.k].setAttribute("fill",C.ok);
+      linkEls.forEach(l=>l.classList.remove("down")); incident=null;
+      sev.textContent="0 incidentes"; sev.classList.remove("bad"); sum.textContent=sumBase;
+      add(pr.host,`OK healthcheck passed in ${20+Math.floor(Math.random()*40)} ms · MTTR 5 s`,"okk"); },5200);
+  };
+  for(let i=0;i<5;i++){ const [h,m,c]=pick(EVENTS)(); add(h,m,c); }
+  const loop=()=>{ if(!document.hidden){ const [h,m,c]=pick(EVENTS)(); add(h,m,c); } setTimeout(loop,1400+Math.random()*1600); };
+  setTimeout(loop,1500);
+  setTimeout(function inc(){ if(!document.hidden && !incident) fire(); setTimeout(inc,17000+Math.random()*8000); },9000);
+})();
+
+/* =================== lista de proyectos =================== */
+const svcEl=$("#services"), fEl=$("#filters");
+const cats=["Todos",...new Set(PROJECTS.flatMap(p=>p.cats))];
+cats.forEach((c,i)=>{ const b=document.createElement("button"); b.type="button"; b.textContent=(c==="Todos"?"--todos":"--"+c.toLowerCase());
+  b.setAttribute("aria-pressed",i===0); b.onclick=()=>{ fEl.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderList(c); }; fEl.appendChild(b); });
+function renderList(cat){
+  svcEl.querySelectorAll(".svc").forEach(n=>n.remove());
+  PROJECTS.filter(p=>cat==="Todos"||p.cats.includes(cat)).forEach(p=>{
+    const b=document.createElement("button"); b.className="svc"; b.type="button";
+    b.innerHTML=`<span><span class="t">${p.title}</span><span class="d">${p.short}</span></span><span class="stk">${p.stack.slice(0,4).join(" · ")}</span><span class="cat">${p.area}</span>${pill(p.status)}`;
+    b.onclick=()=>openProject(p); svcEl.appendChild(b); });
+}
+renderList("Todos");
+
+/* =================== diagramas animados =================== */
+function flowSVG(flow,dir,label){
+  const n=flow.length, Wd=760, Hd=160, bw=190, gap=n>1?(Wd-n*bw)/(n-1):0;
+  const s=el("svg",{viewBox:`0 0 ${Wd} ${Hd}`,role:"img","aria-label":label});
+  const xs=flow.map((_,i)=> n===1?(Wd-bw)/2 : i*(bw+gap));
+  flow.forEach((f,i)=>{
+    const x=xs[i], y=40, mid=(i===Math.floor((n-1)/2)+(n===2?1:0));
+    el("rect",{x:x+1,y,width:bw-2,height:80,rx:9,fill:C.panel,stroke:mid?C.vio:C.line,"stroke-width":1.3},s);
+    el("text",{x:x+bw/2,y:y+36,"text-anchor":"middle",fill:C.text,"font-family":"Geist,sans-serif","font-size":16,"font-weight":600},s).textContent=f[0];
+    el("text",{x:x+bw/2,y:y+58,"text-anchor":"middle",fill:C.muted,"font-family":"Martian Mono,monospace","font-size":11},s).textContent=f[1];
+    if(i<n-1){
+      const x1=x+bw+8, x2=xs[i+1]-8, ym=y+40, back=dir[i]<0;
+      el("line",{x1,y1:ym,x2,y2:ym,stroke:C.line,"stroke-width":1.5,"stroke-dasharray":"5 5"},s);
+      el("path",{d: back?`M${x1} ${ym} l9 -5 v10z`:`M${x2} ${ym} l-9 -5 v10z`,fill:C.muted},s);
+      if(!reduce) for(let k=0;k<3;k++){ const c=el("circle",{r:3.2,fill:C.vio},s);
+        el("animateMotion",{dur:"1.8s",repeatCount:"indefinite",begin:`-${k*0.6}s`,path: back?`M${x2} ${ym} L${x1} ${ym}`:`M${x1} ${ym} L${x2} ${ym}`},c); }
+    }
+  });
+  return s;
+}
+
+/* =================== ficha de proyecto =================== */
+const dlg=$("#dlg");
+function openProject(p){
+  $("#dlg-path").textContent=`~/proyectos/${p.id}`;
+  $("#dlg-status").innerHTML=pill(p.status);
+  $("#dlg-title").textContent=p.title;
+  $("#dlg-body").innerHTML=`<div class="diagram" id="dg"></div>
+    <div class="dlg-grid">
+      <div><h4>// el problema</h4><p>${p.problem}</p><h4>// qué hice</h4><ul>${p.did.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div><div class="side-box"><h4>// qué aprendí</h4><p style="margin:0">${p.learned}</p></div>
+      <div class="side-box"><h4>// tecnologías</h4><div class="tags">${p.stack.map(x=>`<span>${x}</span>`).join("")}</div></div></div>
+    </div>`;
+  $("#dg").appendChild(flowSVG(p.flow,p.dir,"Arquitectura: "+p.flow.map(f=>f[0]).join(", ")));
+  dlg.showModal(); try{history.replaceState(null,"","#"+p.id)}catch(e){}
+}
+$("#dlg-close").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
+dlg.addEventListener("close",()=>{ try{history.replaceState(null,"",location.pathname+location.search)}catch(e){} });
+const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProject(fromHash),50);
+
+/* =================== despliegue =================== */
+(function pipe(){
+  const s=$("#pipe");
+  const steps=[["Tu navegador","petición HTTPS",70],["DNS · IONOS","jasancho.com → A",230],["GitHub Pages","TLS · CDN",390],["Repositorio","git push → main",550]];
+  steps.forEach(([a,b,x],i)=>{
+    el("rect",{x:x-62,y:96,width:124,height:70,rx:9,fill:C.panel,stroke:i===2?C.vio:C.line,"stroke-width":1.3},s);
+    el("text",{x,y:126,"text-anchor":"middle",fill:C.text,"font-family":"Geist,sans-serif","font-size":14,"font-weight":600},s).textContent=a;
+    el("text",{x,y:147,"text-anchor":"middle",fill:C.muted,"font-family":"Martian Mono,monospace","font-size":10},s).textContent=b;
+    if(i<steps.length-1){ const x1=x+66,x2=steps[i+1][2]-66;
+      el("line",{x1,y1:131,x2,y2:131,stroke:C.line,"stroke-width":1.5,"stroke-dasharray":"5 5"},s);
+      el("path",{d:`M${x2} 131 l-8 -5 v10z`,fill:C.muted},s);
+      if(!reduce){ const c=el("circle",{r:3.2,fill:C.vio},s); el("animateMotion",{dur:"1.4s",repeatCount:"indefinite",begin:`-${i*0.45}s`,path:`M${x1} 131 L${x2} 131`},c); } }
+  });
+  [["resuelve el dominio",150],["sirve con certificado",310],["publica cada cambio",470]].forEach(([t,x])=>{ el("text",{x,y:200,"text-anchor":"middle",fill:C.dim,"font-family":"Martian Mono,monospace","font-size":10},s).textContent=t; });
+  el("text",{x:320,y:250,"text-anchor":"middle",fill:C.muted,"font-family":"Geist,sans-serif","font-size":13},s).textContent="Sin servidor que mantener: cada git push publica la web y el HTTPS se renueva solo.";
+})();
+(function live(){
+  const proto = location.protocol==="https:";
+  const rows=[["dominio", location.hostname || "vista local"],["protocolo", proto ? "HTTPS · cifrado" : location.protocol.replace(":","")],["http","—"],["carga","—"],["peso","—"],["último cambio","consultando…"]];
+  const fill=()=>{ const n=performance.getEntriesByType("navigation")[0];
+    if(n){ rows[2][1]=n.nextHopProtocol||"—"; if(n.duration) rows[3][1]=Math.round(n.duration)+" ms"; rows[4][1]=n.transferSize?(n.transferSize/1024).toFixed(1)+" KB":"en caché"; }
+    $("#live").innerHTML=rows.map(([k,v],i)=>`<dt>${k}</dt><dd class="${i===1&&proto?"good":""}">${v}</dd>`).join(""); };
+  fill(); addEventListener("load",()=>setTimeout(fill,60));
+  // último despliegue real, consultado a la API pública de GitHub
+  const ago=d=>{ const s=(Date.now()-d)/1000; if(s<3600) return `hace ${Math.max(1,Math.round(s/60))} min`; if(s<86400) return `hace ${Math.round(s/3600)} h`; return `hace ${Math.round(s/86400)} días`; };
+  try{
+    fetch("https://api.github.com/repos/jasanchoselma/Portfolio/commits?per_page=1").then(r=>r.ok?r.json():Promise.reject())
+      .then(j=>{ const c=j[0]; rows[5][1]=`${ago(new Date(c.commit.author.date))} · ${c.sha.slice(0,7)}`; fill(); })
+      .catch(()=>{ rows[5][1]="no disponible"; fill(); });
+  }catch(e){ rows[5][1]="no disponible"; fill(); }
+})();
+
+/* =================== curso semana a semana =================== */
+(function course(){
+  const d=s=>new Date(s+"T00:00:00"), DAY=864e5;
+  const total=Math.round((d(COURSE.end)-d(COURSE.start))/DAY/7)+1, now=Math.floor((Date.now()-d(COURSE.start))/DAY/7);
+  const idx=s=>Math.round((d(s)-d(COURSE.start))/DAY/7); let count=0;
+  COURSE.blocks.forEach(b=>{
+    const row=document.createElement("div"); row.className="row"; row.innerHTML=`<span class="nm">${b.name}</span>`;
+    const t=document.createElement("div"); t.className="ticks"; t.style.setProperty("--w",total);
+    const m={}; (b.weeks||[]).forEach(([w,n])=>m[idx(w)]={w,n});
+    for(let i=0;i<total;i++){ const s=document.createElement("span"); s.className="tick";
+      const fct=b.fct&&i>=idx(b.fct[0])&&i<=idx(b.fct[1]);
+      if(m[i]&&i<=now){ s.classList.add("done"); count+=m[i].n; s.title=`${m[i].n} prácticas`; }
+      else if(m[i]||fct){ s.classList.add(fct&&i<=now?"done":"plan"); }
+      else s.classList.add("idle");
+      if(i===now) s.classList.add("now"); t.appendChild(s); }
+    row.appendChild(t); $("#rows").appendChild(row); });
+  $("#count").textContent=count;
+})();
+
+/* =================== copiar email =================== */
+$("#copy-mail").addEventListener("click",async()=>{
+  try{ await navigator.clipboard.writeText(EMAIL); toast(`[ <b>OK</b> ] ${EMAIL} copiado al portapapeles`); }
+  catch(e){ toast(`Copia el email a mano: ${EMAIL}`); }
+});
+
+/* =================== versión imprimible (Ctrl+P = CV) =================== */
+(function printCV(){
+  const stack=[...document.querySelectorAll("#stackgrid > div")].map(d=>`<p><b>${d.querySelector("h3").firstChild.textContent.trim()}:</b> ${d.querySelector("p").innerText.replace(/\n/g," · ")}</p>`).join("");
+  const tl=[...document.querySelectorAll("#timeline li")].map(li=>`<p><b>${li.querySelector("strong").textContent}</b> · ${li.querySelector("span").textContent} <span class="tg">(${li.querySelector("time").textContent})</span></p>`).join("");
+  $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
+    <p class="sub">Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad</p>
+    <p class="ct">Valencia · ${EMAIL} · jasancho.com · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
+    <h2>PERFIL</h2><p>Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027.</p>
+    <h2>PROYECTOS</h2>${PROJECTS.map(p=>`<div class="proj"><h3>${p.title}${p.status==="wip"?" (en curso)":""}</h3><ul>${p.did.map(x=>`<li>${x}</li>`).join("")}</ul><p class="tg">${p.stack.join(" · ")}</p></div>`).join("")}
+    <h2>COMPETENCIAS</h2>${stack}
+    <h2>FORMACIÓN Y EXPERIENCIA</h2>${tl}
+    <h2>IDIOMAS</h2><p>Español nativo · Valenciano C1 · Inglés B2 · Francés A1 · Permiso B</p>`;
+})();
+</script>
+</body>
+</html>

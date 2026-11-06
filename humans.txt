@@ -1,0 +1,16 @@
+/* TEAM */
+  Sysadmin, diseño y código: José Antonio Sancho Selma
+  Contacto: sanchoselmajoseantonio [at] gmail.com
+  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368
+  GitHub: github.com/jasanchoselma
+  Desde: Valencia, España
+
+/* THANKS */
+  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.
+
+/* SITE */
+  Última actualización: 2026/11/06
+  Idioma: español
+  Estándares: HTML5, CSS3, JavaScript sin frameworks
+  Tipografías: Martian Mono, Geist
+  Alojamiento: GitHub Pages · DNS en IONOS
