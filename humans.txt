@@ -9,8 +9,9 @@
   Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.
 
 /* SITE */
-  Última actualización: 2026/11/06
+  Última actualización: 2026/11/07
   Idioma: español
   Estándares: HTML5, CSS3, JavaScript sin frameworks
+  Librerías: GSAP y Lenis (autoalojadas)
   Tipografías: Martian Mono, Geist (autoalojadas, licencia SIL OFL)
   Alojamiento: GitHub Pages · DNS en IONOS
