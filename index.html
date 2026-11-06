@@ -276,6 +276,35 @@
     .pcv .tg{font:8.5pt var(--mono);color:#555}
     .pcv .proj{break-inside:avoid}
   }
+
+  /* ---------- botones de cabecera y terminal ---------- */
+  .hdr-btn{font:500 12px var(--mono);background:transparent;color:var(--muted);border:1px solid var(--line-2);border-radius:7px;padding:8px 11px;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s}
+  .hdr-btn:hover{color:var(--text);border-color:var(--vio)}
+  .hint{font:400 12px var(--mono);color:var(--dim);margin:20px 0 0}
+  .hint kbd{font:inherit;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:4px;padding:1px 6px;color:var(--soft)}
+  .term{position:fixed;inset:0;z-index:80;background:rgba(6,5,12,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px}
+  .term[hidden]{display:none}
+  .term-win{width:min(920px,100%);height:min(620px,calc(100vh - 48px));display:flex;flex-direction:column;background:#0A0812;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:pop .2s ease-out}
+  .term-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font:400 11.5px var(--mono);color:var(--dim)}
+  .term-bar .dots{display:flex;gap:6px}.term-bar .dots i{width:10px;height:10px;border-radius:50%;background:var(--line-2)}.term-bar .dots i:first-child{background:var(--alert)}
+  .term-bar>span:nth-child(2){flex:1;text-align:center}
+  .term-bar button{background:none;border:1px solid var(--line-2);color:var(--muted);border-radius:5px;font:400 11px var(--mono);padding:3px 8px;cursor:pointer}
+  .term-out{flex:1;overflow-y:auto;padding:16px 18px 6px;font:400 13px/1.65 var(--mono);color:var(--soft);white-space:pre-wrap;word-break:break-word}
+  .term-out .ff{white-space:normal;margin-bottom:10px}
+  .term-out .tline{color:var(--text);margin-top:8px}
+  .tp-u{color:var(--vio)} .tp-d{color:var(--vio-2)} .tk{color:var(--vio);font-weight:500} .tv{color:var(--vio)} .tc{color:var(--vio-2)} .tdir{color:var(--vio);font-weight:500}
+  .term-out .err{color:var(--alert)} .tok{color:var(--ok)} .twarn{color:var(--warn)} .term-out .dim{color:var(--dim)}
+  .sw{display:inline-block;width:22px;height:12px;margin-right:3px;border-radius:2px}
+  .term-in{display:flex;gap:8px;align-items:center;padding:10px 18px 14px;font:400 13px var(--mono);border-top:1px solid #15122A}
+  .term-in label{white-space:nowrap;color:var(--soft)}
+  .term-in input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:var(--text);font:inherit;caret-color:var(--vio)}
+  body.term-on{overflow:hidden}
+  @media (max-width:680px){
+    .top .wrap{gap:10px} .top-right{gap:6px} .hdr-btn{padding:7px 8px} .hdr-btn .lbl{display:none} .btn-cv{padding:8px 10px;font-size:13px} .host{font-size:12px}
+    .term{padding:0} .term-win{height:100%;border-radius:0;border:0} .term-out{font-size:11.5px;padding:12px} .term-in{padding:10px 12px 14px;font-size:12px}
+    .hint{display:none}
+  }
+  @media print{ .term{display:none!important} }
 </style>
 </head>
 <body>
@@ -294,6 +323,8 @@
     </nav>
     <div class="top-right">
       <span class="meter"><span id="uptime">uptime <b>--</b></span><br><span id="rxl">rx <b>0.0</b> KB</span></span>
+      <button type="button" class="hdr-btn" id="btn-term"><span aria-hidden="true">&gt;_</span><span class="lbl"> terminal</span></button>
+      <button type="button" class="hdr-btn" id="btn-lang">EN</button>
       <a class="btn-cv" href="cv-jose-antonio-sancho-selma.pdf">Descargar CV</a>
     </div>
   </div>
@@ -315,6 +346,7 @@
         <a class="btn primary" href="#proyectos">Ver proyectos</a>
         <a class="btn" href="#contacto">Contactar</a>
       </div>
+      <p class="hint">o pulsa <kbd>º</kbd> para abrir la terminal</p>
     </div>
 
     <figure class="map" id="map" aria-labelledby="map-cap">
@@ -442,6 +474,13 @@
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<div class="term" id="term" hidden role="dialog" aria-modal="true" aria-label="Terminal">
+  <div class="term-win">
+    <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>jasancho@soc: ~ — soc-sh</span><button type="button" id="tclose" aria-label="Cerrar terminal / Close terminal">esc</button></div>
+    <div class="term-out" id="tout" role="log" aria-live="polite"></div>
+    <form class="term-in" id="tform" autocomplete="off"><label for="tin" id="tps"></label><input id="tin" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Comando / Command"></form>
+  </div>
+</div>
 <script>
 /* =================== DATOS: edita aquí =================== */
 const PROJECTS = [
@@ -503,13 +542,53 @@ const PROJECTS = [
     flow:[["Internet",""],["fw01","nftables · DNAT"],["DMZ","servicios"]], dir:[1,1] }
 ];
 
+// Traducciones al inglés de cada proyecto (mismo id)
+const PROJECTS_EN = {
+  teleport:{ title:"SSH bastion with Teleport", short:"Centralized SSH access with two-factor auth and audited sessions", area:"Security",
+    problem:"SSH access depended on loose keys shared between people and port 22 open on every server. When someone leaves, nobody knows which keys are still alive or who accessed what.",
+    did:["Deployed Teleport with Docker Compose as a bastion: internal certificate authority, proxy and single point of access.","Joined a second Ubuntu Server as a node through an agent that connects outbound, so that server exposes no ports at all.","Created named users with OTP second factor and recorded every session."],
+    learned:"The difference between static SSH keys and short-lived certificates, which expire on their own and make revoking access instant.",
+    flow:[["Administrator","web / tsh + OTP"],["Teleport","bastion in Docker"],["Prod server","agent · 0 ports"]] },
+  minio:{ title:"Immutable backups against ransomware", short:"Self-hosted S3 storage with Object Lock and tested restores", area:"Security",
+    problem:"Ransomware goes after backups first, and if the backup agent can delete at the destination, so can the attacker. A backup only counts if it survives the attack.",
+    did:["Built S3-compatible object storage with MinIO and Docker Compose, served over HTTPS behind an Nginx proxy.","Created a bucket with Object Lock in Compliance mode: nothing can be changed or deleted until retention expires, not even by the admin.","Scheduled Kopia backups on an Ubuntu Server (systemd) and a Windows 11 PC (Task Scheduler).","Simulated a full ransomware attack and restored the data."],
+    learned:"A backup isn't done until you've restored it, and immutability is the only defence that doesn't rely on the client staying clean.",
+    flow:[["Ubuntu + Win 11","Kopia encrypted"],["Nginx","HTTPS"],["MinIO","Object Lock"]] },
+  glpi:{ title:"Asset inventory and help desk with GLPI", short:"Machines that inventory themselves and tickets linked to each asset", area:"Support",
+    problem:"Without an organised IT department, nobody knows how many machines there are, what they run or which incidents they've had. The info lives in an old spreadsheet and in email.",
+    did:["Deployed GLPI and MariaDB with Docker Compose, with credentials isolated in an .env file.","Put Nginx in front as the single HTTPS entry point, for browsers and agents alike.","Installed GLPI-Agent on an Ubuntu and a Windows machine, solving certificate validation, so they report their inventory on their own."],
+    learned:"How to tie inventory and support together: when a ticket comes in, you already know which machine it is and what it runs.",
+    flow:[["Machines","GLPI-Agent"],["Nginx","HTTPS"],["GLPI + MariaDB","Docker"]] },
+  samba:{ title:"Corporate domain with Samba AD DC", short:"Linux domain controller with Windows and Ubuntu clients", area:"Systems",
+    problem:"A network with Windows and Linux machines needs centralised users and permissions, without paying for Windows Server licences.",
+    did:["Configured Samba 4 as an Active Directory domain controller.","Joined Windows and Ubuntu Desktop clients to the domain.","Managed users and groups from Windows with RSAT.","Set up a DHCP server handing out addresses on two VLANs."],
+    learned:"How a domain works under the hood (DNS, Kerberos, joining machines) and that Linux can replace Windows Server in this role.",
+    flow:[["Clients","Windows · Ubuntu"],["Samba AD DC","DNS + Kerberos"],["Admin","RSAT"]] },
+  vault:{ title:"Self-hosted password manager", short:"Vaultwarden in a single container, with HTTPS and closed sign-ups", area:"Security",
+    problem:"A team's credentials shouldn't live in a third party's cloud.",
+    did:["Deployed Vaultwarden in a single container, compatible with the official Bitwarden clients.","Generated a certificate and served HTTPS straight from the container.","Protected the admin panel with an Argon2-hashed token instead of plain text.","Created the first account and closed public registration."],
+    learned:"That a service's security depends as much on its initial configuration as on the software: one plain-text admin password undoes everything.",
+    flow:[["Bitwarden apps","browser · mobile"],["Vaultwarden","HTTPS · Docker"]] },
+  aws:{ title:"Cloud server on AWS", short:"EC2 instance with per-user SSH, HTTPS web, SFTP, FTPS and MySQL", area:"Cloud",
+    problem:"Taking what I learned locally to a public cloud: a server reachable from the internet has to be locked down from minute one.",
+    did:["Created an EC2 instance with Ubuntu Server and SSH access with dedicated users.","Configured Apache with HTTPS, SFTP, FTPS and MySQL.","In progress: Docker, WordPress, Nginx Proxy Manager and Moodle on the same instance."],
+    learned:"Security groups, free-tier limits and the difference between testing in a VM and exposing something to the internet.",
+    flow:[["Internet","HTTPS · SSH"],["Security Group","AWS"],["EC2 Ubuntu","Apache · Docker"]] },
+  nft:{ title:"Firewall with nftables and a DMZ", short:"Filtering and DNAT to publish services from a DMZ", area:"Networking",
+    problem:"Publishing services to the internet without exposing the internal network.",
+    did:["Wrote filtering rules with nftables.","Configured DNAT to forward incoming traffic to servers placed in a DMZ."],
+    learned:"How to segment a network so that if a public service falls, the attacker can't reach the internal network.",
+    flow:[["Internet",""],["fw01","nftables · DNAT"],["DMZ","services"]] }
+};
+const CAT_EN = {Seguridad:"security",Docker:"docker",Sistemas:"systems",Redes:"networking",Cloud:"cloud",Todos:"all"};
+
 const NODES = [
   {k:"inet", x:350, y:42,  t:"internet", s:"WAN", cloud:true},
   {k:"aws",  x:590, y:42,  p:"aws"},
   {k:"nft",  x:350, y:140, p:"nft"},
   {k:"sw",   x:350, y:240, t:"core-sw", s:"VLAN 10 · 20"},
   {k:"samba",x:140, y:330, p:"samba"},
-  {k:"cli",  x:140, y:432, t:"clientes", s:"win11 · ubuntu"},
+  {k:"cli",  x:140, y:432, t:"clientes", s:"win11 · ubuntu", t_en:"clients"},
   {k:"dock", x:470, y:330, t:"docker01", s:"Compose host"},
   {k:"teleport",x:620,y:240,p:"teleport"},
   {k:"minio",x:350, y:432, p:"minio"},
@@ -518,58 +597,134 @@ const NODES = [
 ];
 const LINKS = [["inet","nft",1],["inet","aws",1],["nft","sw"],["sw","samba"],["samba","cli"],["sw","dock"],["sw","teleport"],["teleport","dock"],["dock","minio"],["dock","glpi"],["dock","vault"]];
 const COURSE = { start:"2026-09-07", end:"2027-07-02", blocks:[
-  {name:"Servicios", weeks:[["2026-09-07",2],["2026-09-14",4]]},
-  {name:"Samba AD", weeks:[["2026-09-21",5],["2026-09-28",5],["2026-10-05",3]]},
-  {name:"Docker", weeks:[["2026-10-12",6],["2026-10-19",5],["2026-10-26",6]]},
-  {name:"AWS", weeks:[["2026-11-02",6],["2026-11-09",4]]},
-  {name:"FCT", fct:["2027-03-01","2027-07-02"]}
+  {name:"Servicios", en:"Services", weeks:[["2026-09-07",2],["2026-09-14",4]]},
+  {name:"Samba AD", en:"Samba AD", weeks:[["2026-09-21",5],["2026-09-28",5],["2026-10-05",3]]},
+  {name:"Docker", en:"Docker", weeks:[["2026-10-12",6],["2026-10-19",5],["2026-10-26",6]]},
+  {name:"AWS", en:"AWS", weeks:[["2026-11-02",6],["2026-11-09",4]]},
+  {name:"FCT", en:"Internship", fct:["2027-03-01","2027-07-02"]}
 ]};
 const ASIR_START = new Date("2025-09-15T08:00:00");
 const EMAIL = "sanchoselmajoseantonio@gmail.com";
+const LINKEDIN = "https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368";
+const GITHUB = "https://github.com/jasanchoselma";
+
+/* =================== idioma =================== */
+const UI = {
+ es:{ title:"José Antonio Sancho Selma · Sistemas y ciberseguridad", active:"activo", wip:"en curso", incident:"incidente en curso", open:"pulsa para abrir",
+   sumBase:(n,a,w)=>`${n} servicios · ${a} activos · ${w} en curso`, inc0:"0 incidentes", inc1:"1 incidente abierto", hcFail:h=>`${h}: healthcheck fallido`,
+   oncall:"alerta enviada a on-call: jasancho (severidad alta)", days:"días", hello:e=>`Hola, equipo de ${e}. Gracias por revisar mi candidatura para la FCT.`,
+   problem:"// el problema", did:"// qué hice", learned:"// qué aprendí", tech:"// tecnologías", archPrefix:"Arquitectura: ", projPath:"~/proyectos/",
+   copied:e=>`[ <b>OK</b> ] ${e} copiado al portapapeles`, copyFail:e=>`Copia el email a mano: ${e}`, practices:"prácticas", weekly:"Curso 2026/27, semana a semana",
+   live:["dominio","protocolo","http","carga","peso","último cambio"], local:"vista local", https:"HTTPS · cifrado", cached:"en caché", checking:"consultando…", na:"no disponible",
+   ago:[m=>`hace ${m} min`,h=>`hace ${h} h`,d=>`hace ${d} días`],
+   pipe:[["Tu navegador","petición HTTPS"],["DNS · IONOS","jasancho.com → A"],["GitHub Pages","TLS · CDN"],["Repositorio","git push → main"]],
+   pipeNotes:["resuelve el dominio","sirve con certificado","publica cada cambio"], pipeFoot:"Sin servidor que mantener: cada git push publica la web y el HTTPS se renueva solo.",
+   zones:["LAN · dominio","DMZ · servicios"], langBtn:"EN", langLabel:"Switch to English", termBtnLabel:"Abrir terminal (tecla `)", lead:"",
+   bootConn:"Conexión entrante desde", bootDetect:"Detectando unidades…", bootKernel:"Cargando kernel asir-2027", bootSkip:"Pulsa cualquier tecla para saltar",
+   tabAway:"[!] Conexión perdida · vuelve", tabBack:"[ OK ] Reconectado"},
+ en:{ title:"José Antonio Sancho Selma · Systems and cybersecurity", active:"up", wip:"in progress", incident:"incident open", open:"click to open",
+   sumBase:(n,a,w)=>`${n} services · ${a} up · ${w} in progress`, inc0:"0 incidents", inc1:"1 open incident", hcFail:h=>`${h}: healthcheck failed`,
+   oncall:"alert routed to on-call: jasancho (high severity)", days:"days", hello:e=>`Hi, ${e} team. Thanks for reviewing my internship application.`,
+   problem:"// the problem", did:"// what I did", learned:"// what I learned", tech:"// tech", archPrefix:"Architecture: ", projPath:"~/projects/",
+   copied:e=>`[ <b>OK</b> ] ${e} copied to clipboard`, copyFail:e=>`Copy the email manually: ${e}`, practices:"labs", weekly:"Year 2026/27, week by week",
+   live:["domain","protocol","http","load","size","last change"], local:"local preview", https:"HTTPS · encrypted", cached:"cached", checking:"checking…", na:"unavailable",
+   ago:[m=>`${m} min ago`,h=>`${h} h ago`,d=>`${d} days ago`],
+   pipe:[["Your browser","HTTPS request"],["DNS · IONOS","jasancho.com → A"],["GitHub Pages","TLS · CDN"],["Repository","git push → main"]],
+   pipeNotes:["resolves the domain","serves with a certificate","publishes every change"], pipeFoot:"No server to maintain: every git push publishes the site and HTTPS renews itself.",
+   zones:["LAN · domain","DMZ · services"], langBtn:"ES", langLabel:"Cambiar a español", termBtnLabel:"Open terminal (` key)",
+   bootConn:"Incoming connection from", bootDetect:"Detecting drives…", bootKernel:"Loading kernel asir-2027", bootSkip:"Press any key to skip",
+   tabAway:"[!] Connection lost · come back", tabBack:"[ OK ] Reconnected"}
+};
+// textos fijos de la página: [selector, español, inglés, ¿html?]
+const STATIC = [
+ ['nav.main a[href="#proyectos"]',"Proyectos","Projects"],['nav.main a[href="#despliegue"]',"Despliegue","Deployment"],['nav.main a[href="#stack"]',"Stack","Stack"],
+ ['nav.main a[href="#trayectoria"]',"Trayectoria","Background"],['nav.main a[href="#contacto"]',"Contacto","Contact"],
+ [".btn-cv","Descargar CV","Download CV"],
+ [".hero .role","Monto, conecto y protejo servicios: Linux, Docker, AWS y Active Directory. Este es mi laboratorio, monitorizado nodo a nodo.","I build, connect and secure services: Linux, Docker, AWS and Active Directory. This is my lab, monitored node by node."],
+ [".hero .status",'<span class="led" aria-hidden="true"></span>Buscando FCT · marzo a julio de 2027','<span class="led" aria-hidden="true"></span>Looking for an internship · March to July 2027',1],
+ [".hero .actions a.primary","Ver proyectos","See projects"],[".hero .actions a:not(.primary)","Contactar","Get in touch"],
+ [".hero .hint",'o pulsa <kbd>º</kbd> para abrir la terminal','or press <kbd>`</kbd> to open the terminal',1],
+ ["#map-cap b","soc · topología del laboratorio","soc · lab topology"],
+ [".map-foot .lg",'<span><i style="background:var(--ok)"></i>activo</span><span><i style="background:var(--warn)"></i>en curso</span><span><i style="background:var(--alert)"></i>incidente</span>','<span><i style="background:var(--ok)"></i>up</span><span><i style="background:var(--warn)"></i>in progress</span><span><i style="background:var(--alert)"></i>incident</span>',1],
+ ["#proyectos .path","~/proyectos","~/projects"],["#p-title","Proyectos","Projects"],
+ ["#proyectos .lead","Cada servicio lo he desplegado desde cero. Abre uno para ver el problema que resuelve, cómo lo monté y su arquitectura.","I deployed every service from scratch. Open one to see the problem it solves, how I built it and its architecture."],
+ [".svc-head","<span>Servicio</span><span>Stack</span><span>Área</span><span>Estado</span>","<span>Service</span><span>Stack</span><span>Area</span><span>Status</span>",1],
+ ["#despliegue .path","~/despliegue","~/deployment"],["#d-title","Cómo está desplegada esta web","How this site is deployed"],
+ ["#despliegue .lead","Un portfolio de sistemas también es un sistema. Este es el camino que ha seguido tu petición para llegar hasta aquí.","A sysadmin portfolio is a system too. This is the path your request took to get here."],
+ [".live h3",'<span class="led" aria-hidden="true"></span>Esta visita, medida en tu navegador','<span class="led" aria-hidden="true"></span>This visit, measured in your browser',1],
+ [".live p","Los datos los mide tu propio navegador al cargar la página. Nada se envía a ningún servidor.","Your own browser measures this while loading the page. Nothing is sent to any server."],
+ ["#stack .lead","Lo que he configurado con mis manos en prácticas, no una lista de palabras clave.","What I've configured hands-on in labs, not a list of keywords."],
+ ["#stackgrid > div:nth-child(1) h3","Sistemas y directorio <small>/etc</small>","Systems and directory <small>/etc</small>",1],
+ ["#stackgrid > div:nth-child(2) h3","Redes <small>/net</small>","Networking <small>/net</small>",1],
+ ["#stackgrid > div:nth-child(2) p","DHCP + DDNS · DHCP en 2 VLAN<br>nftables: filtrado, DNAT, DMZ<br>Proxy inverso Nginx","DHCP + DDNS · DHCP on 2 VLANs<br>nftables: filtering, DNAT, DMZ<br>Nginx reverse proxy",1],
+ ["#stackgrid > div:nth-child(3) h3","Contenedores <small>/var/lib/docker</small>","Containers <small>/var/lib/docker</small>",1],
+ ["#stackgrid > div:nth-child(4) h3","Servicios de red <small>/srv</small>","Network services <small>/srv</small>",1],
+ ["#stackgrid > div:nth-child(4) p","Apache y Nginx con HTTPS<br>Mailcow · Carbonio<br>SFTP · FTPS · streaming","Apache and Nginx with HTTPS<br>Mailcow · Carbonio<br>SFTP · FTPS · streaming",1],
+ ["#stackgrid > div:nth-child(5) h3","Seguridad <small>/sec</small>","Security <small>/sec</small>",1],
+ ["#stackgrid > div:nth-child(6) h3","Cloud y datos <small>/cloud</small>","Cloud and data <small>/cloud</small>",1],
+ ["#stackgrid > div:nth-child(6) p","AWS EC2 · Ubuntu Server<br>MySQL · PostgreSQL · MariaDB<br>GLPI para inventario","AWS EC2 · Ubuntu Server<br>MySQL · PostgreSQL · MariaDB<br>GLPI for inventory",1],
+ ["#trayectoria .path","~/sobre-mi","~/about"],["#t-title","Trayectoria","Background"],
+ [".bio p:nth-of-type(2)","Empecé por las ciencias de la salud y acabé en sistemas. Lo que me engancha es entender cómo encaja cada pieza y dejarla funcionando sola.","I started in health sciences and ended up in systems. What hooks me is understanding how every piece fits and leaving it running on its own."],
+ [".bio p:nth-of-type(3)","Antes de ASIR di clases particulares y trabajé de cara al público. De ahí me viene algo que en soporte cuenta mucho: explicar las cosas con paciencia a quien no es técnico.","Before ASIR I tutored students and worked with customers. That gave me something that matters a lot in support: explaining things patiently to non-technical people."],
+ [".facts","<dt>busco</dt><dd>Sistemas, soporte técnico, ciberseguridad</dd><dt>idiomas</dt><dd>Español, valenciano C1, inglés B2</dd><dt>base</dt><dd>Valencia · carnet B</dd>","<dt>looking for</dt><dd>Systems, IT support, cybersecurity</dd><dt>languages</dt><dd>Spanish, Valencian C1, English B2</dd><dt>based in</dt><dd>Valencia, Spain · driving licence</dd>",1],
+ ["#timeline",
+  '<li class="next"><time>mar – jul 2027</time><strong>Formación en empresa (FCT)</strong><span>Buscando empresa de sistemas o ciberseguridad</span></li><li class="now"><time>2025 – 2027</time><strong>CFGS Administración de Sistemas Informáticos en Red</strong><span>CEP Sorolla, Valencia</span></li><li><time>may 2026</time><strong>Computer Hardware Basics</strong><span>Cisco Networking Academy</span></li><li><time>jun – sep 2025</time><strong>Atención al cliente</strong><span>Consum Cooperativa Valenciana</span></li><li><time>2022 – 2024</time><strong>Bachillerato de Ciencias de la Salud</strong><span>Maristas Valencia</span></li><li><time>2022 – 2023</time><strong>Profesor particular</strong><span>Matemáticas, física, química y biología</span></li>',
+  '<li class="next"><time>Mar – Jul 2027</time><strong>Work placement (FCT internship)</strong><span>Looking for a systems or cybersecurity company</span></li><li class="now"><time>2025 – 2027</time><strong>Higher VET Diploma in Network Systems Administration (ASIR)</strong><span>CEP Sorolla, Valencia</span></li><li><time>May 2026</time><strong>Computer Hardware Basics</strong><span>Cisco Networking Academy</span></li><li><time>Jun – Sep 2025</time><strong>Customer service</strong><span>Consum Cooperativa Valenciana</span></li><li><time>2022 – 2024</time><strong>High school diploma, Health Sciences</strong><span>Maristas Valencia</span></li><li><time>2022 – 2023</time><strong>Private tutor</strong><span>Maths, physics, chemistry and biology</span></li>',1],
+ ["#contacto .path","~/contacto","~/contact"],["#c-title","¿Hablamos?","Let's talk"],
+ [".contact > div > p:not(.path)","Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.","If you're looking for a systems or cybersecurity intern, write to me. I reply the same day."],
+ ["#copy-mail small",EMAIL+" · copiar",EMAIL+" · copy"],
+ [".links a[href$='.pdf']","<span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small>","<span>Résumé</span><small>PDF · or press Ctrl+P on this page</small>",1],
+ ["footer .wrap span:last-child",'HTML, CSS y JS sin frameworks · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Plain HTML, CSS and JS, no frameworks · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
+ ["#dlg-close","Cerrar","Close"],["#hello-x","Cerrar","Close"],["#hello code","conexión entrante","incoming connection"]
+];
+
+let LANG = (()=>{ try{ const q=new URLSearchParams(location.search).get("lang"); if(q==="en"||q==="es") return q; const s=localStorage.getItem("lang"); if(s==="en"||s==="es") return s; }catch(e){} return (navigator.language||"es").toLowerCase().startsWith("es")?"es":"en"; })();
+const t = k => UI[LANG][k];
+const L = p => LANG==="en" ? Object.assign({},p,PROJECTS_EN[p.id]||{}) : p;
 
 /* =================== utilidades =================== */
 const $ = s => document.querySelector(s);
 const NS = "http://www.w3.org/2000/svg";
 const el = (n,a={},p) => { const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); if(p) p.appendChild(e); return e; };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const P = id => PROJECTS.find(p=>p.id===id);
-const pill = s => s==="ok" ? `<span class="pill ok">activo</span>` : `<span class="pill wip">en curso</span>`;
+const pill = s => s==="ok" ? `<span class="pill ok">${t("active")}</span>` : `<span class="pill wip">${t("wip")}</span>`;
 const C = {panel:"#17142B",line:"#3A3360",text:"#ECE9FA",muted:"#9A93BC",dim:"#6A6390",vio:"#9B8CFF",ok:"#4FE0A6",warn:"#FFC56B",alert:"#FF5C7A"};
-function toast(html){ const t=$("#toast"); t.innerHTML=html; t.classList.add("show"); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove("show"),2400); }
+function toast(html){ const tt=$("#toast"); tt.innerHTML=html; tt.classList.add("show"); clearTimeout(toast.h); toast.h=setTimeout(()=>tt.classList.remove("show"),2400); }
+const act=PROJECTS.filter(p=>p.status==="ok").length;
+const sumBase=()=>t("sumBase")(PROJECTS.length,act,PROJECTS.length-act);
 
-/* =================== saludo por empresa (?empresa=Nombre) =================== */
-const EMPRESA = (()=>{ try{ const v=new URLSearchParams(location.search).get("empresa"); return v ? v.replace(/[^\p{L}\p{N} .&'-]/gu,"").trim().slice(0,40) : ""; }catch(e){ return ""; } })();
-if(EMPRESA){
-  $("#hello-t").textContent = `Hola, equipo de ${EMPRESA}. Gracias por revisar mi candidatura para la FCT.`;
-  $("#hello").classList.add("show");
-  $("#hello-x").onclick=()=>$("#hello").classList.remove("show");
-}
+/* =================== saludo por empresa (?empresa=Nombre o ?company=Name) =================== */
+const EMPRESA = (()=>{ try{ const q=new URLSearchParams(location.search); const v=q.get("empresa")||q.get("company"); return v ? v.replace(/[^\p{L}\p{N} .&'-]/gu,"").trim().slice(0,40) : ""; }catch(e){ return ""; } })();
+if(EMPRESA){ $("#hello").classList.add("show"); $("#hello-x").onclick=()=>$("#hello").classList.remove("show"); }
 
 /* =================== consola =================== */
 console.log("%c jasancho@soc ","background:#9B8CFF;color:#0C0A14;font:700 14px monospace;padding:4px 8px;border-radius:4px");
-console.log("%c¿Abriendo las DevTools? Me caes bien.\nSin frameworks: todo esto es HTML, CSS y JS escrito a mano.\nCódigo: https://github.com/jasanchoselma/Portfolio\nSi buscas alumno de FCT para sistemas o ciberseguridad: "+EMAIL,"color:#CFCAE8;font:12px/1.6 monospace");
+console.log("%c¿Abriendo las DevTools? Me caes bien. / Opening DevTools? I like you already.\nSin frameworks: HTML, CSS y JS escrito a mano. Pulsa ` para abrir la terminal.\nCódigo: https://github.com/jasanchoselma/Portfolio\nFCT / internship: "+EMAIL,"color:#CFCAE8;font:12px/1.6 monospace");
 
 /* =================== arranque =================== */
 (function boot(){
   const box=$("#boot"); let seen=false;
+  box.querySelector(".skip").textContent=t("bootSkip");
   try{ seen = sessionStorage.getItem("booted")==="1"; }catch(e){}
   if(seen || reduce){ box.classList.add("off"); return; }
   const lines=[
     '<span class="hl">JASANCHO-BIOS v27.06</span>  ·  SOC Edition',
-    'CPU: curiosidad @ 3.2 GHz   Memoria: 16384 MB OK',
-    'Detectando unidades… <span class="hl">/dev/sda</span> experiencia.img  <span class="hl">/dev/sdb</span> proyectos.img',
-    'Cargando kernel asir-2027 <span class="bar"><i id="bb"></i></span>',
+    'CPU: '+(LANG==="es"?"curiosidad":"curiosity")+' @ 3.2 GHz   '+(LANG==="es"?"Memoria":"Memory")+': 16384 MB OK',
+    t("bootDetect")+' <span class="hl">/dev/sda</span> '+(LANG==="es"?"experiencia":"experience")+'.img  <span class="hl">/dev/sdb</span> '+(LANG==="es"?"proyectos":"projects")+'.img',
+    t("bootKernel")+' <span class="bar"><i id="bb"></i></span>',
     '[ <span class="ok">OK</span> ] Started nftables.service',
     '[ <span class="ok">OK</span> ] Started docker.service',
     '[ <span class="ok">OK</span> ] Started teleport.service',
     '[ <span class="ok">OK</span> ] Started soc-monitor.service',
-    EMPRESA ? `[ <span class="v">INFO</span> ] Conexión entrante desde <span class="hl"></span>` : null,
+    EMPRESA ? `[ <span class="v">INFO</span> ] ${t("bootConn")} <span class="hl emp"></span>` : null,
     '[ <span class="ok">OK</span> ] Reached target <span class="hl">portfolio.target</span>'
   ].filter(Boolean);
   const out=$("#boot-out"); let i=0, done=false;
   const finish=()=>{ if(done) return; done=true; box.classList.add("off"); try{sessionStorage.setItem("booted","1")}catch(e){} };
   const step=()=>{ if(done) return; if(i<lines.length){ const d=document.createElement("div"); d.innerHTML=lines[i];
-      if(lines[i].includes("Conexión entrante")) d.querySelector(".hl").textContent=EMPRESA;
+      const emp=d.querySelector(".emp"); if(emp) emp.textContent=EMPRESA;
       out.appendChild(d); if(i===3) requestAnimationFrame(()=>{const b=$("#bb"); if(b) b.style.width="100%";}); i++; setTimeout(step, i===4?1150:i<4?170:120); } else setTimeout(finish,380); };
   box.addEventListener("click",finish); addEventListener("keydown",finish,{once:true});
   step();
@@ -579,12 +734,11 @@ console.log("%c¿Abriendo las DevTools? Me caes bien.\nSin frameworks: todo esto
 const GLYPHS="!<>-_\\/[]{}=+*^?#01ABCDEF";
 function scramble(node){
   if(node.dataset.done) return; node.dataset.done="1";
-  const final=node.textContent; if(!node.getAttribute("aria-hidden")) node.setAttribute("aria-label",final);
   if(reduce) return;
-  const len=final.length, start=performance.now(), dur=900;
-  const frame=t=>{ const p=Math.min(1,(t-start)/dur), rev=Math.floor(p*len); let s="";
+  const final=node.textContent, len=final.length, start=performance.now(), dur=900;
+  const frame=tm=>{ if(node.textContent!==node._last && node._last!==undefined) return; const p=Math.min(1,(tm-start)/dur), rev=Math.floor(p*len); let s="";
     for(let i=0;i<len;i++){ const ch=final[i]; s += (i<rev||ch===" ") ? ch : GLYPHS[Math.floor(Math.random()*GLYPHS.length)]; }
-    node.textContent=s; if(p<1) requestAnimationFrame(frame); else node.textContent=final; };
+    node.textContent=s; node._last=s; if(p<1) requestAnimationFrame(frame); else { node.textContent=final; node._last=undefined; } };
   requestAnimationFrame(frame);
 }
 const sio = "IntersectionObserver" in window ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ scramble(e.target); sio.unobserve(e.target);} }),{threshold:.6}) : null;
@@ -600,15 +754,16 @@ if(!reduce && matchMedia("(pointer:fine)").matches){
 }
 
 /* =================== uptime =================== */
+const upDays=()=>Math.floor((Date.now()-ASIR_START)/864e5);
 function tickClock(){
-  const ms=Date.now()-ASIR_START, d=Math.floor(ms/864e5), h=Math.floor(ms/36e5)%24, m=Math.floor(ms/6e4)%60;
-  $("#uptime").innerHTML=`uptime <b>${d} días, ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}</b>`;
+  const ms=Date.now()-ASIR_START, h=Math.floor(ms/36e5)%24, m=Math.floor(ms/6e4)%60;
+  $("#uptime").innerHTML=`uptime <b>${upDays()} ${t("days")}, ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}</b>`;
 }
-tickClock(); setInterval(tickClock,30000);
+setInterval(tickClock,30000);
 
 /* =================== scroll como transferencia =================== */
 (function rx(){
-  let total=0; try{ total=new Blob([document.documentElement.outerHTML]).size/1024; }catch(e){ total=60; }
+  let total=0; try{ total=new Blob([document.documentElement.outerHTML]).size/1024; }catch(e){ total=90; }
   const bar=$("#rx"), lab=$("#rxl"); let raf=0;
   const upd=()=>{ raf=0; const h=document.documentElement.scrollHeight-innerHeight, p=h>0?Math.min(1,scrollY/h):1;
     bar.style.setProperty("--p",p); lab.innerHTML=`rx <b>${(total*p).toFixed(1)}</b> / ${total.toFixed(1)} KB`; };
@@ -623,20 +778,18 @@ tickClock(); setInterval(tickClock,30000);
   document.querySelectorAll("section.block").forEach(s=>io.observe(s));
 })();
 
-/* =================== pestaña viva (favicon LED + título) =================== */
+/* =================== pestaña viva =================== */
 const favSVG = c => "data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='#15122A'/><circle cx='16' cy='16' r='7' fill='${c}'/></svg>`);
-const TITLE=document.title;
 function setFav(c){ $("#fav").href=favSVG(c); }
 document.addEventListener("visibilitychange",()=>{
-  if(document.hidden){ document.title="[!] Conexión perdida · vuelve"; setFav(C.alert); }
-  else { document.title="[ OK ] Reconectado"; setFav(C.ok); setTimeout(()=>{ document.title=TITLE; },1600); }
+  if(document.hidden){ document.title=t("tabAway"); setFav(C.alert); }
+  else { document.title=t("tabBack"); setFav(C.ok); setTimeout(()=>{ document.title=t("title"); },1600); }
 });
 
 /* =================== mapa de red =================== */
 const svg=$("#net"), tip=$("#tip"), mapBox=$("#map");
 const N = Object.fromEntries(NODES.map(n=>[n.k,n]));
 const W=118, H=44;
-// radar
 const rad=el("g",{opacity:.9},svg);
 [90,180,270].forEach(r=>el("circle",{cx:350,cy:250,r,fill:"none",stroke:"#211C38","stroke-width":1},rad));
 el("path",{d:"M350 250 H70",stroke:"#211C38"},rad); el("path",{d:"M350 250 V-30",stroke:"#211C38"},rad);
@@ -645,12 +798,11 @@ const lg=el("linearGradient",{id:"sweep",x1:"0",y1:"0",x2:"1",y2:"0"},defs);
 el("stop",{offset:"0","stop-color":"#9B8CFF","stop-opacity":"0"},lg); el("stop",{offset:"1","stop-color":"#9B8CFF","stop-opacity":".16"},lg);
 const sw=el("path",{d:"M350 250 L620 250 A270 270 0 0 0 583.8 115 Z",fill:"url(#sweep)"},rad);
 if(!reduce) el("animateTransform",{attributeName:"transform",type:"rotate",from:"0 350 250",to:"-360 350 250",dur:"9s",repeatCount:"indefinite"},sw);
-// zonas
-el("rect",{x:52,y:290,width:176,height:180,rx:10,class:"zone"},svg); el("text",{x:62,y:304,class:"zone-l"},svg).textContent="LAN · dominio";
-el("rect",{x:286,y:290,width:372,height:180,rx:10,class:"zone"},svg); el("text",{x:296,y:304,class:"zone-l"},svg).textContent="DMZ · servicios";
+el("rect",{x:52,y:290,width:176,height:180,rx:10,class:"zone"},svg); const z1=el("text",{x:62,y:304,class:"zone-l"},svg);
+el("rect",{x:286,y:290,width:372,height:180,rx:10,class:"zone"},svg); const z2=el("text",{x:296,y:304,class:"zone-l"},svg);
 const linkEls = LINKS.map(([a,b,wan])=>{ const l=el("line",{x1:N[a].x,y1:N[a].y,x2:N[b].x,y2:N[b].y,class:"link"+(wan?" wan":"")},svg); l.dataset.a=a; l.dataset.b=b; return l; });
 const pktLayer = el("g",{},svg);
-const nodeEl={}, lampEl={};
+const nodeEl={}, lampEl={}, labelEl={};
 NODES.forEach(n=>{
   const pr = n.p && P(n.p);
   const g=el("g",{class:"node"+(pr?" proj":""),transform:`translate(${n.x-W/2},${n.y-H/2})`},svg); nodeEl[n.k]=g;
@@ -660,13 +812,13 @@ NODES.forEach(n=>{
   }
   el("rect",{width:W,height:H,rx:8},g);
   lampEl[n.k]=el("circle",{cx:14,cy:H/2,r:4,class:"lamp",fill: pr ? (pr.status==="ok"?C.ok:C.warn) : C.dim},g);
-  el("text",{x:26,y:19,class:"n1"},g).textContent = pr ? pr.host : n.t;
+  labelEl[n.k]=el("text",{x:26,y:19,class:"n1"},g); labelEl[n.k].textContent = pr ? pr.host : n.t;
   el("text",{x:26,y:33,class:"n2"},g).textContent = pr ? pr.stack[0] : n.s;
   if(pr){
-    g.setAttribute("tabindex","0"); g.setAttribute("role","button"); g.setAttribute("aria-label",`${pr.title}. Abrir ficha`);
-    const show=()=>{ g.classList.add("sel"); hot(n.k,true);
+    g.setAttribute("tabindex","0"); g.setAttribute("role","button");
+    const show=()=>{ const lp=L(pr); g.classList.add("sel"); hot(n.k,true);
       const inc = g.classList.contains("alert");
-      tip.innerHTML=`<b>${pr.title}</b><span>${pr.short}</span><em>${inc?'<span style="color:#FF5C7A">● incidente en curso</span>':(pr.status==="ok"?"● activo":"● en curso")} · pulsa para abrir</em>`;
+      tip.innerHTML=`<b>${esc(lp.title)}</b><span>${esc(lp.short)}</span><em>${inc?`<span style="color:#FF5C7A">● ${t("incident")}</span>`:"● "+(pr.status==="ok"?t("active"):t("wip"))} · ${t("open")}</em>`;
       const r=svg.getBoundingClientRect(), mb=mapBox.getBoundingClientRect(), sc=r.width/700;
       let x=r.left-mb.left+n.x*sc-116, y=r.top-mb.top+(n.y-H/2)*sc-10;
       x=Math.max(8,Math.min(x,mb.width-240)); tip.style.left=x+"px";
@@ -680,11 +832,15 @@ NODES.forEach(n=>{
   }
 });
 function hot(k,on){ linkEls.forEach(l=>{ if(l.dataset.a===k||l.dataset.b===k) l.classList.toggle("hot",on); }); }
-const act=PROJECTS.filter(p=>p.status==="ok").length;
-const sumBase=`${PROJECTS.length} servicios · ${act} activos · ${PROJECTS.length-act} en curso`;
-$("#map-sum").textContent=sumBase;
+let incidentOpen=null;
+function mapTexts(){
+  z1.textContent=t("zones")[0]; z2.textContent=t("zones")[1];
+  labelEl.cli.textContent = LANG==="en" ? N.cli.t_en : N.cli.t;
+  NODES.filter(n=>n.p).forEach(n=>nodeEl[n.k].setAttribute("aria-label",`${L(P(n.p)).title}. ${t("open")}`));
+  if(!incidentOpen){ $("#map-sum").textContent=sumBase(); $("#sev").textContent=t("inc0"); }
+  else { $("#map-sum").textContent=t("hcFail")(P(N[incidentOpen].p).host); $("#sev").textContent=t("inc1"); }
+}
 
-// paquetes
 if(!reduce){
   const pk=[];
   const spawn=()=>{ const [a,b]=LINKS[Math.floor(Math.random()*LINKS.length)]; const fwd=Math.random()<.6;
@@ -699,14 +855,16 @@ if(!reduce){
 }
 
 /* =================== syslog e incidentes simulados =================== */
+const SYSLOG=[];
 (function syslog(){
   const box=$("#syslog"), sev=$("#sev"), sum=$("#map-sum");
   const ip=()=>["203.0.113.","198.51.100.","192.0.2."][Math.floor(Math.random()*3)]+(2+Math.floor(Math.random()*250));
   const pick=a=>a[Math.floor(Math.random()*a.length)];
   const now=()=>{ const d=new Date(); return d.toLocaleString("en-US",{month:"short"})+" "+String(d.getDate()).padStart(2,"0")+" "+d.toLocaleTimeString("es-ES"); };
-  const add=(host,msg,cls="")=>{ const d=document.createElement("div");
-    d.innerHTML=`<span class="ts">${now()}</span> <span class="h">${host}</span> <span class="${cls}"></span>`; d.lastChild.textContent=msg;
-    box.appendChild(d); while(box.children.length>6) box.firstChild.remove(); };
+  const add=(host,msg,cls="")=>{ const ts=now(); SYSLOG.push([ts,host,msg,cls]); if(SYSLOG.length>40) SYSLOG.shift();
+    const d=document.createElement("div");
+    d.innerHTML=`<span class="ts">${ts}</span> <span class="h">${host}</span> <span class="${cls}"></span>`; d.lastChild.textContent=msg;
+    box.appendChild(d); while(box.children.length>6) box.firstChild.remove(); if(window.termTail) window.termTail(ts,host,msg,cls); };
   const EVENTS=[
     ()=>["fw01",`nftables: DROP IN=eth0 SRC=${ip()} DPT=${pick([22,23,3389,445,5900])} PROTO=TCP`],
     ()=>["fw01",`nftables: DNAT ${ip()}:443 -> 10.0.20.${pick([11,12,13])}:443`],
@@ -720,40 +878,45 @@ if(!reduce){
     ()=>["ec2-web",`sshd: Invalid user ${pick(["oracle","test","pi","ubnt"])} from ${ip()}`,"wrn"],
     ()=>["ec2-web",`apache: 200 GET / TLSv1.3 ${ip()}`]
   ];
-  let incident=null;
-  const fire=()=>{
+  window.fireIncident=(k)=>{
+    if(incidentOpen) return false;
     const cands=NODES.filter(n=>n.p && P(n.p).status==="ok");
-    const n=pick(cands), pr=P(n.p), g=nodeEl[n.k];
-    incident=n.k; g.classList.add("alert"); lampEl[n.k].setAttribute("fill",C.alert);
+    const n=k ? cands.find(c=>c.p===k) : pick(cands); if(!n) return false;
+    const pr=P(n.p), g=nodeEl[n.k];
+    incidentOpen=n.k; g.classList.add("alert"); lampEl[n.k].setAttribute("fill",C.alert);
     linkEls.forEach(l=>{ if(l.dataset.a===n.k||l.dataset.b===n.k) l.classList.add("down"); });
-    sev.textContent="1 incidente abierto"; sev.classList.add("bad"); sum.textContent=`${pr.host}: healthcheck fallido`;
+    sev.textContent=t("inc1"); sev.classList.add("bad"); sum.textContent=t("hcFail")(pr.host);
     add(pr.host,`CRIT healthcheck failed: HTTP 502 after 3 retries`,"crit");
-    setTimeout(()=>add("soc",`alerta enviada a on-call: jasancho (severidad alta)`,"wrn"),900);
+    setTimeout(()=>add("soc",t("oncall"),"wrn"),900);
     setTimeout(()=>add(pr.host,`systemd: restarting ${pr.stack[0].toLowerCase().replace(/\s.*/,"")}.service`),2600);
     setTimeout(()=>{ g.classList.remove("alert"); lampEl[n.k].setAttribute("fill",C.ok);
-      linkEls.forEach(l=>l.classList.remove("down")); incident=null;
-      sev.textContent="0 incidentes"; sev.classList.remove("bad"); sum.textContent=sumBase;
+      linkEls.forEach(l=>l.classList.remove("down")); incidentOpen=null;
+      sev.textContent=t("inc0"); sev.classList.remove("bad"); sum.textContent=sumBase();
       add(pr.host,`OK healthcheck passed in ${20+Math.floor(Math.random()*40)} ms · MTTR 5 s`,"okk"); },5200);
+    return pr.host;
   };
   for(let i=0;i<5;i++){ const [h,m,c]=pick(EVENTS)(); add(h,m,c); }
   const loop=()=>{ if(!document.hidden){ const [h,m,c]=pick(EVENTS)(); add(h,m,c); } setTimeout(loop,1400+Math.random()*1600); };
   setTimeout(loop,1500);
-  setTimeout(function inc(){ if(!document.hidden && !incident) fire(); setTimeout(inc,17000+Math.random()*8000); },9000);
+  setTimeout(function inc(){ if(!document.hidden && !incidentOpen) window.fireIncident(); setTimeout(inc,17000+Math.random()*8000); },9000);
 })();
 
 /* =================== lista de proyectos =================== */
 const svcEl=$("#services"), fEl=$("#filters");
 const cats=["Todos",...new Set(PROJECTS.flatMap(p=>p.cats))];
-cats.forEach((c,i)=>{ const b=document.createElement("button"); b.type="button"; b.textContent=(c==="Todos"?"--todos":"--"+c.toLowerCase());
-  b.setAttribute("aria-pressed",i===0); b.onclick=()=>{ fEl.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderList(c); }; fEl.appendChild(b); });
-function renderList(cat){
+let curCat="Todos";
+function renderFilters(){
+  fEl.innerHTML="";
+  cats.forEach(c=>{ const b=document.createElement("button"); b.type="button"; b.textContent="--"+(LANG==="en"?CAT_EN[c]||c.toLowerCase():(c==="Todos"?"todos":c.toLowerCase()));
+    b.setAttribute("aria-pressed",c===curCat); b.onclick=()=>{ curCat=c; renderFilters(); renderList(); }; fEl.appendChild(b); });
+}
+function renderList(){
   svcEl.querySelectorAll(".svc").forEach(n=>n.remove());
-  PROJECTS.filter(p=>cat==="Todos"||p.cats.includes(cat)).forEach(p=>{
+  PROJECTS.filter(p=>curCat==="Todos"||p.cats.includes(curCat)).forEach(p=>{ const lp=L(p);
     const b=document.createElement("button"); b.className="svc"; b.type="button";
-    b.innerHTML=`<span><span class="t">${p.title}</span><span class="d">${p.short}</span></span><span class="stk">${p.stack.slice(0,4).join(" · ")}</span><span class="cat">${p.area}</span>${pill(p.status)}`;
+    b.innerHTML=`<span><span class="t">${esc(lp.title)}</span><span class="d">${esc(lp.short)}</span></span><span class="stk">${p.stack.slice(0,4).join(" · ")}</span><span class="cat">${esc(lp.area)}</span>${pill(p.status)}`;
     b.onclick=()=>openProject(p); svcEl.appendChild(b); });
 }
-renderList("Todos");
 
 /* =================== diagramas animados =================== */
 function flowSVG(flow,dir,label){
@@ -777,95 +940,234 @@ function flowSVG(flow,dir,label){
 }
 
 /* =================== ficha de proyecto =================== */
-const dlg=$("#dlg");
-function openProject(p){
-  $("#dlg-path").textContent=`~/proyectos/${p.id}`;
+const dlg=$("#dlg"); let curProj=null;
+function fillProject(p){ const lp=L(p);
+  $("#dlg-path").textContent=t("projPath")+p.id;
   $("#dlg-status").innerHTML=pill(p.status);
-  $("#dlg-title").textContent=p.title;
+  $("#dlg-title").textContent=lp.title;
   $("#dlg-body").innerHTML=`<div class="diagram" id="dg"></div>
     <div class="dlg-grid">
-      <div><h4>// el problema</h4><p>${p.problem}</p><h4>// qué hice</h4><ul>${p.did.map(x=>`<li>${x}</li>`).join("")}</ul></div>
-      <div><div class="side-box"><h4>// qué aprendí</h4><p style="margin:0">${p.learned}</p></div>
-      <div class="side-box"><h4>// tecnologías</h4><div class="tags">${p.stack.map(x=>`<span>${x}</span>`).join("")}</div></div></div>
+      <div><h4>${t("problem")}</h4><p>${esc(lp.problem)}</p><h4>${t("did")}</h4><ul>${lp.did.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div><div class="side-box"><h4>${t("learned")}</h4><p style="margin:0">${esc(lp.learned)}</p></div>
+      <div class="side-box"><h4>${t("tech")}</h4><div class="tags">${p.stack.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div></div>
     </div>`;
-  $("#dg").appendChild(flowSVG(p.flow,p.dir,"Arquitectura: "+p.flow.map(f=>f[0]).join(", ")));
-  dlg.showModal(); try{history.replaceState(null,"","#"+p.id)}catch(e){}
+  $("#dg").appendChild(flowSVG(lp.flow,p.dir,t("archPrefix")+lp.flow.map(f=>f[0]).join(", ")));
 }
+function openProject(p){ curProj=p; fillProject(p); if(!dlg.open) dlg.showModal(); try{history.replaceState(null,"","#"+p.id)}catch(e){} }
 $("#dlg-close").onclick=()=>dlg.close();
 dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
-dlg.addEventListener("close",()=>{ try{history.replaceState(null,"",location.pathname+location.search)}catch(e){} });
-const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProject(fromHash),50);
+dlg.addEventListener("close",()=>{ curProj=null; try{history.replaceState(null,"",location.pathname+location.search)}catch(e){} });
 
 /* =================== despliegue =================== */
-(function pipe(){
-  const s=$("#pipe");
-  const steps=[["Tu navegador","petición HTTPS",70],["DNS · IONOS","jasancho.com → A",230],["GitHub Pages","TLS · CDN",390],["Repositorio","git push → main",550]];
-  steps.forEach(([a,b,x],i)=>{
+function drawPipe(){
+  const s=$("#pipe"); s.innerHTML=""; const xs=[70,230,390,550];
+  t("pipe").forEach(([a,b],i)=>{ const x=xs[i];
     el("rect",{x:x-62,y:96,width:124,height:70,rx:9,fill:C.panel,stroke:i===2?C.vio:C.line,"stroke-width":1.3},s);
     el("text",{x,y:126,"text-anchor":"middle",fill:C.text,"font-family":"Geist,sans-serif","font-size":14,"font-weight":600},s).textContent=a;
     el("text",{x,y:147,"text-anchor":"middle",fill:C.muted,"font-family":"Martian Mono,monospace","font-size":10},s).textContent=b;
-    if(i<steps.length-1){ const x1=x+66,x2=steps[i+1][2]-66;
+    if(i<3){ const x1=x+66,x2=xs[i+1]-66;
       el("line",{x1,y1:131,x2,y2:131,stroke:C.line,"stroke-width":1.5,"stroke-dasharray":"5 5"},s);
       el("path",{d:`M${x2} 131 l-8 -5 v10z`,fill:C.muted},s);
       if(!reduce){ const c=el("circle",{r:3.2,fill:C.vio},s); el("animateMotion",{dur:"1.4s",repeatCount:"indefinite",begin:`-${i*0.45}s`,path:`M${x1} 131 L${x2} 131`},c); } }
   });
-  [["resuelve el dominio",150],["sirve con certificado",310],["publica cada cambio",470]].forEach(([t,x])=>{ el("text",{x,y:200,"text-anchor":"middle",fill:C.dim,"font-family":"Martian Mono,monospace","font-size":10},s).textContent=t; });
-  el("text",{x:320,y:250,"text-anchor":"middle",fill:C.muted,"font-family":"Geist,sans-serif","font-size":13},s).textContent="Sin servidor que mantener: cada git push publica la web y el HTTPS se renueva solo.";
-})();
-(function live(){
-  const proto = location.protocol==="https:";
-  const rows=[["dominio", location.hostname || "vista local"],["protocolo", proto ? "HTTPS · cifrado" : location.protocol.replace(":","")],["http","—"],["carga","—"],["peso","—"],["último cambio","consultando…"]];
-  const fill=()=>{ const n=performance.getEntriesByType("navigation")[0];
-    if(n){ rows[2][1]=n.nextHopProtocol||"—"; if(n.duration) rows[3][1]=Math.round(n.duration)+" ms"; rows[4][1]=n.transferSize?(n.transferSize/1024).toFixed(1)+" KB":"en caché"; }
-    $("#live").innerHTML=rows.map(([k,v],i)=>`<dt>${k}</dt><dd class="${i===1&&proto?"good":""}">${v}</dd>`).join(""); };
-  fill(); addEventListener("load",()=>setTimeout(fill,60));
-  // último despliegue real, consultado a la API pública de GitHub
-  const ago=d=>{ const s=(Date.now()-d)/1000; if(s<3600) return `hace ${Math.max(1,Math.round(s/60))} min`; if(s<86400) return `hace ${Math.round(s/3600)} h`; return `hace ${Math.round(s/86400)} días`; };
-  try{
-    fetch("https://api.github.com/repos/jasanchoselma/Portfolio/commits?per_page=1").then(r=>r.ok?r.json():Promise.reject())
-      .then(j=>{ const c=j[0]; rows[5][1]=`${ago(new Date(c.commit.author.date))} · ${c.sha.slice(0,7)}`; fill(); })
-      .catch(()=>{ rows[5][1]="no disponible"; fill(); });
-  }catch(e){ rows[5][1]="no disponible"; fill(); }
-})();
+  t("pipeNotes").forEach((tx,i)=>{ el("text",{x:150+i*160,y:200,"text-anchor":"middle",fill:C.dim,"font-family":"Martian Mono,monospace","font-size":10},s).textContent=tx; });
+  el("text",{x:320,y:250,"text-anchor":"middle",fill:C.muted,"font-family":"Geist,sans-serif","font-size":13},s).textContent=t("pipeFoot");
+}
+const LIVE={commit:null,commitState:"checking"};
+function fillLive(){
+  const proto=location.protocol==="https:", n=performance.getEntriesByType("navigation")[0];
+  const ago=d=>{ const s=(Date.now()-d)/1000, a=t("ago"); if(s<3600) return a[0](Math.max(1,Math.round(s/60))); if(s<86400) return a[1](Math.round(s/3600)); return a[2](Math.round(s/86400)); };
+  const vals=[ location.hostname||t("local"), proto?t("https"):location.protocol.replace(":",""), n&&n.nextHopProtocol||"—",
+    n&&n.duration?Math.round(n.duration)+" ms":"—", n?(n.transferSize?(n.transferSize/1024).toFixed(1)+" KB":t("cached")):"—",
+    LIVE.commit ? `${ago(new Date(LIVE.commit.date))} · ${LIVE.commit.sha}` : (LIVE.commitState==="na"?t("na"):t("checking")) ];
+  $("#live").innerHTML=t("live").map((k,i)=>`<dt>${k}</dt><dd class="${i===1&&proto?"good":""}">${esc(vals[i])}</dd>`).join("");
+}
+addEventListener("load",()=>setTimeout(fillLive,60));
+try{
+  fetch("https://api.github.com/repos/jasanchoselma/Portfolio/commits?per_page=1").then(r=>r.ok?r.json():Promise.reject())
+    .then(j=>{ LIVE.commit={date:j[0].commit.author.date,sha:j[0].sha.slice(0,7)}; fillLive(); })
+    .catch(()=>{ LIVE.commitState="na"; fillLive(); });
+}catch(e){ LIVE.commitState="na"; }
 
 /* =================== curso semana a semana =================== */
-(function course(){
-  const d=s=>new Date(s+"T00:00:00"), DAY=864e5;
+let practiceCount=0;
+function drawCourse(){
+  const d=s=>new Date(s+"T00:00:00"), DAY=864e5, rows=$("#rows"); rows.innerHTML="";
   const total=Math.round((d(COURSE.end)-d(COURSE.start))/DAY/7)+1, now=Math.floor((Date.now()-d(COURSE.start))/DAY/7);
   const idx=s=>Math.round((d(s)-d(COURSE.start))/DAY/7); let count=0;
   COURSE.blocks.forEach(b=>{
-    const row=document.createElement("div"); row.className="row"; row.innerHTML=`<span class="nm">${b.name}</span>`;
-    const t=document.createElement("div"); t.className="ticks"; t.style.setProperty("--w",total);
+    const row=document.createElement("div"); row.className="row"; row.innerHTML=`<span class="nm">${LANG==="en"?b.en:b.name}</span>`;
+    const tk=document.createElement("div"); tk.className="ticks"; tk.style.setProperty("--w",total);
     const m={}; (b.weeks||[]).forEach(([w,n])=>m[idx(w)]={w,n});
     for(let i=0;i<total;i++){ const s=document.createElement("span"); s.className="tick";
       const fct=b.fct&&i>=idx(b.fct[0])&&i<=idx(b.fct[1]);
-      if(m[i]&&i<=now){ s.classList.add("done"); count+=m[i].n; s.title=`${m[i].n} prácticas`; }
+      if(m[i]&&i<=now){ s.classList.add("done"); count+=m[i].n; s.title=`${m[i].n} ${t("practices")}`; }
       else if(m[i]||fct){ s.classList.add(fct&&i<=now?"done":"plan"); }
       else s.classList.add("idle");
-      if(i===now) s.classList.add("now"); t.appendChild(s); }
-    row.appendChild(t); $("#rows").appendChild(row); });
-  $("#count").textContent=count;
-})();
+      if(i===now) s.classList.add("now"); tk.appendChild(s); }
+    row.appendChild(tk); rows.appendChild(row); });
+  practiceCount=count;
+  $(".course-h").innerHTML=`<span>${t("weekly")}</span><span><b id="count">${count}</b> ${t("practices")}</span>`;
+}
 
 /* =================== copiar email =================== */
-$("#copy-mail").addEventListener("click",async()=>{
-  try{ await navigator.clipboard.writeText(EMAIL); toast(`[ <b>OK</b> ] ${EMAIL} copiado al portapapeles`); }
-  catch(e){ toast(`Copia el email a mano: ${EMAIL}`); }
-});
+async function copyEmail(){ try{ await navigator.clipboard.writeText(EMAIL); toast(t("copied")(EMAIL)); return true; }catch(e){ toast(t("copyFail")(EMAIL)); return false; } }
+$("#copy-mail").addEventListener("click",copyEmail);
 
 /* =================== versión imprimible (Ctrl+P = CV) =================== */
-(function printCV(){
-  const stack=[...document.querySelectorAll("#stackgrid > div")].map(d=>`<p><b>${d.querySelector("h3").firstChild.textContent.trim()}:</b> ${d.querySelector("p").innerText.replace(/\n/g," · ")}</p>`).join("");
-  const tl=[...document.querySelectorAll("#timeline li")].map(li=>`<p><b>${li.querySelector("strong").textContent}</b> · ${li.querySelector("span").textContent} <span class="tg">(${li.querySelector("time").textContent})</span></p>`).join("");
+function printCV(){
+  const en=LANG==="en";
+  const stack=[...document.querySelectorAll("#stackgrid > div")].map(d=>`<p><b>${esc(d.querySelector("h3").firstChild.textContent.trim())}:</b> ${esc(d.querySelector("p").innerText.replace(/\n/g," · "))}</p>`).join("");
+  const tl=[...document.querySelectorAll("#timeline li")].map(li=>`<p><b>${esc(li.querySelector("strong").textContent)}</b> · ${esc(li.querySelector("span").textContent)} <span class="tg">(${esc(li.querySelector("time").textContent)})</span></p>`).join("");
   $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
-    <p class="sub">Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad</p>
+    <p class="sub">${en?"ASIR (Network Systems Administration) student · Systems, IT support and cybersecurity":"Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad"}</p>
     <p class="ct">Valencia · ${EMAIL} · jasancho.com · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
-    <h2>PERFIL</h2><p>Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027.</p>
-    <h2>PROYECTOS</h2>${PROJECTS.map(p=>`<div class="proj"><h3>${p.title}${p.status==="wip"?" (en curso)":""}</h3><ul>${p.did.map(x=>`<li>${x}</li>`).join("")}</ul><p class="tg">${p.stack.join(" · ")}</p></div>`).join("")}
-    <h2>COMPETENCIAS</h2>${stack}
-    <h2>FORMACIÓN Y EXPERIENCIA</h2>${tl}
-    <h2>IDIOMAS</h2><p>Español nativo · Valenciano C1 · Inglés B2 · Francés A1 · Permiso B</p>`;
+    <h2>${en?"PROFILE":"PERFIL"}</h2><p>${en?"Second-year ASIR student with hands-on practice in Linux, Active Directory with Samba, Docker, AWS and service hardening. Available for an internship from March to July 2027.":"Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027."}</p>
+    <h2>${en?"PROJECTS":"PROYECTOS"}</h2>${PROJECTS.map(p=>{const lp=L(p); return `<div class="proj"><h3>${esc(lp.title)}${p.status==="wip"?(en?" (in progress)":" (en curso)"):""}</h3><ul>${lp.did.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="tg">${p.stack.join(" · ")}</p></div>`}).join("")}
+    <h2>${en?"SKILLS":"COMPETENCIAS"}</h2>${stack}
+    <h2>${en?"EDUCATION AND EXPERIENCE":"FORMACIÓN Y EXPERIENCIA"}</h2>${tl}
+    <h2>${en?"LANGUAGES":"IDIOMAS"}</h2><p>${en?"Spanish native · Valencian C1 · English B2 · French A1 · Driving licence":"Español nativo · Valenciano C1 · Inglés B2 · Francés A1 · Permiso B"}</p>`;
+}
+
+/* =================== cambio de idioma =================== */
+function setLang(l, save){
+  LANG=l; document.documentElement.lang=l; document.title=t("title");
+  STATIC.forEach(([sel,es,en,html])=>{ const n=document.querySelector(sel); if(!n) return; const v=l==="en"?en:es; if(html) n.innerHTML=v; else n.textContent=v; });
+  const b=$("#btn-lang"); b.textContent=t("langBtn"); b.setAttribute("aria-label",t("langLabel")); b.title=t("langLabel");
+  $("#btn-term").title=t("termBtnLabel"); $("#btn-term").setAttribute("aria-label",t("termBtnLabel"));
+  if(EMPRESA) $("#hello-t").textContent=t("hello")(EMPRESA);
+  tickClock(); mapTexts(); renderFilters(); renderList(); drawPipe(); fillLive(); drawCourse(); printCV();
+  if(curProj) fillProject(curProj);
+  if(save){ try{ localStorage.setItem("lang",l); }catch(e){} }
+}
+$("#btn-lang").addEventListener("click",()=>{ setLang(LANG==="es"?"en":"es",true); if(window.termLang) window.termLang(); });
+setLang(LANG,false);
+const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProject(fromHash),50);
+
+/* =================== terminal =================== */
+(function terminal(){
+  const box=$("#term"), out=$("#tout"), inp=$("#tin"), form=$("#tform"), ps=$("#tps");
+  let cwd="~", hist=[], hi=0, opened=false, tailOn=false;
+  const tr=(es,en)=>LANG==="en"?en:es;
+  const dirName=()=>tr("proyectos","projects");
+  const files=()=>{
+    const f={}; f[tr("sobre-mi.txt","about.txt")]="about"; f[tr("contacto.txt","contact.txt")]="contact"; f["stack.txt"]="stack";
+    f[tr("trayectoria.log","background.log")]="timeline"; f["cv.pdf"]="cv"; f[".secreto"]="secret"; f[dirName()+"/"]="dir"; return f; };
+  const projFiles=()=>PROJECTS.map(p=>p.id+".md");
+  const line=(html,cls="")=>{ const d=document.createElement("div"); if(cls) d.className=cls; d.innerHTML=html; out.appendChild(d); out.scrollTop=out.scrollHeight; };
+  const txt=(s,cls)=>line(esc(s),cls);
+  const promptStr=()=>`<span class="tp-u">jasancho@soc</span>:<span class="tp-d">${esc(cwd)}</span>$`;
+  const setPS=()=>{ ps.innerHTML=promptStr(); };
+  const content={
+    about:()=>tr("José Antonio Sancho Selma · Valencia\nEstudiante de 2º de ASIR en el CEP Sorolla (2025–2027).\nEmpecé por ciencias de la salud y acabé en sistemas.\nBusco FCT de marzo a julio de 2027 en sistemas, soporte o ciberseguridad.\nIdiomas: español, valenciano C1, inglés B2.",
+                   "José Antonio Sancho Selma · Valencia, Spain\nSecond-year ASIR student at CEP Sorolla (2025–2027).\nStarted in health sciences, ended up in systems.\nLooking for an internship, March–July 2027: systems, IT support or cybersecurity.\nLanguages: Spanish, Valencian C1, English B2."),
+    contact:()=>`email     ${EMAIL}\nlinkedin  ${LINKEDIN}\ngithub    ${GITHUB}\n\n`+tr("Escribe 'email' para copiar el correo.","Type 'email' to copy the address."),
+    stack:()=>[...document.querySelectorAll("#stackgrid > div")].map(d=>`[${d.querySelector("h3").firstChild.textContent.trim()}]\n  ${d.querySelector("p").innerText.replace(/\n/g,"\n  ")}`).join("\n"),
+    timeline:()=>[...document.querySelectorAll("#timeline li")].map(li=>`${li.querySelector("time").textContent.padEnd(16)} ${li.querySelector("strong").textContent} — ${li.querySelector("span").textContent}`).join("\n"),
+    secret:()=>tr("¿Buscando archivos ocultos? Así me gusta.\nPista: prueba 'sudo hire jasancho'.","Looking for hidden files? Good instinct.\nHint: try 'sudo hire jasancho'."),
+    cv:()=>tr("cat: cv.pdf: es un archivo binario. Usa 'cv' para descargarlo.","cat: cv.pdf: binary file. Use 'cv' to download it.")
+  };
+  const projMD=p=>{ const lp=L(p); return `# ${lp.title}\n${tr("estado","status")}: ${p.status==="ok"?t("active"):t("wip")} · host: ${p.host}\n\n## ${tr("Problema","Problem")}\n${lp.problem}\n\n## ${tr("Qué hice","What I did")}\n${lp.did.map(x=>"- "+x).join("\n")}\n\n## ${tr("Qué aprendí","What I learned")}\n${lp.learned}\n\n## Stack\n${p.stack.join(" · ")}\n\n${tr("→ 'open "+p.id+"' para ver el diagrama","→ 'open "+p.id+"' to see the diagram")}`; };
+  const resolve=a=>{ if(!a||a==="~"||a==="/"||a==="~/") return "~"; if(a===".."||a==="../") return "~"; const n=a.replace(/^~\//,"").replace(/\/$/,""); if(n===dirName()) return "~/"+dirName(); if(cwd!=="~"&&n===".") return cwd; return null; };
+  function fastfetch(){
+    const logo=["     _____ ","    / ___ \\ ","   / /  / / ","  / /__/ /  "," /_____/    ","  jasancho  "];
+    const info=[["",'<span class="tp-u">jasancho</span>@<span class="tp-u">soc</span>'],["","-------------"],
+      ["OS",tr("ASIR 2025–2027 · Valencia","ASIR 2025–2027 · Valencia, Spain")],["Host","jasancho.com · GitHub Pages"],["Kernel",tr("curiosidad 6.x","curiosity 6.x")],
+      ["Uptime",`${upDays()} ${t("days")}`],["Shell","soc-sh 1.0"],[tr("Servicios","Services"),sumBase()],[tr("Busco","Seeking"),tr("FCT mar–jul 2027","internship Mar–Jul 2027")],
+      [tr("Prácticas","Labs"),`${practiceCount} ${tr("este curso","this year")}`]];
+    const rows=Math.max(logo.length,info.length); let html="";
+    for(let i=0;i<rows;i++){ const l=esc(logo[i]||"").padEnd(14," "); const [k,v]=info[i]||["",""];
+      html+=`<span class="tv">${l.replace(/ /g,"&nbsp;")}</span>${k?`<span class="tk">${esc(k)}</span>: `:""}${k?esc(v):v}<br>`; }
+    html+=`<br>${"<span class='sw' style='background:#9B8CFF'></span><span class='sw' style='background:#FF5C7A'></span><span class='sw' style='background:#4FE0A6'></span><span class='sw' style='background:#FFC56B'></span><span class='sw' style='background:#ECE9FA'></span>"}`;
+    line(html,"ff");
+    line(tr("Escribe <b>help</b> para ver los comandos. <b>Tab</b> autocompleta, <b>↑↓</b> recorre el historial, <b>Esc</b> cierra.","Type <b>help</b> for commands. <b>Tab</b> completes, <b>↑↓</b> browses history, <b>Esc</b> closes."),"dim");
+  }
+  const HELP=()=>[
+    ["help",tr("esta ayuda","this help")],["whoami",tr("quién soy","who I am")],["ls [-a] [dir]",tr("lista archivos","list files")],["cd <dir>",tr("cambia de directorio","change directory")],
+    ["cat <file>",tr("muestra un archivo","print a file")],[tr("open <proyecto>","open <project>"),tr("abre la ficha con su diagrama","open the project card")],["projects",tr("lista los proyectos","list projects")],
+    ["status",tr("estado de los servicios","service status")],["journalctl [-f]",tr("últimos eventos del syslog","latest syslog events")],["incident [id]",tr("simula una caída en el mapa","simulate an outage")],
+    ["ping <host>","ping"],["email",tr("copia mi email","copy my email")],["cv",tr("descarga el CV","download résumé")],[tr("goto <sección>","goto <section>"),tr("va a una sección de la web","jump to a section")],
+    ["lang es|en",tr("cambia el idioma","switch language")],["fastfetch",tr("info del sistema","system info")],["history · clear · date · exit",""]
+  ].map(([c,d])=>`<span class="tc" style="display:inline-block;min-width:24ch">${esc(c)}</span>${esc(d)}`).join("<br>");
+  const SECTIONS={proyectos:"#proyectos",projects:"#proyectos",despliegue:"#despliegue",deployment:"#despliegue",stack:"#stack",trayectoria:"#trayectoria",background:"#trayectoria",contacto:"#contacto",contact:"#contacto",inicio:"#inicio",home:"#inicio"};
+  const CMDS={
+    help:()=>line(HELP()),
+    man:a=>CMDS.help(a),
+    whoami:()=>txt(content.about()),
+    fastfetch:()=>fastfetch(), neofetch:()=>fastfetch(),
+    pwd:()=>txt(cwd.replace("~","/home/jasancho")),
+    ls:a=>{ const all=a.includes("-a")||a.includes("-la")||a.includes("-al"); const target=a.filter(x=>!x.startsWith("-"))[0];
+      const dir=target?resolve(target):cwd; if(!dir) return txt(`ls: ${target}: ${tr("no existe","no such file or directory")}`,"err");
+      if(dir==="~"){ const f=Object.keys(files()).filter(n=>all||!n.startsWith(".")); line(f.map(n=>n.endsWith("/")?`<span class="tdir">${esc(n)}</span>`:esc(n)).join("&nbsp;&nbsp;&nbsp;")); }
+      else line(projFiles().map(esc).join("&nbsp;&nbsp;&nbsp;")); },
+    cd:a=>{ const d=resolve(a[0]); if(!d) return txt(`cd: ${a[0]}: ${tr("no existe el directorio","no such directory")}`,"err"); cwd=d; setPS(); },
+    cat:a=>{ if(!a[0]) return txt("cat: "+tr("falta el archivo","missing file"),"err");
+      let name=a[0].replace(/^~\//,""); let inProj=cwd!=="~";
+      if(name.startsWith(dirName()+"/")){ inProj=true; name=name.slice(dirName().length+1); }
+      if(inProj){ const p=PROJECTS.find(x=>x.id+".md"===name||x.id===name); return p?txt(projMD(p)):txt(`cat: ${a[0]}: ${tr("no existe","no such file")}`,"err"); }
+      const k=files()[name]; if(!k||k==="dir") return txt(`cat: ${a[0]}: ${k==="dir"?tr("es un directorio","is a directory"):tr("no existe","no such file")}`,"err"); txt(content[k]()); },
+    projects:()=>line(PROJECTS.map(p=>{const lp=L(p); return `<span class="${p.status==="ok"?"tok":"twarn"}">●</span> <span class="tc">${esc(p.id.padEnd(10," ")).replace(/ /g,"&nbsp;")}</span>${esc(lp.title)}`}).join("<br>")+"<br><span class='dim'>"+tr("→ 'open &lt;id&gt;' para ver uno","→ 'open &lt;id&gt;' to view one")+"</span>"),
+    open:a=>{ const p=P((a[0]||"").replace(/\.md$/,"")); if(!p) return txt(`open: ${a[0]||""}: ${tr("proyecto no encontrado. Prueba 'projects'","project not found. Try 'projects'")}`,"err"); close(); openProject(p); },
+    status:()=>line(PROJECTS.map(p=>{ const inc=incidentOpen&&N[incidentOpen].p===p.id; const st=inc?`<span class="err">failed</span>`:p.status==="ok"?`<span class="tok">active (running)</span>`:`<span class="twarn">activating</span>`; return `● ${esc((p.host+".service").padEnd(20," ")).replace(/ /g,"&nbsp;")} ${st}`; }).join("<br>")),
+    systemctl:a=>CMDS.status(a),
+    journalctl:a=>{ SYSLOG.slice(-8).forEach(([ts,h,m,c])=>line(`<span class="dim">${esc(ts)}</span> <span class="tp-u">${esc(h)}</span> <span class="${c==="crit"?"err":c==="okk"?"tok":c==="wrn"?"twarn":""}">${esc(m)}</span>`));
+      if(a.includes("-f")){ tailOn=true; txt(tr("-- siguiendo el log en vivo (escribe cualquier comando para parar) --","-- following live log (type any command to stop) --"),"dim"); } },
+    incident:a=>{ const h=window.fireIncident(a[0]); if(!h) return txt(tr("Ya hay un incidente abierto, o ese servicio no existe/está en curso.","An incident is already open, or that service doesn't exist/is in progress."),"err");
+      txt(tr(`Incidente simulado en ${h}. Mira el mapa o sigue el log:`,`Simulated incident on ${h}. Watch the map or follow the log:`),"twarn"); tailOn=true; },
+    ping:a=>{ const h=a[0]||"jasancho.com"; txt(`PING ${h} (185.199.108.153) 56(84) bytes of data.`); let i=0; const go=()=>{ if(i<4){ txt(`64 bytes from ${h}: icmp_seq=${i+1} ttl=57 time=${(12+Math.random()*6).toFixed(1)} ms`); i++; setTimeout(go,350);} else txt(`--- ${h} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`); }; go(); },
+    nmap:()=>txt(tr("Starting Nmap…\nPORT    STATE SERVICE\n80/tcp  open  http\n443/tcp open  https\n\nNada más abierto. Es una web estática: menos superficie de ataque.","Starting Nmap…\nPORT    STATE SERVICE\n80/tcp  open  http\n443/tcp open  https\n\nNothing else open. It's a static site: minimal attack surface.")),
+    sudo:a=>{ if(a.join(" ")==="hire jasancho"){ txt(tr("[sudo] contraseña para reclutador: ********\n✓ Permiso concedido. Abriendo canal de contacto…","[sudo] password for recruiter: ********\n✓ Access granted. Opening contact channel…"),"tok"); setTimeout(()=>{ close(); location.hash="#contacto"; },900); }
+      else txt(tr("jasancho no está en el archivo sudoers. Este incidente será reportado.","jasancho is not in the sudoers file. This incident will be reported."),"err"); },
+    rm:a=>txt(a.join(" ").includes("-rf")?tr("Buen intento. Esta web es de solo lectura y tengo copias inmutables 😉","Nice try. This site is read-only and I keep immutable backups 😉"):tr("rm: permiso denegado","rm: permission denied"),"err"),
+    email:async()=>{ const ok=await copyEmail(); txt(ok?tr(`✓ ${EMAIL} copiado al portapapeles`,`✓ ${EMAIL} copied to clipboard`):EMAIL,ok?"tok":""); },
+    cv:()=>{ txt(tr("Abriendo el CV…","Opening résumé…")); location.href=$(".btn-cv").getAttribute("href"); },
+    goto:a=>{ const s=SECTIONS[(a[0]||"").toLowerCase()]; if(!s) return txt(tr("goto: secciones: proyectos, despliegue, stack, trayectoria, contacto","goto: sections: projects, deployment, stack, background, contact"),"err"); close(); location.hash=s; },
+    lang:a=>{ if(a[0]!=="es"&&a[0]!=="en") return txt("lang es | lang en","err"); setLang(a[0],true); window.termLang(); txt(tr("Idioma: español","Language: English"),"tok"); },
+    date:()=>txt(new Date().toString()),
+    echo:a=>txt(a.join(" ")),
+    uname:()=>txt("soc-sh 1.0 jasancho.com asir-2027 x86_64 GNU/Linux"),
+    history:()=>txt(hist.map((h,i)=>`${String(i+1).padStart(4," ")}  ${h}`).join("\n")),
+    clear:()=>{ out.innerHTML=""; },
+    exit:()=>close(), quit:()=>close(),
+    vim:()=>txt(tr("Entraste en vim. Para salir: :q! … tranquilo, aquí basta con 'exit'.","You entered vim. To quit: :q! … relax, here 'exit' is enough.")),
+    cowsay:a=>txt(` ${"_".repeat((a.join(" ")||"muuu").length+2)}\n< ${a.join(" ")||"muuu"} >\n ${"-".repeat((a.join(" ")||"muuu").length+2)}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||`)
+  };
+  function run(raw){
+    const cmdline=raw.trim(); tailOn=false;
+    line(`${promptStr()} ${esc(cmdline)}`,"tline");
+    if(!cmdline) return;
+    hist.push(cmdline); hi=hist.length;
+    const [c,...args]=cmdline.split(/\s+/); const fn=CMDS[c.toLowerCase()];
+    if(fn) fn(args); else txt(`${c}: ${tr("orden no encontrada. Escribe 'help'.","command not found. Type 'help'.")}`,"err");
+  }
+  window.termTail=(ts,h,m,c)=>{ if(tailOn&&!box.hidden) line(`<span class="dim">${esc(ts)}</span> <span class="tp-u">${esc(h)}</span> <span class="${c==="crit"?"err":c==="okk"?"tok":c==="wrn"?"twarn":""}">${esc(m)}</span>`); };
+  window.termLang=()=>{ if(cwd!=="~") cwd="~/"+dirName(); setPS(); };
+  let lastFocus=null;
+  function openT(){ lastFocus=document.activeElement; box.hidden=false; document.body.classList.add("term-on"); setPS();
+    if(!opened){ opened=true; fastfetch(); } setTimeout(()=>inp.focus(),20); }
+  function close(){ box.hidden=true; tailOn=false; document.body.classList.remove("term-on"); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+  window.openTerminal=openT;
+  $("#btn-term").addEventListener("click",openT);
+  $("#tclose").addEventListener("click",close);
+  box.addEventListener("click",e=>{ if(e.target===box) close(); else if(!window.getSelection().toString()) inp.focus(); });
+  form.addEventListener("submit",e=>{ e.preventDefault(); const v=inp.value; inp.value=""; run(v); });
+  inp.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){ e.preventDefault(); close(); }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); if(hi>0){ hi--; inp.value=hist[hi]; } }
+    else if(e.key==="ArrowDown"){ e.preventDefault(); if(hi<hist.length-1){ hi++; inp.value=hist[hi]; } else { hi=hist.length; inp.value=""; } }
+    else if(e.key==="Tab"){ e.preventDefault(); const parts=inp.value.split(/\s+/); const last=parts[parts.length-1]||"";
+      let pool = parts.length===1 ? Object.keys(CMDS) : (["open","incident"].includes(parts[0]) ? PROJECTS.map(p=>p.id) : parts[0]==="goto" ? Object.keys(SECTIONS) : (cwd==="~"?Object.keys(files()):projFiles()));
+      const m=pool.filter(x=>x.startsWith(last));
+      if(m.length===1){ parts[parts.length-1]=m[0]; inp.value=parts.join(" ")+(m[0].endsWith("/")?"":" "); }
+      else if(m.length>1){ line(`${promptStr()} ${esc(inp.value)}`,"tline"); line(m.map(esc).join("&nbsp;&nbsp;&nbsp;"),"dim"); } }
+    else if(e.key==="l"&&e.ctrlKey){ e.preventDefault(); out.innerHTML=""; }
+  });
+  document.addEventListener("keydown",e=>{
+    const tag=(document.activeElement&&document.activeElement.tagName)||"";
+    if((e.key==="`"||e.key==="º") && box.hidden && !dlg.open && !/INPUT|TEXTAREA/.test(tag)){ e.preventDefault(); openT(); }
+  });
 })();
 </script>
+
 </body>
 </html>
