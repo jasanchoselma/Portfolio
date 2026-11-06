@@ -31,6 +31,76 @@
   /* Tipografías autoalojadas (SIL Open Font License): ninguna petición a Google */
   @font-face{font-family:"Martian Mono";src:url("/fonts/martian-mono.woff2") format("woff2");font-weight:100 800;font-style:normal;font-display:swap}
   @font-face{font-family:"Geist";src:url("/fonts/geist.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+
+  /* ---------- stack: rack de servidores ---------- */
+  #stk.stk{display:block;grid-template-columns:none;font:inherit;color:inherit}
+  .rack-wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:34px;align-items:stretch;perspective:1800px}
+  .rack{position:relative;padding:16px 30px 14px;border-radius:16px;background:linear-gradient(180deg,#15122A,#0A0813);border:1px solid var(--line-2);
+    box-shadow:inset 0 0 0 7px #0D0B18,inset 0 0 0 8px var(--line),0 50px 90px -40px rgba(0,0,0,.9),0 0 80px -30px rgba(155,140,255,.35);
+    transform:rotateY(6deg);transform-origin:left center;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+  .rack:hover{transform:rotateY(2deg)}
+  .rack::before,.rack::after{content:"";position:absolute;top:44px;bottom:42px;width:8px;background:repeating-linear-gradient(180deg,#2C2648 0 3px,transparent 3px 10px);opacity:.9}
+  .rack::before{left:14px} .rack::after{right:14px}
+  .rack-top,.rack-foot{display:flex;justify-content:space-between;gap:12px;font:400 10.5px var(--mono);color:var(--dim);padding:2px 4px 12px}
+  .rack-top b{color:var(--ok);font-weight:400}
+  .rack-foot{padding:6px 4px 0}
+  .srv{all:unset;box-sizing:border-box;display:grid;grid-template-columns:16px minmax(0,1fr) 16px;width:100%;height:68px;margin:0 0 8px;cursor:pointer;position:relative;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .srv:focus-visible{outline:2px solid var(--warn);outline-offset:3px;border-radius:6px}
+  .ear{background:linear-gradient(90deg,#211C3A,#17142B);border:1px solid var(--line-2);display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:11px 0;transition:border-color .4s}
+  .ear.l{border-radius:7px 0 0 7px;border-right:0} .ear.r{border-radius:0 7px 7px 0;border-left:0}
+  .ear i{width:6px;height:6px;border-radius:50%;background:#08070F;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px #2C2648}
+  .srv-face{display:grid;grid-template-columns:auto minmax(0,1.25fr) auto minmax(24px,1fr) auto;gap:14px;align-items:center;padding:0 14px 0 16px;border:1px solid var(--line-2);background:linear-gradient(180deg,#1E1A37,#13102A);position:relative;overflow:hidden;transition:border-color .4s,box-shadow .4s}
+  .srv-face::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transform:translateX(-100%);transition:transform .9s}
+  .srv:hover .srv-face::before,.srv.on .srv-face::before{transform:translateX(100%)}
+  .srv-face::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c);opacity:.3;box-shadow:0 0 14px var(--c);transition:opacity .4s}
+  .srv-ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent)}
+  .srv-ico .ico{width:18px;height:18px}
+  .srv-name{min-width:0}
+  .srv-name b{display:block;font:600 14px var(--sans);color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .srv-name small{font:400 10px var(--mono);color:var(--dim)}
+  .srv-bays{display:flex;gap:4px}
+  .bay{width:9px;height:32px;border-radius:2px;background:#0D0B18;border:1px solid var(--line);position:relative}
+  .bay em{position:absolute;left:50%;bottom:4px;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c);opacity:.2;animation:bay var(--t,1.3s) steps(1) infinite;animation-delay:var(--d,0s)}
+  @keyframes bay{0%{opacity:.15}30%{opacity:1}36%{opacity:.2}62%{opacity:.85}70%{opacity:.2}}
+  .srv-vent{height:32px;border-radius:3px;background:repeating-linear-gradient(90deg,#0B0915 0 3px,transparent 3px 6px);border:1px solid var(--line)}
+  .srv-leds{display:flex;flex-direction:column;gap:7px}
+  .srv-leds i{width:7px;height:7px;border-radius:50%}
+  .srv-leds .pw{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+  .srv-leds .act{background:var(--c);box-shadow:0 0 8px var(--c);animation:bay .9s steps(1) infinite;animation-delay:var(--d2,0s)}
+  .srv:hover{transform:translateX(7px)}
+  .srv.on{transform:translateX(26px) translateZ(40px)}
+  .srv.on .srv-face{border-color:var(--c);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 14px 34px -12px color-mix(in srgb,var(--c) 70%,transparent)}
+  .srv.on .srv-face::after{opacity:1}
+  .srv.on .ear{border-color:color-mix(in srgb,var(--c) 55%,var(--line-2))}
+  .rk-panel{--c:#9B8CFF;position:relative;overflow:hidden;border:1px solid color-mix(in srgb,var(--c) 45%,var(--line));border-radius:18px;padding:26px;
+    background:linear-gradient(160deg,color-mix(in srgb,var(--c) 11%,#17142B),rgba(12,10,20,.78) 62%);transition:border-color .5s,background .5s;display:flex;flex-direction:column}
+  .rk-panel::after{content:"";position:absolute;width:300px;height:300px;right:-110px;top:-130px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 34%,transparent),transparent 65%);pointer-events:none;transition:background .5s}
+  .rk-anim{position:relative;z-index:2;display:flex;flex-direction:column;flex:1;animation:fadeUp .45s both}
+  .rk-head{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+  .rk-ico{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--c) 30%,transparent);flex:none}
+  .rk-ico .ico{width:28px;height:28px}
+  .rk-head small{font:400 11px var(--mono);color:var(--dim)}
+  .rk-head h3{font:700 26px/1.1 var(--mono);letter-spacing:-.035em;margin:4px 0 0}
+  .rk-st{margin-left:auto;align-self:flex-start;font:500 10.5px var(--mono);color:var(--ok);border:1px solid rgba(79,224,166,.35);background:rgba(79,224,166,.07);border-radius:999px;padding:4px 10px;display:inline-flex;gap:6px;align-items:center}
+  .rk-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor}
+  .rk-desc{color:var(--soft);margin:0 0 20px;max-width:46ch}
+  .rk-mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mod{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(8,7,15,.62);font:400 12.5px var(--mono);color:var(--text);animation:modIn .45s both;animation-delay:calc(.08s + var(--j)*45ms);transition:border-color .2s}
+  .mod:hover{border-color:color-mix(in srgb,var(--c) 50%,var(--line))}
+  @keyframes modIn{from{opacity:0;transform:translateY(8px) scale(.97)}}
+  .mod span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mod-led{width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);flex:none}
+  .mod em{margin-left:auto;font-style:normal;font-size:10px;color:var(--dim);flex:none}
+  .rk-use{margin-top:auto;padding-top:22px}
+  .rk-hint{font:400 11px var(--mono);color:var(--dim);margin:14px 0 0}
+  @media (max-width:1040px){ .rack-wrap{grid-template-columns:1fr} .rack,.rack:hover{transform:none} }
+  @media (max-width:680px){
+    .rack{padding:14px 22px 12px} .rack::before{left:9px} .rack::after{right:9px}
+    .srv-face{grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px;padding:0 10px 0 12px} .srv-name small{white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis} .srv-bays{gap:3px} .srv-bays .bay:nth-child(n+5){display:none} .srv-vent{display:none} .bay{width:7px}
+    .srv.on{transform:translateX(10px)} .srv:hover{transform:none}
+    .rk-mods{grid-template-columns:1fr} .rk-head h3{font-size:21px}
+  }
+  @media (prefers-reduced-motion:reduce){ .bay em,.srv-leds .act{animation:none;opacity:.8} .rack{transform:none} }
 </style>
 <style>
   :root{
@@ -735,7 +805,6 @@
         <div class="dp-journey gc" id="dp-journey"></div>
         <div class="dp-card gc" id="dp-wf"></div>
         <div class="dp-card gc" id="dp-meta"></div>
-        <div class="dp-card gc dp-dns" id="dp-dns"></div>
       </div>
     </div>
   </section>
@@ -1910,6 +1979,60 @@ function printCV(){
     <h2>${en?"SKILLS":"COMPETENCIAS"}</h2>${STACK.map(c=>`<p><b>${esc(c.name[LANG])}:</b> ${esc(c.items.map(tx).join(" · "))}</p>`).join("")}
     <h2>${en?"EDUCATION AND EXPERIENCE":"FORMACIÓN Y EXPERIENCIA"}</h2>${TIMELINE.map(e=>`<p><b>${esc(tx(e.title))}</b> · ${esc(tx(e.sub))} <span class="tg">(${esc(tx(e.date))})</span></p>`).join("")}
     <h2>${en?"LANGUAGES":"IDIOMAS"}</h2><p>${en?"Spanish native · Valencian C1 · English B2 · French A1 · Driving licence":"Español nativo · Valenciano C1 · Inglés B2 · Francés A1 · Permiso B"}</p>`;
+}
+
+/* =================== stack como rack de servidores =================== */
+const STACK_DESC={
+ sys:{es:"Instalo y administro servidores Linux y Windows, y centralizo usuarios y equipos en un dominio.",en:"I install and manage Linux and Windows servers, and centralise users and machines in a domain."},
+ net:{es:"Diseño la red: direccionamiento, VLAN, DHCP y un cortafuegos que solo deja pasar lo necesario.",en:"I design the network: addressing, VLANs, DHCP and a firewall that only lets through what's needed."},
+ ctr:{es:"Despliego servicios en contenedores con Docker Compose: reproducibles y fáciles de mover.",en:"I deploy services in containers with Docker Compose: reproducible and easy to move."},
+ srv:{es:"Publico servicios web, de correo y de ficheros, siempre cifrados con TLS.",en:"I publish web, mail and file services, always encrypted with TLS."},
+ sec:{es:"Protejo accesos y datos: bastión con doble factor, contraseñas centralizadas y copias inmutables.",en:"I protect access and data: an MFA bastion, centralised passwords and immutable backups."},
+ cld:{es:"Llevo servicios a AWS y gestiono sus bases de datos.",en:"I take services to AWS and manage their databases."}
+};
+let rkSel=0, rkAuto=null, rkUser=false, rkIdle=null;
+function renderStack(){
+  const box=$("#stk"); if(!box) return; const en=LANG==="en", fine=matchMedia("(pointer:fine)").matches;
+  box.innerHTML=`<div class="rack-wrap">
+    <div class="rack" id="rack">
+      <div class="rack-top"><span>rack-01 · ${en?"lab":"laboratorio"}</span><span>${STACK.length} ${en?"servers":"servidores"} · <b>online</b></span></div>
+      ${STACK.map((c,i)=>`<button type="button" class="srv" data-i="${i}" style="--c:${c.color};--d2:${((i*.37)%1).toFixed(2)}s" aria-label="${esc(c.name[LANG])}">
+        <span class="ear l"><i></i><i></i></span>
+        <span class="srv-face">
+          <span class="srv-ico">${ICON(c.icon)}</span>
+          <span class="srv-name"><b>${esc(c.name[LANG])}</b><small>srv-0${i+1} · ${c.items.length} ${en?"modules":"módulos"}</small></span>
+          <span class="srv-bays" aria-hidden="true">${c.items.map((_,j)=>`<i class="bay"><em style="--d:${(((i*7+j*3)%10)/10).toFixed(1)}s;--t:${(1+((i+j)%5)*.25).toFixed(2)}s"></em></i>`).join("")}</span>
+          <span class="srv-vent" aria-hidden="true"></span>
+          <span class="srv-leds" aria-hidden="true"><i class="pw"></i><i class="act"></i></span>
+        </span>
+        <span class="ear r"><i></i><i></i></span>
+      </button>`).join("")}
+      <div class="rack-foot"><span>UPS · 100%</span><span>PDU A/B</span><span>22.4 °C</span></div>
+    </div>
+    <div class="rk-panel gc" id="rk-panel" aria-live="polite"></div>
+  </div>`;
+  const rack=$("#rack");
+  box.querySelectorAll(".srv").forEach(b=>{ const i=+b.dataset.i;
+    b.addEventListener("click",()=>{ rkUser=true; rkShow(i); });
+    if(fine) b.addEventListener("mouseenter",()=>{ rkUser=true; rkShow(i); });
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"||e.key==="ArrowUp"){ e.preventDefault(); const n=(i+(e.key==="ArrowDown"?1:-1)+STACK.length)%STACK.length; box.querySelector(`.srv[data-i="${n}"]`).focus(); rkUser=true; rkShow(n); } });
+  });
+  rack.addEventListener("mouseleave",()=>{ clearTimeout(rkIdle); rkIdle=setTimeout(()=>{ rkUser=false; },6000); });
+  rkShow(rkSel,true);
+  clearInterval(rkAuto); if(!reduce) rkAuto=setInterval(()=>{ if(!rkUser&&!document.hidden) rkShow((rkSel+1)%STACK.length); },4200);
+}
+function rkShow(i,force){
+  if(i===rkSel&&!force) return; rkSel=i; const c=STACK[i], en=LANG==="en", panel=$("#rk-panel"); if(!panel) return;
+  document.querySelectorAll(".srv").forEach(s=>{ const on=+s.dataset.i===i; s.classList.toggle("on",on); s.setAttribute("aria-pressed",on); });
+  panel.style.setProperty("--c",c.color);
+  panel.innerHTML=`<div class="rk-anim">
+    <div class="rk-head"><span class="rk-ico">${ICON(c.icon)}</span><div><small>srv-0${i+1} · ${c.path}</small><h3>${esc(c.name[LANG])}</h3></div><span class="rk-st">online</span></div>
+    <p class="rk-desc">${esc(STACK_DESC[c.k][LANG])}</p>
+    <div class="rk-mods">${c.items.map((it,j)=>`<div class="mod" style="--j:${j}"><i class="mod-led"></i><span>${esc(tx(it))}</span><em>slot ${String(j+1).padStart(2,"0")}</em></div>`).join("")}</div>
+    <div class="sk-use rk-use"><span>${en?"used in":"usado en"} →</span>${c.use.map(id=>`<button type="button" data-p="${id}">${esc(P(id).host)}</button>`).join("")}</div>
+    <p class="rk-hint">${en?"Hover the rack or use ↑ ↓ to inspect each server":"Pasa el ratón por el rack o usa ↑ ↓ para inspeccionar cada servidor"}</p>
+  </div>`;
+  panel.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>openProject(P(b.dataset.p)));
 }
 
 /* =================== cambio de idioma =================== */
