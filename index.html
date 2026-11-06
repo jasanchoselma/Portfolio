@@ -25,9 +25,13 @@
 <meta property="og:url" content="https://jasancho.com/">
 <link rel="author" href="/humans.txt">
 <link rel="icon" id="fav" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315122A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%234FE0A6'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Martian+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/martian-mono.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  /* Tipografías autoalojadas (SIL Open Font License): ninguna petición a Google */
+  @font-face{font-family:"Martian Mono";src:url("/fonts/martian-mono.woff2") format("woff2");font-weight:100 800;font-style:normal;font-display:swap}
+  @font-face{font-family:"Geist";src:url("/fonts/geist.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
+</style>
 <style>
   :root{
     --ink:#0C0A14; --ink-2:#121022; --panel:#17142B; --panel-2:#201C3A;
@@ -1390,8 +1394,8 @@ const AUDIT=[
    en:["Automatically bilingual","Detects your browser language, remembers your choice and can be forced with ?lang=es."]},
  {tag:"a11y", live:"a11y", es:["Accesible","Se recorre entera con el teclado, respeta la opción de «reducir movimiento» del sistema y mantiene buen contraste."],
    en:["Accessible","Fully keyboard-navigable, honours the system's “reduce motion” setting and keeps good contrast throughout."]},
- {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. No se envía nada a terceros."],
-   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Nothing is sent to third parties."]},
+ {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. Las tipografías se sirven desde este mismo dominio: ninguna petición a Google. La única consulta externa es a la API de GitHub, que ya aloja la web, para mostrar el último cambio."],
+   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Fonts are served from this same domain: no requests to Google. The only external call goes to the GitHub API, which already hosts the site, to show the last change."]},
  {tag:"F12", es:["Mensajes para curiosos","Abre las herramientas de desarrollador (F12) o el código fuente: hay un saludo esperándote."],
    en:["Messages for the curious","Open the developer tools (F12) or view the source: there's a greeting waiting for you."]}
 ];
@@ -1775,7 +1779,7 @@ $("#dp-replay").addEventListener("click",runJourney);
 const AU_ICON={TLS:"lock",DNS:"dns","RFC 9116":"shield",OWASP:"bug",UX:"route",web:"heart",CLI:"terminal",CSS:"printer",i18n:"lang",a11y:"a11y",privacy:"eyeoff",F12:"code"};
 const FILES={
  "/.well-known/security.txt":"# Política de divulgación de vulnerabilidades de jasancho.com (RFC 9116)\n# ¿Has encontrado un fallo en esta web? Gracias por avisar antes de publicarlo.\nContact: mailto:sanchoselmajoseantonio@gmail.com\nExpires: 2027-11-06T00:00:00.000Z\nPreferred-Languages: es, en\nCanonical: https://jasancho.com/.well-known/security.txt",
- "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: sanchoselmajoseantonio [at] gmail.com\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Tipografías: Martian Mono, Geist\n  Alojamiento: GitHub Pages · DNS en IONOS",
+ "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: sanchoselmajoseantonio [at] gmail.com\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
  "/robots.txt":"# robots.txt de jasancho.com\nUser-agent: *\nAllow: /"
 };
 let auScanned=false, auRunning=false;

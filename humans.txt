@@ -12,5 +12,5 @@
   Última actualización: 2026/11/06
   Idioma: español
   Estándares: HTML5, CSS3, JavaScript sin frameworks
-  Tipografías: Martian Mono, Geist
+  Tipografías: Martian Mono, Geist (autoalojadas, licencia SIL OFL)
   Alojamiento: GitHub Pages · DNS en IONOS
