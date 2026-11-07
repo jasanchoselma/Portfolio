@@ -1020,6 +1020,105 @@
   .pc-flat .crt-body{grid-template-columns:1fr;height:auto;padding-bottom:30px} .pc-flat .crt-list{display:block;border-right:0;border-bottom:1px solid rgba(155,140,255,.14)}
   .pc-flat .crt-det{min-height:250px} .pc-flat .crt-det .big{font-size:44px}
   @media (max-width:1100px){ #rk-panel{min-height:430px} }
+
+  /* =================== v9 · escenas WebGL =================== */
+  #gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none}
+  .stage{position:relative;height:var(--H,600px);touch-action:pan-y}
+  .stage-labels{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+  @media (max-width:700px){ .l3d.hn>b{font-size:9px!important;padding:2px 6px!important} .l3d.hn>span{display:none} .l3d.au-l>.tag{font-size:8.5px;padding:2px 6px} .l3d.au-l>.tag .ico{display:none} #hero-stage{margin:0!important} }
+  .l3d{position:absolute;left:0;top:0;will-change:transform;transition:opacity .3s;pointer-events:none}
+  .l3d>*{pointer-events:none}
+  .l3d.hn>b{position:absolute;left:0;top:0;transform:translate(-50%,-100%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:4px 10px;border-radius:999px;
+    font:500 11px var(--mono);color:var(--text);background:rgba(12,10,20,.72);border:1px solid rgba(155,140,255,.28);backdrop-filter:blur(6px);transition:all .35s cubic-bezier(.2,.8,.2,1);opacity:var(--dim,1)}
+  .l3d.hn>b i{width:6px;height:6px;border-radius:50%;flex:none}
+  .l3d.hn>span{position:absolute;left:0;top:2px;transform:translate(-50%,0);font:400 9.5px var(--mono);color:var(--dim);white-space:nowrap}
+  .l3d.hn.on>b,.l3d.hn.hv>b{border-color:var(--vio);background:rgba(40,32,80,.85);transform:translate(-50%,-115%) scale(1.08);box-shadow:0 0 24px -6px var(--vio)}
+  .l3d.hn.bad>b{border-color:var(--alert);color:#fff;background:rgba(80,20,36,.85);box-shadow:0 0 22px -4px var(--alert)}
+  .l3d.hn.pk>b{border-color:rgba(79,224,166,.25)}
+  #hero-stage .l3d.hn>b{transform:translate(-50%,0);font-size:10.5px;padding:3px 8px}
+  #hero-stage .l3d.hn>span{top:26px}
+  #hero-stage .l3d.hn.on>b{transform:translate(-50%,0) scale(1.08)}
+  .l3d.au-l>.tag{position:absolute;left:0;top:0;transform:translate(-50%,-100%);font-size:10.5px}
+  .l3d.au-l>.tag .ico{width:12px;height:12px}
+  .l3d.au-l.on>.tag,.l3d.au-l.hv>.tag{border-color:var(--vio);transform:translate(-50%,-112%) scale(1.08);background:rgba(40,32,80,.9)}
+  .l3d.dp-l>.dl{position:absolute;left:0;bottom:0;transform:translate(-50%,-10px);text-align:center;white-space:nowrap;font:400 10.5px/1.55 var(--mono);color:var(--muted);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+  .l3d.dp-l>.dl>*{display:block}
+  .l3d.dp-l .dl-n{font-size:9px;color:var(--vio)}
+  .l3d.dp-l b{font:600 14px var(--sans);color:var(--text);margin:1px 0 2px;transition:color .3s,text-shadow .3s}
+  .l3d.dp-l .dim{color:var(--dim)}
+  .l3d.dp-l em{font-style:normal;display:inline-block!important;margin-top:6px;padding:2px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--soft);background:rgba(12,10,20,.65);transition:all .35s}
+  .l3d.dp-l.lit .dl{transform:translate(-50%,-16px)} .l3d.dp-l.lit b{color:#fff;text-shadow:0 0 16px rgba(155,140,255,.8)} .l3d.dp-l.lit em{border-color:var(--vio);color:var(--vio-2)}
+  .l3d.dp-l.resp em{border-color:rgba(79,224,166,.5);color:var(--ok)}
+  .sc3 .stage{min-width:0}
+  .scene.sc3{grid-template-columns:minmax(0,1fr) 340px;align-items:center}
+  .scene.sc3 .sc-panel{align-self:center;min-height:420px;backdrop-filter:blur(10px);background:linear-gradient(165deg,color-mix(in srgb,var(--c) 12%,rgba(22,19,42,.82)),rgba(12,10,20,.78) 60%)}
+  .scp-sub{color:var(--muted)!important;font-size:13.5px!important}
+  .scp-lbl{font:400 11px var(--mono);color:var(--dim)}
+  .scp .cur{display:inline-block;width:8px;height:16px;background:var(--c);vertical-align:-2px;margin-left:3px;animation:blink 1s steps(1) infinite}
+  .tl-dots{display:flex;gap:8px;align-items:center;position:relative;padding:6px 0}
+  .tl-dots::before{content:"";position:absolute;left:6px;right:6px;top:50%;height:1px;background:linear-gradient(90deg,var(--line-2),var(--vio),var(--warn))}
+  .tl-dots button{all:unset;cursor:pointer;position:relative;z-index:1;width:12px;height:12px;border-radius:50%;background:#0C0A14;border:2px solid var(--c);flex:1;max-width:12px;margin:0 auto;transition:transform .25s,box-shadow .25s}
+  .tl-dots button[aria-pressed=true]{background:var(--c);box-shadow:0 0 12px var(--c);transform:scale(1.25)}
+  .tl-dots button:focus-visible{outline:2px solid var(--warn);outline-offset:2px}
+
+  /* portada: el mapa pasa a 3D sin marco */
+  .hero>*{min-width:0} .map .syslog{overflow:hidden}
+  .map{border:0!important;background:none!important;box-shadow:none!important;padding:0!important;transform:none!important;overflow:visible!important}
+  .map::before,.map::after,.map .hud{display:none!important}
+  html.gl .map #net,html.gl .map .tip{display:none!important}
+  .map-bar{background:none!important;border:0!important;padding:0 6px 2px!important;justify-content:space-between}
+  .map-bar .dots{display:none}
+  #hero-stage{--H:430px;margin:-8px -30px -6px}
+  .map .kpis{border:1px solid var(--line)!important;border-bottom:0!important;border-radius:16px 16px 0 0;background:rgba(14,11,26,.55)!important;backdrop-filter:blur(12px)}
+  .map .syslog{border-left:1px solid var(--line);border-right:1px solid var(--line);background:rgba(10,8,18,.55)!important;backdrop-filter:blur(12px)}
+  .map .map-foot{border:1px solid var(--line)!important;border-top:1px solid var(--line)!important;border-radius:0 0 16px 16px;background:rgba(14,11,26,.55)!important;backdrop-filter:blur(12px)}
+  .map.alarm .kpis,.map.alarm .syslog,.map.alarm .map-foot{border-color:rgba(255,92,122,.45)!important}
+  html:not(.gl) #hero-stage{display:none}
+  html:not(.gl) .stage{display:none}
+
+  /* despliegue */
+  .dp3{display:flex;flex-direction:column;gap:18px}
+  #dp-stage{--H:470px;margin:0 -20px}
+  .dp-row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+  .dp-row #dp-journey{border:1px solid var(--line);border-radius:16px;padding:16px;background:rgba(12,10,20,.6);backdrop-filter:blur(10px);display:flex;flex-direction:column;gap:10px}
+  .dp-row .dj-log{flex:1;min-height:150px}
+  .dp-row .dp-card{margin:0}
+
+  /* trayectoria */
+  .tl-scene{margin-bottom:34px}
+  .tr2{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:start}
+  .tr2 .tr-prof{display:flex;flex-direction:column;gap:16px}
+  /* matriz de LEDs del curso */
+  .course{padding:20px 20px 16px!important;position:relative;overflow:hidden}
+  .course::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% 0%,rgba(155,140,255,.12),transparent 60%);pointer-events:none}
+  .lm-h{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;position:relative}
+  .lm-h small{display:block;font:400 10.5px var(--mono);color:var(--vio)} .lm-h b{font:600 17px var(--sans)}
+  .lm-cnt{text-align:right} .lm-cnt b{display:block;font:700 34px/1 var(--mono);color:var(--vio-2);text-shadow:0 0 22px rgba(155,140,255,.6)} .lm-cnt span{font:400 11px var(--mono);color:var(--dim)}
+  .lm{position:relative;display:flex;flex-direction:column;gap:7px}
+  .lm-row{display:grid;grid-template-columns:78px minmax(0,1fr);align-items:center;gap:10px}
+  .lm-row .nm{font:400 10.5px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lm-cells{position:relative;display:grid;grid-template-columns:repeat(var(--w),1fr);gap:3px}
+  .lm-cells i{aspect-ratio:1;border-radius:50%;background:#1A1630;box-shadow:inset 0 0 0 1px rgba(155,140,255,.08);position:relative;transform:scale(.4);opacity:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s,box-shadow .2s;transition-delay:calc(var(--i) * 18ms)}
+  .course.in .lm-cells i{transform:none;opacity:1}
+  .lm-cells i.done{background:color-mix(in srgb,#9B8CFF calc(45% + var(--l) * 55%),#2A2450);box-shadow:0 0 calc(4px + var(--l) * 10px) rgba(155,140,255,calc(.3 + var(--l) * .6))}
+  .lm-cells i.plan{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(155,140,255,.55)}
+  .lm-cells i.fct{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,197,107,.7)}
+  .lm-cells i.fct.done{background:#FFC56B;box-shadow:0 0 10px rgba(255,197,107,.8)}
+  .lm-cells i:hover{transform:scale(1.5)!important;z-index:2;box-shadow:0 0 0 2px #fff}
+  .lm-cells i.now{outline:1.5px solid var(--ok);outline-offset:1px}
+  .lm-mo .lm-cells{height:14px} .lm-mo em{grid-column:calc(var(--i) + 1) / span 4;grid-row:1;font:400 9.5px var(--mono);font-style:normal;color:var(--dim);text-transform:lowercase}
+  .lm-nowrow .lm-cells{height:16px}
+  .lm-now{grid-column:calc(var(--now) + 1);grid-row:1;position:relative;display:block}
+  .lm-now::before{content:"";position:absolute;left:50%;bottom:16px;width:2px;height:150px;margin-left:-1px;background:linear-gradient(transparent,var(--ok));opacity:.7;animation:lmScan 2.4s ease-in-out infinite}
+  .lm-now span{position:absolute;left:50%;top:0;transform:translateX(-50%);font:500 9.5px var(--mono);color:var(--ok);white-space:nowrap}
+  @keyframes lmScan{50%{opacity:.25}}
+  .lm-leg{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font:400 10.5px var(--mono);color:var(--dim);align-items:center}
+  .lm-leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:#1A1630}
+  .lm-leg i.done{background:#9B8CFF;box-shadow:0 0 8px rgba(155,140,255,.8)} .lm-leg i.plan{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(155,140,255,.55)} .lm-leg i.fct{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,197,107,.7)}
+  .lm-tip{margin-left:auto;color:var(--soft);opacity:0;transition:opacity .2s} .lm-tip.on{opacity:1}
+
+  @media (max-width:1100px){ .scene.sc3{grid-template-columns:1fr} .scene.sc3 .sc-panel{min-height:0} .dp-row{grid-template-columns:1fr} .tr2{grid-template-columns:1fr} }
+  @media (max-width:700px){ .stage{--H:400px!important} #hero-stage{--H:340px!important;margin:0 -10px} #dp-stage{--H:360px!important} .l3d.dp-l b{font-size:11px} .l3d.dp-l .dl>span{display:none!important} .l3d.dp-l em{font-size:9px} .lm-row{grid-template-columns:56px minmax(0,1fr)} .lm-cells{gap:2px} }
 </style>
 </head>
 <body>
@@ -1070,6 +1169,7 @@
     <figure class="map" id="map" aria-labelledby="map-cap">
       <i class="hud tl"></i><i class="hud tr"></i><i class="hud bl"></i><i class="hud br"></i>
       <div class="map-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="map-cap"><b>soc · topología del laboratorio</b></span><span class="sev" id="sev">0 incidentes</span></div>
+      <div class="stage" id="hero-stage" data-bleed="90"></div>
       <svg id="net" viewBox="0 0 700 480" role="group" aria-label="Mapa de red con mis proyectos. Pulsa un nodo para abrir su ficha."></svg>
       <div class="tip" id="tip"></div>
       <div class="kpis" aria-hidden="true">
@@ -1112,10 +1212,13 @@
         </div>
         <button type="button" class="act2" id="dp-replay"><svg class="ico" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg><span id="dp-replay-t">repetir petición</span></button>
       </div>
-      <div class="dp">
-        <div class="dp-journey gc" id="dp-journey"></div>
-        <div class="dp-card gc" id="dp-wf"></div>
-        <div class="dp-card gc" id="dp-meta"></div>
+      <div class="dp3">
+        <div class="stage" id="dp-stage" data-bleed="60"></div>
+        <div class="dp-row">
+          <div id="dp-journey"></div>
+          <div class="dp-card gc" id="dp-wf"></div>
+          <div class="dp-card gc" id="dp-meta"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1143,22 +1246,20 @@
   </section>
 
   <section class="block" id="trayectoria" aria-labelledby="t-title">
-    <div class="wrap tr">
-      <div class="tr-side">
-        <p class="path">~/sobre-mi</p>
-        <h2 class="title" id="t-title" data-scramble>Trayectoria</h2>
-        <div class="tr-id gc">
-          <div class="avatar" aria-hidden="true"><span>JA</span><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="29" fill="none" stroke="#9B8CFF" stroke-width="1.5" stroke-dasharray="4 6"/></svg></div>
-          <div><b>José Antonio Sancho Selma</b><small id="tr-role"></small></div>
+    <div class="wrap">
+      <div class="sec-head"><div><p class="path">~/sobre-mi</p><h2 class="title" id="t-title" data-scramble>Trayectoria</h2><p class="lead" id="tr-lead"></p></div></div>
+      <div class="scene sc3 tl-scene"><div class="stage" id="tl-stage" style="--H:600px" data-bleed="70"></div><aside class="sc-panel" id="tl-panel" aria-live="polite"></aside></div>
+      <div class="tr2">
+        <div class="tr-prof">
+          <div class="tr-id gc">
+            <div class="avatar" aria-hidden="true"><span>JA</span><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="29" fill="none" stroke="#9B8CFF" stroke-width="1.5" stroke-dasharray="4 6"/></svg></div>
+            <div><b>José Antonio Sancho Selma</b><small id="tr-role"></small></div>
+          </div>
+          <div id="tr-bio"></div>
+          <div class="tr-chips" id="tr-chips"></div>
         </div>
-        <div id="tr-bio"></div>
-        <div class="tr-chips" id="tr-chips"></div>
-        <div class="course gc" aria-label="Curso 2026/27">
-          <div class="course-h"></div>
-          <div id="rows"></div>
-        </div>
+        <div class="course gc" aria-label="Curso 2026/27"><div class="course-h"></div><div id="rows"></div></div>
       </div>
-      <div class="tl" id="tl"><div class="tl-line"><i id="tl-fill"></i></div><ol id="tl-list"></ol></div>
     </div>
   </section>
 
@@ -1184,7 +1285,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 José Antonio Sancho Selma · <a href="/.well-known/security.txt">security.txt</a> · <a href="/humans.txt">humans.txt</a></span>
-    <span>HTML, CSS y JS a mano · GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a></span>
+    <span>HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a></span>
   </div>
 </footer>
 
@@ -1211,6 +1312,7 @@
 <script src="/vendor/gsap.min.js"></script>
 <script src="/vendor/ScrollTrigger.min.js"></script>
 <script src="/vendor/lenis.min.js"></script>
+<script type="module" src="/vendor/lab3d.js"></script>
 <script>
 /* =================== DATOS: edita aquí =================== */
 const PROJECTS = [
@@ -1406,7 +1508,7 @@ const STATIC = [
  [".contact > div > p:not(.path)","Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.","If you're looking for a systems or cybersecurity intern, write to me. I reply the same day."],
  ["#copy-mail small",EMAIL+" · copiar",EMAIL+" · copy"],
  [".links a[href$='.pdf']","<span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small>","<span>Résumé</span><small>PDF · or press Ctrl+P on this page</small>",1],
- ["footer .wrap span:last-child",'HTML, CSS y JS a mano · GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Hand-written HTML, CSS and JS · self-hosted GSAP and Lenis · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
+ ["footer .wrap span:last-child",'HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Hand-written HTML, CSS and JS · self-hosted three.js, GSAP and Lenis · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
  ["#dlg-close","Cerrar","Close"],["#hello-x","Cerrar","Close"],["#hello code","conexión entrante","incoming connection"]
 ];
 
@@ -1777,8 +1879,8 @@ const AUDIT=[
    en:["Automatically bilingual","Detects your browser language, remembers your choice and can be forced with ?lang=es."]},
  {tag:"a11y", live:"a11y", es:["Accesible","Se recorre entera con el teclado, respeta la opción de «reducir movimiento» del sistema y mantiene buen contraste."],
    en:["Accessible","Fully keyboard-navigable, honours the system's “reduce motion” setting and keeps good contrast throughout."]},
- {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. Las tipografías y las dos librerías de animación (GSAP y Lenis) se sirven desde este mismo dominio: ninguna petición a Google ni a CDNs. La única consulta externa es a la API de GitHub, que ya aloja la web, para mostrar el último cambio."],
-   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Fonts and the two animation libraries (GSAP and Lenis) are served from this same domain: no requests to Google or CDNs. The only external call goes to the GitHub API, which already hosts the site, to show the last change."]},
+ {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. Las tipografías y las librerías (three.js para el 3D, GSAP y Lenis) se sirven desde este mismo dominio: ninguna petición a Google ni a CDNs. La única consulta externa es a la API de GitHub, que ya aloja la web, para mostrar el último cambio."],
+   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Fonts and libraries (three.js for 3D, GSAP and Lenis) are served from this same domain: no requests to Google or CDNs. The only external call goes to the GitHub API, which already hosts the site, to show the last change."]},
  {tag:"F12", es:["Mensajes para curiosos","Abre las herramientas de desarrollador (F12) o el código fuente: hay un saludo esperándote."],
    en:["Messages for the curious","Open the developer tools (F12) or view the source: there's a greeting waiting for you."]}
 ];
@@ -2162,7 +2264,7 @@ $("#dp-replay").addEventListener("click",runJourney);
 const AU_ICON={TLS:"lock",DNS:"dns","RFC 9116":"shield",OWASP:"bug",UX:"route",web:"heart",CLI:"terminal",CSS:"printer",i18n:"lang",a11y:"a11y",privacy:"eyeoff",F12:"code"};
 const FILES={
  "/.well-known/security.txt":"# Política de divulgación de vulnerabilidades de jasancho.com (RFC 9116)\n# ¿Has encontrado un fallo en esta web? Gracias por avisar antes de publicarlo.\nContact: mailto:sanchoselmajoseantonio@gmail.com\nExpires: 2027-11-06T00:00:00.000Z\nPreferred-Languages: es, en\nCanonical: https://jasancho.com/.well-known/security.txt",
- "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: sanchoselmajoseantonio [at] gmail.com\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
+ "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: sanchoselmajoseantonio [at] gmail.com\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: three.js, GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
  "/robots.txt":"# robots.txt de jasancho.com\nUser-agent: *\nAllow: /"
 };
 let auScanned=false, auRunning=false;
@@ -2818,6 +2920,236 @@ function tlFill(){}
 // la inclinación del ordenador usa el mismo bucle
 (function pcLoop(){ const S=SCENES.pc; if(S&&S.world&&S.world.isConnected){ S.crz+=(S.trz-S.crz)*.08; S.crx+=(S.trx-S.crx)*.08; S.world.style.setProperty("--ry",S.crz.toFixed(2)+"deg"); S.world.style.setProperty("--rx",S.crx.toFixed(2)+"deg"); } requestAnimationFrame(pcLoop); })();
 
+/* =================== v9 · escenas WebGL (three.js) =================== */
+const LABX = () => (window.LAB && window.LAB.ok) ? window.LAB : null;
+const stageEl = (id, h, bleed = 60) => `<div class="stage" id="${id}" style="--H:${h}px" data-bleed="${bleed}"></div>`;
+
+/* ---------- PROYECTOS ---------- */
+function renderList(){
+  const host = svcEl; if(!host) return;
+  if(!$("#pr-stage")) host.innerHTML = `<div class="scene sc3">${stageEl("pr-stage", 620, 70)}<aside class="sc-panel" id="pr-panel" aria-live="polite"></aside></div>`;
+  const lab = LABX(); if(lab && lab.pr) lab.pr.filter(curCat);
+  const vis = PROJECTS.map((p, i) => [p, i]).filter(([p]) => curCat === "Todos" || p.cats.includes(curCat));
+  if(curCat !== "Todos" && vis.length && !vis.some(([, i]) => i === prSel)) prShow(vis[0][1]);
+  else prShow(prSel, false, true);
+}
+function prShow(i, fly = true, hoverOnly = false){
+  prSel = i; const p = PROJECTS[i]; if(!p) return; const lp = L(p), c = prColor(p), en = LANG === "en", panel = $("#pr-panel"); if(!panel) return;
+  panel.style.setProperty("--c", c);
+  panel.innerHTML = `<div class="scp">
+    <div class="scp-top"><span class="scp-ico">${ICON(AU_ICON_P[p.area] || "server")}</span><div><small>rack-0${i + 1} · ${esc(p.host)}</small><small>${esc(PIP[p.id] || "")} · ${esc(tx(PZONE[p.id] || ""))}</small></div>${pill(p.status)}</div>
+    <h3>${esc(lp.title)}</h3><p>${esc(lp.short)}.</p><p class="scp-sub">${esc(lp.problem)}</p>
+    <div class="scp-chips">${p.stack.map(s => `<span>${esc(s)}</span>`).join("")}</div>
+    <div class="scp-act"><button type="button" class="btn primary" id="pr-open">${en ? "Open file" : "Abrir ficha"} →</button>
+      <span class="scp-n">${String(i + 1).padStart(2, "0")}/${String(PROJECTS.length).padStart(2, "0")}</span>
+      <button type="button" class="scp-nav" id="pr-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="pr-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+  $("#pr-open").onclick = () => openProject(p);
+  $("#pr-prev").onclick = () => prShow((i - 1 + PROJECTS.length) % PROJECTS.length);
+  $("#pr-next").onclick = () => prShow((i + 1) % PROJECTS.length);
+  const lab = LABX(); if(lab && lab.pr && !hoverOnly) lab.pr.select(i, fly);
+}
+
+/* ---------- AUDITORÍA ---------- */
+function auTag(i){
+  const c = AUDIT[i], done = auScanned || c._done, info = auditStatus(c)[1] === "info";
+  const col = !done ? "var(--dim)" : info ? "var(--warn)" : "var(--ok)";
+  return `<span class="tag" id="au-tag-${i}" style="--tc:${col}"><i></i>${ICON(AU_ICON[c.tag] || "shield")}${esc(c.tag)}</span>`;
+}
+function auTagsAll(){ const lab = LABX(); if(lab && lab.au) AUDIT.forEach((_, i) => lab.au.setTag(i, auTag(i))); }
+function drawAudit(){
+  const box = $("#audit"); if(!box) return; const en = LANG === "en";
+  $("#au-rescan-t").textContent = en ? "scan again" : "volver a escanear";
+  if(!$("#au-stage")){
+    box.className = "scene sc3 au-scene";
+    const bar = $(".au-bar"), score = $("#au-score");
+    box.innerHTML = `${stageEl("au-stage", 640, 70)}<aside class="sc-panel"><div class="au-scorebox" id="au-sb"></div><div class="au-dots" id="au-dots" role="group"></div><div id="au-detail" aria-live="polite" style="display:flex;flex:1"></div></aside>`;
+    $("#au-sb").append(score, bar);
+  }
+  $("#au-dots").setAttribute("aria-label", en ? "Checks" : "Comprobaciones");
+  $("#au-status").textContent = auScanned ? (en ? `scan complete · ${auPass()}/${AUDIT.length} passed` : `escaneo completado · ${auPass()}/${AUDIT.length} superados`) : (en ? "waiting to scan…" : "esperando escaneo…");
+  $("#au-fill").style.width = auScanned ? "100%" : "0%";
+  drawScore(false); auDots(); auTagsAll(); auShow(auSel, false);
+}
+function auShow(i, fly = true){
+  auSel = i; const c = AUDIT[i], en = LANG === "en", [title, desc] = c[LANG], det = $("#au-detail"); if(!det) return;
+  const done = auScanned || c._done, info = auditStatus(c)[1] === "info", col = info ? "#FFC56B" : "#4FE0A6";
+  document.querySelectorAll("#au-dots button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.i === i));
+  det.closest(".sc-panel").style.setProperty("--c", done ? col : "#9B8CFF");
+  let act = ""; if(c.act && c.act.href) act = `<button type="button" class="act" data-href="${c.act.href}">${esc(c.act[LANG])}</button>`; else if(c.act && c.act.fn) act = `<button type="button" class="act" data-fn="${c.act.fn}">${esc(c.act[LANG])}</button>`;
+  det.innerHTML = `<div class="scp">
+    <div class="scp-top"><span class="scp-ico">${ICON(AU_ICON[c.tag] || "shield")}</span><div><small>check ${String(i + 1).padStart(2, "0")}/${AUDIT.length}</small><small>${esc(c.tag)}</small></div><span class="au-st ${done ? (info ? "info" : "pass") : "pend"}">${done ? (info ? "LOCAL" : "PASS") : (en ? "pending" : "pendiente")}</span></div>
+    <h3>${esc(title)}</h3><p>${esc(desc)}</p>
+    ${c.tryit ? `<form class="try" id="try-form"><input id="try-in" type="text" maxlength="120" placeholder="${en ? "Your company" : "Tu empresa"}" aria-label="${en ? "Company name" : "Nombre de la empresa"}"><button type="submit">${en ? "Test" : "Probar"}</button></form><div class="try-out" id="try-out" aria-live="polite"></div>` : ""}
+    <div class="scp-act">${act}<span class="scp-n"></span><button type="button" class="scp-nav" id="au-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="au-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+  $("#au-prev").onclick = () => auShow((i - 1 + AUDIT.length) % AUDIT.length);
+  $("#au-next").onclick = () => auShow((i + 1) % AUDIT.length);
+  det.querySelectorAll("[data-fn]").forEach(b => b.addEventListener("click", () => { const f = b.dataset.fn;
+    if(f === "term" && window.openTerminal) window.openTerminal(); else if(f === "print"){ try{ window.print(); }catch(e){} } else if(f === "lang") $("#btn-lang").click(); }));
+  det.querySelectorAll("[data-href]").forEach(b => b.addEventListener("click", () => { const h = b.dataset.href;
+    if(FILES[h] || h.endsWith(".txt")) viewFile(h); else curtain(`traceroute jasancho.com${h}`, () => { location.href = h; }); }));
+  const tf = $("#try-form");
+  if(tf) tf.addEventListener("submit", e => { e.preventDefault();
+    const raw = $("#try-in").value, clean = sanitizeCo(raw), out = $("#try-out");
+    if(!clean){ out.innerHTML = en ? "Nothing left after sanitising." : "No queda nada tras el saneado."; return; }
+    EMPRESA = clean; $("#hello-t").textContent = t("hello")(EMPRESA); $("#hello").classList.add("show"); $("#hello-x").onclick = () => $("#hello").classList.remove("show");
+    const removed = raw.length - clean.length;
+    out.innerHTML = (en ? "Shown: " : "Mostrado: ") + `<b>${esc(clean)}</b>` + (removed > 0 ? (en ? ` · ${removed} chars removed` : ` · ${removed} caracteres eliminados`) : "") + (en ? " · look at the top" : " · mira arriba");
+    try{ const u = new URL(location.href); u.searchParams.set(en ? "company" : "empresa", clean); history.replaceState(null, "", u.pathname + u.search + u.hash); }catch(err){} });
+  const lab = LABX(); if(lab && lab.au) lab.au.select(i, fly);
+}
+function runScan(){
+  if(auRunning) return; auRunning = true; auScanned = false; AUDIT.forEach(c => c._done = false); drawAudit();
+  const en = LANG === "en", tot = AUDIT.length, lab = LABX(), xs = lab && lab.au ? lab.au.objX() : AUDIT.map((_, i) => i);
+  const order = [...AUDIT.keys()].sort((a, b) => xs[a] - xs[b]);
+  if(lab && lab.au){ lab.au.home(); lab.au.beam(-5.4, true); }
+  let k = 0; const step = () => {
+    if(k >= tot){ auScanned = true; auRunning = false; const L2 = LABX(); if(L2 && L2.au) L2.au.beam(5.4, false);
+      $("#au-status").textContent = en ? `scan complete · ${auPass()}/${tot} passed` : `escaneo completado · ${auPass()}/${tot} superados`; drawScore(true); auShow(auSel, false); return; }
+    const i = order[k], c = AUDIT[i]; c._done = true; const L2 = LABX();
+    if(L2 && L2.au){ L2.au.beam(xs[i] + .3, true); L2.au.flash(i); L2.au.setTag(i, auTag(i)); }
+    k++; $("#au-fill").style.width = (k / tot * 100) + "%"; $("#au-status").textContent = (en ? "scanning jasancho.com · " : "escaneando jasancho.com · ") + `${k}/${tot}`; auDots();
+    setTimeout(step, reduce ? 0 : 260); };
+  setTimeout(step, reduce ? 0 : 600);
+}
+
+/* ---------- STACK ---------- */
+function renderStack(){
+  const box = $("#stk"); if(!box) return;
+  if(!$("#rk-stage")) box.innerHTML = `<div class="scene sc3">${stageEl("rk-stage", 640, 70)}<aside class="sc-panel" id="rk-panel" aria-live="polite"></aside></div>`;
+  const lab = LABX(); if(lab && lab.rk) lab.rk.relabel();
+  rkShow3(rkSel3, true);
+  clearInterval(rkAuto3); if(!reduce) rkAuto3 = setInterval(() => { if(!rkUser3 && !document.hidden && isVisible($("#rk-stage"))) rkShow3((rkSel3 + 1) % STACK.length); }, 5200);
+  const st = $("#rk-stage"); if(st && !st.dataset.b){ st.dataset.b = 1; st.addEventListener("mouseleave", () => setTimeout(() => { rkUser3 = false; }, 7000)); }
+}
+function rkPanel(i){
+  const c = STACK[i], en = LANG === "en", panel = $("#rk-panel"); if(!panel) return;
+  panel.style.setProperty("--c", c.color);
+  panel.innerHTML = `<div class="scp">
+    <div class="scp-top"><span class="scp-ico">${ICON(c.icon)}</span><div><small>srv-0${i + 1} · ${c.path}</small><small>${c.items.length} ${en ? "modules" : "módulos"}</small></div><span class="au-st pass">online</span></div>
+    <h3>${esc(c.name[LANG])}</h3><p>${esc(STACK_DESC[c.k][LANG])}</p>
+    <div class="rk3-mods">${c.items.map((it, j) => `<div style="--j:${j}"><i></i><span>${esc(tx(it))}</span></div>`).join("")}</div>
+    <div class="sk-use"><span class="scp-lbl">${en ? "used in" : "usado en"} →</span>${c.use.map(id => `<button type="button" data-p="${id}">${esc(P(id).host)}</button>`).join("")}</div>
+    <div class="scp-act"><span class="scp-n">${String(i + 1).padStart(2, "0")}/${String(STACK.length).padStart(2, "0")}</span><button type="button" class="scp-nav" id="rk-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="rk-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+  panel.querySelectorAll("[data-p]").forEach(b => b.onclick = () => openProject(P(b.dataset.p)));
+  $("#rk-prev").onclick = () => { rkUser3 = true; rkShow3((i - 1 + STACK.length) % STACK.length); };
+  $("#rk-next").onclick = () => { rkUser3 = true; rkShow3((i + 1) % STACK.length); };
+}
+function rkShow3(i){ rkSel3 = i; rkPanel(i); const lab = LABX(); if(lab && lab.rk) lab.rk.select(i); }
+window.rkHover = i => { rkUser3 = true; };
+window.rkPick = i => { rkUser3 = true; rkShow3(i); };
+
+/* ---------- TRAYECTORIA ---------- */
+function renderTimeline(){
+  const en = LANG === "en";
+  $("#tr-role").textContent = en ? "Systems · IT support · Cybersecurity" : "Sistemas · Soporte · Ciberseguridad";
+  $("#tr-bio").innerHTML = en ? "<p>I started in health sciences and ended up in systems. What hooks me is understanding how every piece fits and leaving it running on its own.</p><p>Before ASIR I tutored students and worked with customers. That gave me something that matters a lot in support: explaining things patiently to non-technical people.</p>"
+    : "<p>Empecé por las ciencias de la salud y acabé en sistemas. Lo que me engancha es entender cómo encaja cada pieza y dejarla funcionando sola.</p><p>Antes de ASIR di clases particulares y trabajé de cara al público. De ahí me viene algo que en soporte cuenta mucho: explicar las cosas con paciencia a quien no es técnico.</p>";
+  $("#tr-chips").innerHTML = (en ? ["Valencia, Spain", "Driving licence", "Spanish · Valencian C1 · English B2", "Available Mar 2027"] : ["Valencia", "Carnet B", "Español · Valenciano C1 · Inglés B2", "Disponible mar 2027"]).map(x => `<span><i></i>${esc(x)}</span>`).join("");
+  const ld = $("#tr-lead"); if(ld) ld.textContent = en ? "My path, wired like a motherboard: every stage is a chip and the signal runs through them in order. The empty socket is waiting for my internship." : "Mi recorrido, cableado como una placa base: cada etapa es un chip y la señal pasa por todas en orden. El zócalo vacío espera a mi FCT.";
+  const lab = LABX(); if(lab && lab.tl) lab.tl.relabel();
+  tlShow(tlSel, false);
+  clearInterval(tlTimer); if(!reduce) tlTimer = setInterval(() => { if(!tlHold && !document.hidden && isVisible($("#tl-stage"))) tlShow((tlSel + 1) % TIMELINE.length); }, 6500);
+  const st = $("#tl-stage"); if(st && !st.dataset.b){ st.dataset.b = 1; st.addEventListener("pointerenter", () => tlHold = true); st.addEventListener("pointerleave", () => setTimeout(() => tlHold = false, 5000)); }
+}
+function tlShow(i, fly = true){
+  tlSel = i; const e = TIMELINE[i], en = LANG === "en", panel = $("#tl-panel"); if(!panel) return;
+  let extra = "";
+  if(e.note) extra += `<div class="tl-note">${esc(tx(e.note))}</div>`;
+  if(e.progress){ const a = new Date(e.progress[0]), b = new Date(e.progress[1]), p = Math.max(0, Math.min(100, (Date.now() - a) / (b - a) * 100)); extra += `<div class="tl-prog"><div class="bar"><i style="--p:${p.toFixed(1)}%"></i></div><span>${p.toFixed(0)}% ${en ? "completed" : "completado"}</span></div>`; }
+  if(e.countdown){ const d = Math.ceil((new Date(e.countdown + "T00:00:00") - Date.now()) / 864e5); if(d > 0) extra += `<div class="tl-count"><b>${d}</b>${en ? "days to go" : "días para empezar"}</div>`; }
+  const col = TL_COLORS[e.type]; panel.style.setProperty("--c", col);
+  const order = TIMELINE.length - i;
+  panel.innerHTML = `<div class="scp">
+    <div class="scp-top"><span class="scp-ico">${ICON(TL_ICON[e.type])}</span><div><small>chip JA-${String(order).padStart(2, "0")}</small><small>${esc(tx(e.date))}</small></div><span class="au-st" style="color:${col};border-color:${col}55;background:${col}12">${esc(TL_LABEL[e.type][LANG])}</span></div>
+    <h3 id="tl-h"></h3><p>${esc(tx(e.sub))}</p>${extra}
+    <div class="tl-dots">${TIMELINE.map((x, k) => `<button type="button" data-i="${k}" style="--c:${TL_COLORS[x.type]}" aria-pressed="${k === i}" aria-label="${esc(tx(x.title))}"></button>`).reverse().join("")}</div>
+    <div class="scp-act"><span class="scp-n">${order}/${TIMELINE.length}</span><button type="button" class="scp-nav" id="tl-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="tl-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+  panel.querySelectorAll(".tl-dots button").forEach(b => b.onclick = () => { tlHold = true; tlShow(+b.dataset.i); });
+  $("#tl-prev").onclick = () => { tlHold = true; tlShow((i + 1) % TIMELINE.length); };
+  $("#tl-next").onclick = () => { tlHold = true; tlShow((i - 1 + TIMELINE.length) % TIMELINE.length); };
+  const h = $("#tl-h"), txt = tx(e.title);
+  if(reduce) h.textContent = txt; else { let k = 0; const tick = () => { if(!h.isConnected) return; k = Math.min(txt.length, k + 2); h.innerHTML = esc(txt.slice(0, k)) + '<span class="cur"></span>'; if(k < txt.length) setTimeout(tick, 16); }; tick(); }
+  const lab = LABX(); if(lab && lab.tl) lab.tl.select(i, fly);
+}
+window.tlPick = i => { tlHold = true; tlShow(i); };
+
+/* ---------- curso: matriz de LEDs ---------- */
+let lmIO = null;
+function drawCourse(){
+  const box = $(".course"); if(!box) return; const en = LANG === "en";
+  const d = s => new Date(s + "T00:00:00"), DAY = 864e5;
+  const total = Math.round((d(COURSE.end) - d(COURSE.start)) / DAY / 7) + 1, now = Math.floor((Date.now() - d(COURSE.start)) / DAY / 7);
+  const idx = s => Math.round((d(s) - d(COURSE.start)) / DAY / 7); let count = 0;
+  const wk = i => new Date(d(COURSE.start).getTime() + i * 7 * DAY).toLocaleDateString(en ? "en-GB" : "es-ES", { day:"numeric", month:"short" });
+  const months = []; let lastM = -1; for(let i = 0; i < total; i++){ const m = new Date(d(COURSE.start).getTime() + i * 7 * DAY).getMonth(); if(m !== lastM){ months.push([i, new Date(2026, m, 1).toLocaleDateString(en ? "en-GB" : "es-ES", { month:"short" }).replace(".", "")]); lastM = m; } }
+  const rows = COURSE.blocks.map(b => { const m = {}; (b.weeks || []).forEach(([w, n]) => m[idx(w)] = n);
+    const cells = Array.from({ length:total }, (_, i) => { const fct = b.fct && i >= idx(b.fct[0]) && i <= idx(b.fct[1]); const n = m[i];
+      let cls = "", tip = `${en ? "Week of" : "Semana del"} ${wk(i)} · ${en ? b.en : b.name}`, l = 0;
+      if(n && i <= now){ cls = "done"; count += n; l = Math.min(1, n / 6); tip += ` · ${n} ${t("practices")}`; }
+      else if(n){ cls = "plan"; tip += en ? " · planned" : " · planificada"; }
+      else if(fct){ cls = i <= now ? "done fct" : "fct"; tip += en ? " · internship" : " · FCT"; }
+      return `<i class="${cls}${i === now ? " now" : ""}" style="--i:${i};--l:${l.toFixed(2)}" data-tip="${esc(tip)}"></i>`; }).join("");
+    return `<div class="lm-row"><span class="nm">${esc(en ? b.en : b.name)}</span><div class="lm-cells">${cells}</div></div>`; }).join("");
+  practiceCount = count;
+  box.innerHTML = `<div class="lm-h"><div><small>// ${en ? "year 2026/27" : "curso 2026/27"}</small><b>${en ? "Week by week" : "Semana a semana"}</b></div><div class="lm-cnt"><b id="count">${count}</b><span>${t("practices")}</span></div></div>
+    <div class="lm" style="--w:${total};--now:${Math.max(0, Math.min(total - 1, now))}">
+      <div class="lm-row lm-mo"><span class="nm"></span><div class="lm-cells">${months.map(([i, n]) => `<em style="--i:${i}">${esc(n)}</em>`).join("")}</div></div>
+      ${rows}
+      <div class="lm-row lm-nowrow"><span class="nm"></span><div class="lm-cells"><b class="lm-now"><span>${en ? "today" : "hoy"}</span></b></div></div>
+    </div>
+    <div class="lm-leg"><span><i class="done" style="--l:.8"></i>${en ? "done" : "hecha"}</span><span><i class="plan"></i>${en ? "planned" : "planificada"}</span><span><i class="fct"></i>FCT</span><span class="lm-tip" id="lm-tip" aria-live="polite"></span></div>`;
+  const tipEl = $("#lm-tip");
+  box.querySelectorAll(".lm-cells i").forEach(c => { c.addEventListener("pointerenter", () => { tipEl.textContent = c.dataset.tip; tipEl.classList.add("on"); }); c.addEventListener("pointerleave", () => tipEl.classList.remove("on")); });
+  if(reduce || !("IntersectionObserver" in window)) box.classList.add("in");
+  else { if(lmIO) lmIO.disconnect(); lmIO = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ box.classList.add("in"); lmIO.disconnect(); } }), { threshold:.3 }); lmIO.observe(box); }
+}
+
+/* ---------- DESPLIEGUE ---------- */
+function drawPipe(){
+  const J = $("#dp-journey"); if(!J) return; const en = LANG === "en", T = timings();
+  $("#dp-replay-t").textContent = en ? "replay request" : "repetir petición";
+  const commit = LIVE.commit ? `${LIVE.commit.sha}` : "main";
+  const st = [
+    { t:en ? "Your browser" : "Tu navegador", l1:"GET https://jasancho.com", l2:`TLS · ${httpVer()}`, hop:"t = 0" },
+    { t:"DNS · IONOS", l1:"4×A · 4×AAAA", l2:"www → CNAME", hop:T ? `DNS ${ms(T.dns)}` : "DNS" },
+    { t:"GitHub Pages", l1:"185.199.108–111.153", l2:"CDN · Let's Encrypt", hop:T ? `${en ? "wait" : "espera"} ${ms(T.ttfb)}` : "TLS" },
+    { t:en ? "Repository" : "Repositorio", l1:"jasanchoselma/Portfolio", l2:`git push → ${commit}`, hop:"200 OK" }
+  ];
+  window.DP_LABELS = st.map((s, i) => `<div class="dl"><span class="dl-n">0${i + 1}</span><b>${esc(s.t)}</b><span>${esc(s.l1)}</span><span class="dim">${esc(s.l2)}</span><em>${esc(s.hop)}</em></div>`);
+  const lab = LABX(); if(lab && lab.dp) lab.dp.setLabels(window.DP_LABELS);
+  J.innerHTML = `<div class="dj-head"><span>${en ? "HTTP exchange" : "intercambio HTTP"}</span><span class="dj-state" id="dj-state">GET / · HTTPS</span></div>
+    <div class="dj-log" id="dj-log" aria-hidden="true"></div><p class="dj-foot">${esc(t("pipeFoot"))}</p>`;
+  runJourney();
+}
+function runJourney(){
+  clearTimeout(journeyTimer); const state = $("#dj-state"); if(!state) return;
+  const en = LANG === "en", lab = LABX(), dp = lab && lab.dp, seq = []; const go = (fn, d) => seq.push([fn, d]);
+  const lg = $("#dj-log"), hv = httpVer() === "—" ? "HTTP/2" : httpVer(), log = (c, txt) => { if(!lg) return; const d = document.createElement("div"); d.className = c; d.textContent = txt; lg.appendChild(d); while(lg.children.length > 8) lg.firstChild.remove(); };
+  if(lg) lg.innerHTML = "";
+  const lit = (i, on, c) => dp && dp.lit(i, on, c);
+  [0, 1, 2, 3].forEach(i => { lit(i, false); lit(i, false, "resp"); });
+  if(dp) dp.reset();
+  if(reduce){ [0, 1, 2, 3].forEach(i => lit(i, true)); log("q", `> GET / ${hv}`); log("r", `< ${hv} 200`); state.textContent = en ? "✓ page delivered" : "✓ página entregada"; if(dp) dp.done(); return; }
+  const LOGS = { 1:[["d", `* dns: jasancho.com → 185.199.108.153`]], 2:[["d", `* tls: TLSv1.3 · cert CN=jasancho.com (Let's Encrypt)`]], 3:[["d", `* github pages: jasanchoselma/Portfolio @ main`]] };
+  lit(0, true); state.textContent = en ? "→ request sent" : "→ petición enviada"; state.className = "dj-state";
+  log("q", `> GET / ${hv}`); log("q", "> host: jasancho.com");
+  [0, 1, 2].forEach(k => go(() => { if(dp) dp.travel(k, false, .75); setTimeout(() => { if(dp) dp.arrive(k + 1); lit(k + 1, true); (LOGS[k + 1] || []).forEach(([c, x]) => log(c, x)); }, 760); }, 1150));
+  go(() => { state.textContent = en ? "← 200 OK · response" : "← 200 OK · respuesta"; state.className = "dj-state ok"; [0, 1, 2, 3].forEach(i => lit(i, true, "resp")); log("r", `< ${hv} 200`); log("r", "< server: GitHub.com"); log("r", "< strict-transport-security: max-age=31556952"); }, 300);
+  [2, 1, 0].forEach(k => go(() => { if(dp) dp.travel(k, true, .5); }, 760));
+  go(() => { if(dp){ dp.arrive(0); dp.done(); } state.textContent = en ? "✓ page delivered" : "✓ página entregada"; }, 400);
+  let i = 0; const step = () => { if(i >= seq.length){ journeyTimer = setTimeout(runJourney, 4200); return; } const [fn, d] = seq[i++]; fn(); journeyTimer = setTimeout(step, d); };
+  journeyTimer = setTimeout(step, 700);
+}
+
+/* ---------- sincronizar cuando el 3D esté listo ---------- */
+window.labReady = () => {
+  const lab = LABX(); if(!lab) return;
+  if(lab.pr){ lab.pr.filter(curCat); lab.pr.select(prSel, false); }
+  if(lab.au){ auTagsAll(); lab.au.select(auSel, false); }
+  if(lab.rk) lab.rk.select(rkSel3);
+  if(lab.tl) lab.tl.select(tlSel, false);
+  if(lab.dp && window.DP_LABELS){ lab.dp.setLabels(window.DP_LABELS); runJourney(); }
+};
 /* =================== cambio de idioma =================== */
 function setLang(l, save){
   LANG=l; document.documentElement.lang=l; document.title=t("title");
@@ -2825,7 +3157,7 @@ function setLang(l, save){
   const b=$("#btn-lang"); b.textContent=t("langBtn"); b.setAttribute("aria-label",t("langLabel")); b.title=t("langLabel");
   $("#btn-term").title=t("termBtnLabel"); $("#btn-term").setAttribute("aria-label",t("termBtnLabel"));
   if(EMPRESA) $("#hello-t").textContent=t("hello")(EMPRESA);
-  tickClock(); mapTexts(); renderFilters(); renderList(); drawPipe(); fillLive(); drawCourse(); drawAudit(); renderStack(); renderTimeline(); printCV(); if(window.fxLang) window.fxLang(); if(typeof fxLang7==="function") fxLang7();
+  tickClock(); mapTexts(); renderFilters(); renderList(); drawPipe(); fillLive(); drawCourse(); drawAudit(); renderStack(); renderTimeline(); printCV(); if(window.fxLang) window.fxLang(); if(typeof fxLang7==="function") fxLang7(); if(window.LAB&&LAB.relabel) LAB.relabel();
   if(curProj) fillProject(curProj);
   if(save){ try{ localStorage.setItem("lang",l); }catch(e){} }
 }
