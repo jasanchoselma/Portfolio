@@ -1167,6 +1167,39 @@
   .scanline::after{content:"";position:absolute;left:0;right:0;top:0;height:140px;
      background:radial-gradient(45% 100% at 50% 0,color-mix(in srgb,var(--acc) 13%,transparent),transparent 72%)}
   section.block{position:relative}
+
+  /* ===== v12 · sistema de movimiento y color (tokens), estados interactivos y entradas coreografiadas ===== */
+  :root{--d-fast:150ms;--d-norm:220ms;--d-slow:420ms;--e-std:cubic-bezier(.2,0,0,1);--e-in:cubic-bezier(0,0,.2,1);--e-out:cubic-bezier(.4,0,1,1)}
+  ::selection{background:var(--acc);color:#0B0912}
+  :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
+  /* cabecera: más sólida, subrayado y barra de progreso con el color de la sección */
+  header.top{background:rgba(7,6,12,.72);backdrop-filter:blur(14px) saturate(140%);border-bottom-color:rgba(255,255,255,.06)}
+  nav.main a::after{background:var(--acc);height:2px;border-radius:2px;transition:transform var(--d-norm) var(--e-std)}
+  .rx{background:linear-gradient(90deg,var(--acc),color-mix(in srgb,var(--acc) 50%,#fff))}
+  /* botones: elevación con sombra del color de la sección, pulsación y foco */
+  .btn{transition:transform var(--d-norm) var(--e-std),border-color var(--d-fast) linear,background-color var(--d-fast) linear,box-shadow var(--d-norm) var(--e-std)}
+  .btn:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--acc) 70%,#fff);box-shadow:0 12px 30px -14px color-mix(in srgb,var(--acc) 80%,transparent)}
+  .btn:active{transform:translateY(0) scale(.98);transition-duration:80ms}
+  .btn.primary:hover{background:color-mix(in srgb,var(--vio) 85%,#fff)}
+  .contact .links>*::before{background:var(--acc)}
+  /* tarjetas: la misma superficie que los paneles 3D */
+  .dp-journey,.dp-card{background:rgba(9,8,16,.82);border-color:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+     transition:border-color var(--d-norm) var(--e-std),transform var(--d-slow) var(--e-std)}
+  .dp-card:hover{border-color:color-mix(in srgb,var(--acc) 35%,transparent)}
+  .kpis,.scp-meta,.stage-cap,.dp-card{font-variant-numeric:tabular-nums}
+  .sec-head p.lead,.lead{max-width:62ch;color:var(--soft)}
+  /* contraste del texto del inicio sobre la sala */
+  .hero>div:first-child{position:relative}
+  .hero>div:first-child::before{content:"";position:absolute;inset:-80px -40px;z-index:-1;pointer-events:none;
+     background:radial-gradient(closest-side,rgba(6,5,11,.6),rgba(6,5,11,.3) 60%,transparent)}
+  /* barrido de escaneo la primera vez que aparece cada escena 3D */
+  .stage::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;pointer-events:none;opacity:0;z-index:3;
+     background:linear-gradient(90deg,transparent,var(--acc) 20%,#fff 50%,var(--acc) 80%,transparent);
+     box-shadow:0 0 18px 2px color-mix(in srgb,var(--acc) 70%,transparent)}
+  .stage.swept::after{animation:sweep 1.25s var(--e-std) forwards}
+  @media (max-width:760px){ .hero>div:first-child::before{inset:-40px 0} }
+  @keyframes sweep{0%{top:0;opacity:0}10%{opacity:1}85%{opacity:.9}100%{top:100%;opacity:0}}
+  @media (prefers-reduced-motion:reduce){ .stage.swept::after{animation:none} .btn:hover{transform:none} }
 </style>
 </head>
 <body>
@@ -3360,6 +3393,19 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
   document.querySelectorAll("section.block").forEach(sec=>{ const l=document.createElement("div"); l.className="scanline"; l.setAttribute("aria-hidden","true"); sec.prepend(l);
     if(rm){ l.style.transform="scaleX(1)"; return; }
     gsap.fromTo(l,{scaleX:0,opacity:0},{scaleX:1,opacity:.8,ease:"none",scrollTrigger:{trigger:sec,start:"top 92%",end:"top 35%",scrub:.6}}); });
+})();
+</script>
+<script>
+/* v12 · coreografía de entrada: los títulos se revelan con una máscara y cada escena 3D se escanea al aparecer */
+(()=>{ const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if('IntersectionObserver' in window && !rm){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("swept"); io.unobserve(e.target); } }),{threshold:.35});
+    document.querySelectorAll(".stage").forEach(s=>io.observe(s));
+  }
+  if(rm || !window.gsap || !window.ScrollTrigger) return;
+  document.querySelectorAll("section.block h2.title").forEach(h=>{
+    gsap.fromTo(h,{clipPath:"inset(0 0 100% 0)"},{clipPath:"inset(0 0 -20% 0)",duration:1.1,ease:"power4.out",scrollTrigger:{trigger:h,start:"top 88%"}});
+  });
 })();
 </script>
 </body>
