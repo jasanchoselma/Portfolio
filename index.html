@@ -25,6 +25,7 @@
 <meta property="og:url" content="https://jasancho.com/">
 <link rel="author" href="/humans.txt">
 <link rel="icon" id="fav" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315122A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%234FE0A6'/%3E%3C/svg%3E">
+<link rel="modulepreload" href="/vendor/lab3d.js">
 <link rel="preload" href="/fonts/martian-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -1200,6 +1201,21 @@
   @media (max-width:760px){ .hero>div:first-child::before{inset:-40px 0} }
   @keyframes sweep{0%{top:0;opacity:0}10%{opacity:1}85%{opacity:.9}100%{top:100%;opacity:0}}
   @media (prefers-reduced-motion:reduce){ .stage.swept::after{animation:none} .btn:hover{transform:none} }
+
+  /* ===== v13 · rendimiento: nada de desenfoques ni mezclas sobre el lienzo 3D que cambia en cada frame ===== */
+  html.bgw *,html.bgw *::before,html.bgw *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  html.bgw header.top{background:rgba(7,6,12,.94)}
+  html.bgw .map .kpis{background:rgba(12,10,22,.92)!important}
+  html.bgw .scene.sc3 .sc-panel{background:rgba(9,8,16,.94)}
+  html::before{animation:none;mix-blend-mode:normal;opacity:.035;inset:0}
+
+  /* ===== v13 · accesibilidad (WCAG 2.2 AA) ===== */
+  :root{--dim:#8C85B3}                                   /* texto terciario: 3,6:1 → 5,8:1 */
+  html{scroll-padding-top:84px}                         /* 2.4.11: el foco no queda tapado por la cabecera fija */
+  .skip-link{position:fixed;left:16px;top:-60px;z-index:100;padding:10px 16px;border-radius:8px;background:var(--acc);color:#0B0912;font:600 14px var(--sans);text-decoration:none;transition:top var(--d-norm) var(--e-std)}
+  .skip-link:focus{top:12px}
+  .l3d.sv.on{margin-top:-24px;transition:margin-top var(--d-norm) var(--e-std)} .l3d.sv{transition:margin-top var(--d-norm) var(--e-std)}
+  @media (prefers-reduced-motion:reduce){ .scanline{transform:scaleX(1)!important} html{scroll-behavior:auto} }
 </style>
 </head>
 <body>
@@ -1207,6 +1223,7 @@
 <div class="grain" aria-hidden="true"></div>
 <div id="boot" role="presentation" aria-hidden="true"><div id="boot-out"></div><span class="skip">Pulsa cualquier tecla para saltar</span></div>
 
+<a class="skip-link" href="#proyectos">Saltar al contenido</a>
 <header class="top">
   <div class="wrap">
     <a class="host" href="#inicio"><b>jasancho</b>@soc:~</a>
@@ -1328,7 +1345,7 @@
 
   <section class="block" id="trayectoria" aria-labelledby="t-title">
     <div class="wrap">
-      <div class="sec-head"><div><p class="path">~/sobre-mi</p><h2 class="title" id="t-title" data-scramble>Trayectoria</h2><p class="lead" id="tr-lead"></p></div></div>
+      <div class="sec-head"><div><p class="path">~/trayectoria</p><h2 class="title" id="t-title" data-scramble>Trayectoria</h2><p class="lead" id="tr-lead"></p></div></div>
       <div class="scene sc3 tl-scene"><div class="stage" id="tl-stage" style="--H:600px" data-bleed="70"></div><aside class="sc-panel" id="tl-panel" aria-live="polite"></aside></div>
       <div class="tr2">
         <div class="tr-prof">
@@ -1578,7 +1595,7 @@ const STATIC = [
  ["#stackgrid > div:nth-child(5) h3","Seguridad <small>/sec</small>","Security <small>/sec</small>",1],
  ["#stackgrid > div:nth-child(6) h3","Cloud y datos <small>/cloud</small>","Cloud and data <small>/cloud</small>",1],
  ["#stackgrid > div:nth-child(6) p","AWS EC2 · Ubuntu Server<br>MySQL · PostgreSQL · MariaDB<br>GLPI para inventario","AWS EC2 · Ubuntu Server<br>MySQL · PostgreSQL · MariaDB<br>GLPI for inventory",1],
- ["#trayectoria .path","~/sobre-mi","~/about"],["#t-title","Trayectoria","Background"],
+ ["#trayectoria .path","~/trayectoria","~/background"],[".skip-link","Saltar al contenido","Skip to content"],["#t-title","Trayectoria","Background"],
  [".bio p:nth-of-type(2)","Empecé por las ciencias de la salud y acabé en sistemas. Lo que me engancha es entender cómo encaja cada pieza y dejarla funcionando sola.","I started in health sciences and ended up in systems. What hooks me is understanding how every piece fits and leaving it running on its own."],
  [".bio p:nth-of-type(3)","Antes de ASIR di clases particulares y trabajé de cara al público. De ahí me viene algo que en soporte cuenta mucho: explicar las cosas con paciencia a quien no es técnico.","Before ASIR I tutored students and worked with customers. That gave me something that matters a lot in support: explaining things patiently to non-technical people."],
  [".facts","<dt>busco</dt><dd>Sistemas, soporte técnico, ciberseguridad</dd><dt>idiomas</dt><dd>Español, valenciano C1, inglés B2</dd><dt>base</dt><dd>Valencia · carnet B</dd>","<dt>looking for</dt><dd>Systems, IT support, cybersecurity</dd><dt>languages</dt><dd>Spanish, Valencian C1, English B2</dd><dt>based in</dt><dd>Valencia, Spain · driving licence</dd>",1],
@@ -2575,6 +2592,7 @@ function initField(){
   addEventListener("pointermove",e=>{ mx=e.clientX; my=e.clientY; },{passive:true});
   addEventListener("click",e=>{ if(!reduce) pulses.push({x:e.clientX,y:e.clientY+scrollY,r:0,a:.55}); });
   function frame(t){
+    if(document.documentElement.classList.contains("bgw")){ cv.remove(); document.querySelectorAll(".aur").forEach(a=>a.remove()); return; }
     ctx.clearRect(0,0,W,H);
     const off=(scrollY*.35)%G;
     if(!reduce&&t-last>2600){ last=t; pulses.push({x:Math.random()*W,y:scrollY+Math.random()*H,r:0,a:.35}); }
@@ -2651,7 +2669,7 @@ function initMotion(){
     lenis.on("scroll",ScrollTrigger.update);
     gsap.ticker.add(t=>lenis.raf(t*1000)); gsap.ticker.lagSmoothing(0);
     document.addEventListener("click",e=>{ const a=e.target.closest('a[href^="#"]'); if(!a) return; const id=a.getAttribute("href"); const tg=id.length>1&&document.querySelector(id);
-      if(tg||id==="#inicio"){ e.preventDefault(); lenis.scrollTo(id==="#inicio"?0:tg,{offset:-70,duration:1.3}); history.replaceState(null,"",id); } },true);
+      if(tg||id==="#inicio"){ e.preventDefault(); lenis.scrollTo(id==="#inicio"?0:tg,{offset:0,duration:1.3}); history.replaceState(null,"",id); } },true);
     window.v7lenis=lenis;
   }
   // héroe: al salir, el mapa se aleja y el nombre sube
@@ -3223,13 +3241,14 @@ function runJourney(){
 }
 
 /* ---------- sincronizar cuando el 3D esté listo ---------- */
-window.labReady = () => {
-  const lab = LABX(); if(!lab) return;
-  if(lab.pr){ lab.pr.filter(curCat); lab.pr.select(prSel, false); }
-  if(lab.au){ auTagsAll(); lab.au.select(auSel, false); }
-  if(lab.rk) lab.rk.select(rkSel3);
-  if(lab.tl) lab.tl.select(tlSel, false);
-  if(lab.dp && window.DP_LABELS){ lab.dp.setLabels(window.DP_LABELS); runJourney(); }
+window.labReady = k => {
+  const lab = LABX(); if(!lab) return; const all = !k;
+  if(lab.pr && (all || k === "pr")){ lab.pr.filter(curCat); lab.pr.select(prSel, false); }
+  if(lab.au && (all || k === "au")){ auTagsAll(); lab.au.select(auSel, false); }
+  if(lab.rk && (all || k === "rk")) lab.rk.select(rkSel3);
+  if(lab.tl && (all || k === "tl")) lab.tl.select(tlSel, false);
+  if(lab.dp && window.DP_LABELS && (all || k === "dp")){ lab.dp.setLabels(window.DP_LABELS); runJourney(); }
+  if(k && typeof stageCaps === "function") stageCaps();
 };
 
 /* ---------- leyendas de cada escena ---------- */
@@ -3407,6 +3426,10 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     gsap.fromTo(h,{clipPath:"inset(0 0 100% 0)"},{clipPath:"inset(0 0 -20% 0)",duration:1.1,ease:"power4.out",scrollTrigger:{trigger:h,start:"top 88%"}});
   });
 })();
+</script>
+<script>
+/* v13 · el enlace de salto mueve también el foco del teclado al contenido */
+document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=document.querySelector("#proyectos h2"); if(h){ h.setAttribute("tabindex","-1"); setTimeout(()=>h.focus({preventScroll:true}),60); } });
 </script>
 </body>
 </html>
