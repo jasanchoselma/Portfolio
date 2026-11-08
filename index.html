@@ -1746,6 +1746,8 @@
   .dk-row .nm{color:#111} .dk-row.on .nm{color:#fff}
   .dk-off{z-index:9999}
   @media (max-width:860px){ .dk-mn .mi{display:flex!important} }
+  /* v32: fondo de topología retirado */
+  .dk-wall{display:none!important}
 </style>
 </head>
 <body>
@@ -4084,7 +4086,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     const l=L(), role=$(".hero .role"), stats=$("#stats"), status=$(".hero .status");
     desk.setAttribute("aria-label",l.region);
     const mn=(id,label,items,cls="")=>`<div class="dk-mn ${cls}" data-m="${id}"><button type="button" class="mi" aria-haspopup="true" aria-expanded="false">${label}</button><div class="dk-dd" role="menu">${items.map(it=>it==="-"?'<hr>':`<button type="button" role="menuitem" data-cmd="${it[0]}"><i class="ck"></i>${it[1]}<kbd>${it[2]}</kbd></button>`).join("")}</div></div>`;
-    desk.innerHTML=`${wallpaper()}<div class="dk-menu">${mn("logo",'<span class="dk-logo">JA</span>',l.mLogo,"lg")}${mn("file",l.menu[0],l.mFile,"b")}${mn("edit",l.menu[1],l.mEdit)}${mn("view",l.menu[2],l.mView)}${mn("spec",l.menu[3],l.mSpec)}
+    desk.innerHTML=`<div class="dk-menu">${mn("logo",'<span class="dk-logo">JA</span>',l.mLogo,"lg")}${mn("file",l.menu[0],l.mFile,"b")}${mn("edit",l.menu[1],l.mEdit)}${mn("view",l.menu[2],l.mView)}${mn("spec",l.menu[3],l.mSpec)}
         <span class="dk-sp"></span><span class="dk-st" aria-hidden="true"><i></i>soc · online</span><button type="button" class="dk-lang" id="dk-lang">${l.lang}</button><a class="dk-cv" href="cv-jose-antonio-sancho-selma.pdf">${l.cv}</a><span class="dk-clock" id="dk-clock"></span></div>
       <div class="dk-icons" role="list">${ICONS_DESK.map(iconHTML).join("")}</div>
       ${win("dk-readme",l.readme,`<div class="dk-info"><span>${l.items(7)}</span><span>${l.free}</span></div>
