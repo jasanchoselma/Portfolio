@@ -1243,6 +1243,13 @@
   .contact .links>*:hover span{color:#fff} .contact .links>*:hover small{color:rgba(255,255,255,.85)}
   .contact .links>*::before{background:#0071e3}
   .mail-big{font-family:var(--disp);letter-spacing:-.02em}
+  /* portada: escena 3D más amplia */
+  @media (min-width:1041px){
+    .hero{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px}
+    #hero-stage{--H:560px!important;margin:-40px -90px -14px -30px!important}
+  }
+  @media (min-width:1041px) and (max-width:1320px){ #hero-stage{margin:-30px -40px -10px -20px!important} }
+  #hero-stage .l3d.hn>b{font-size:11.5px;padding:4px 10px;border-radius:999px;letter-spacing:.01em}
 </style>
 </head>
 <body>
