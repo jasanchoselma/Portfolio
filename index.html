@@ -1648,6 +1648,8 @@
   @media (max-width:860px){ .dk-menu .mi:not(.b),.dk-st{display:none} .dk-menu{gap:12px} }
   .win-close{margin-right:0} @media (min-width:1041px){ .win-close{margin-right:-14px} }
   .desk{background:radial-gradient(ellipse at 50% 120%,rgba(41,151,255,.12),transparent 55%),radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.5)),repeating-conic-gradient(rgba(255,255,255,.035) 0 25%,transparent 0 50%) 0 0/4px 4px,rgba(10,10,12,.6)}
+  /* la terminal se abre por encima del escritorio */
+  html.desk-on .term{z-index:97}
 </style>
 </head>
 <body>
@@ -3858,6 +3860,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     history:()=>txt(hist.map((h,i)=>`${String(i+1).padStart(4," ")}  ${h}`).join("\n")),
     clear:()=>{ out.innerHTML=""; },
     exit:()=>close(), quit:()=>close(),
+    escritorio:()=>{ close(); window.deskShow&&window.deskShow(); }, desktop:()=>{ close(); window.deskShow&&window.deskShow(); },
     vim:()=>txt(tr("Entraste en vim. Para salir: :q! … tranquilo, aquí basta con 'exit'.","You entered vim. To quit: :q! … relax, here 'exit' is enough.")),
     cowsay:a=>txt(` ${"_".repeat((a.join(" ")||"muuu").length+2)}\n< ${a.join(" ")||"muuu"} >\n ${"-".repeat((a.join(" ")||"muuu").length+2)}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||`)
   };
@@ -4031,6 +4034,8 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     // si llegas con un enlace a una sección o a una ficha, entras directo a la web
     const h=location.hash.slice(1); if(!h||h==="inicio") showDesk(false);
     addEventListener("load",()=>setTimeout(()=>{ if(root.classList.contains("desk-on")&&window.v7lenis) v7lenis.stop(); },60));
+    addEventListener("hashchange",()=>{ if(!root.classList.contains("desk-on")) return; const id=location.hash.slice(1), el=id&&document.getElementById(id); if(!el||!el.closest("main")) return;
+      openSection(id,desk.querySelector(`.dk-ic[data-k="${id}"]`)); });
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
 })();
