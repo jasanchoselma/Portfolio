@@ -1748,6 +1748,24 @@
   @media (max-width:860px){ .dk-mn .mi{display:flex!important} }
   /* v32: fondo de topología retirado */
   .dk-wall{display:none!important}
+  /* ---- variantes de fondo del escritorio (vista previa) ---- */
+  .desk.wp-dots{background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.45)),
+      repeating-conic-gradient(#2A2C31 0 25%,#202125 0 50%) 0 0/4px 4px,#232428}
+  .desk.wp-dots::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.05) .6px,transparent 1px) 0 0/8px 8px}
+  .desk.wp-sky{background:radial-gradient(ellipse 90% 40% at 50% 100%,rgba(70,140,255,.32),transparent 70%),radial-gradient(ellipse 60% 18% at 50% 96%,rgba(160,200,255,.18),transparent 70%),
+      linear-gradient(180deg,#030304 0%,#0D0E10 45%,#0B1C3D 78%,#16305E 100%)}
+  .desk.wp-sky::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+    background:radial-gradient(1px 1px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 28% 8%,#cfe0ff,transparent),radial-gradient(1px 1px at 44% 26%,#fff,transparent),radial-gradient(1px 1px at 63% 12%,#fff,transparent),
+      radial-gradient(1px 1px at 78% 30%,#cfe0ff,transparent),radial-gradient(1px 1px at 88% 6%,#fff,transparent),radial-gradient(1px 1px at 55% 40%,#fff,transparent),radial-gradient(1px 1px at 20% 44%,#cfe0ff,transparent),radial-gradient(1px 1px at 36% 52%,#fff,transparent),radial-gradient(1px 1px at 92% 46%,#fff,transparent)}
+  .desk.wp-blur{background:linear-gradient(180deg,rgba(14,15,18,.25),rgba(10,10,12,.45));-webkit-backdrop-filter:blur(16px) brightness(1.55) saturate(1.1);backdrop-filter:blur(16px) brightness(1.55) saturate(1.1)}
+  .desk.wp-blur{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(14,15,18,.15),rgba(10,10,12,.35))}
+  html.desk-on.wpb #gl{filter:blur(14px) brightness(1.6) saturate(1.15);transform:scale(1.04);transition:filter .4s}
+  /* v33: fondo ilustrado de despacho 80s */
+  .desk{background:#0C0D0F!important}
+  .dk-wall2{position:absolute;inset:28px 0 0;pointer-events:none;overflow:hidden}
+  .dk-wall2 svg{width:100%;height:100%;display:block;filter:saturate(.92) brightness(.82)}
+  .desk::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.08) 0 1px,transparent 1px 3px)}
+  .desk>*:not(.dk-wall2){position:relative;z-index:1} .desk>.dk-icons,.desk>.dk-win,.desk>.dk-note,.desk>.dk-alert,.desk>.dk-menu{position:absolute}
 </style>
 </head>
 <body>
@@ -4086,7 +4104,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     const l=L(), role=$(".hero .role"), stats=$("#stats"), status=$(".hero .status");
     desk.setAttribute("aria-label",l.region);
     const mn=(id,label,items,cls="")=>`<div class="dk-mn ${cls}" data-m="${id}"><button type="button" class="mi" aria-haspopup="true" aria-expanded="false">${label}</button><div class="dk-dd" role="menu">${items.map(it=>it==="-"?'<hr>':`<button type="button" role="menuitem" data-cmd="${it[0]}"><i class="ck"></i>${it[1]}<kbd>${it[2]}</kbd></button>`).join("")}</div></div>`;
-    desk.innerHTML=`<div class="dk-menu">${mn("logo",'<span class="dk-logo">JA</span>',l.mLogo,"lg")}${mn("file",l.menu[0],l.mFile,"b")}${mn("edit",l.menu[1],l.mEdit)}${mn("view",l.menu[2],l.mView)}${mn("spec",l.menu[3],l.mSpec)}
+    desk.innerHTML=`${wallpaper()}<div class="dk-menu">${mn("logo",'<span class="dk-logo">JA</span>',l.mLogo,"lg")}${mn("file",l.menu[0],l.mFile,"b")}${mn("edit",l.menu[1],l.mEdit)}${mn("view",l.menu[2],l.mView)}${mn("spec",l.menu[3],l.mSpec)}
         <span class="dk-sp"></span><span class="dk-st" aria-hidden="true"><i></i>soc · online</span><button type="button" class="dk-lang" id="dk-lang">${l.lang}</button><a class="dk-cv" href="cv-jose-antonio-sancho-selma.pdf">${l.cv}</a><span class="dk-clock" id="dk-clock"></span></div>
       <div class="dk-icons" role="list">${ICONS_DESK.map(iconHTML).join("")}</div>
       ${win("dk-readme",l.readme,`<div class="dk-info"><span>${l.items(7)}</span><span>${l.free}</span></div>
@@ -4100,13 +4118,69 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     bind(); tick(); applyView(); menus();
     Object.keys(openFd).forEach(k=>{ delete openFd[k]; });
   }
-  /* ---------- fondo de escritorio: la topología del laboratorio en líneas finas y un "JA" enorme ---------- */
-  function wallpaper(){ if(typeof NODES==="undefined") return ""; const N=Object.fromEntries(NODES.map(n=>[n.k,n]));
-    const lab=n=>n.p&&typeof P==="function"&&P(n.p)?P(n.p).host:n.t;
-    const lines=LINKS.map(([a,b],i)=>`<path id="wl${i}" d="M${N[a].x} ${N[a].y} L${N[b].x} ${N[b].y}"/>`).join("");
-    const dots=RM?"":LINKS.filter((_,i)=>i%2===0).map((_,j)=>`<circle r="2.4" class="pk"><animateMotion dur="${4+j*.9}s" repeatCount="indefinite" begin="-${j*1.3}s"><mpath href="#wl${j*2}"/></animateMotion></circle>`).join("");
-    const nodes=NODES.map(n=>`<g transform="translate(${n.x} ${n.y})"><rect x="-13" y="-9" width="26" height="18" rx="4"/><circle cx="8" cy="-3" r="1.6" class="ld"/><text y="24">${lab(n)}</text></g>`).join("");
-    return `<div class="dk-wall" aria-hidden="true"><b>JA</b><svg viewBox="-40 -20 780 520">${lines}${dots}${nodes}</svg></div>`; }
+  /* ---------- fondo ilustrado: un despacho de sistemas de los 80, de noche ---------- */
+  function wallpaper(){
+    let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+    const o=[];
+    o.push(`<defs>
+      <linearGradient id="wpWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1F27"/><stop offset="1" stop-color="#14171D"/></linearGradient>
+      <linearGradient id="wpWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A221C"/><stop offset="1" stop-color="#1A1511"/></linearGradient>
+      <linearGradient id="wpSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0C0E"/><stop offset=".7" stop-color="#0B1B3A"/><stop offset="1" stop-color="#173263"/></linearGradient>
+      <linearGradient id="wpDesk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2E24"/><stop offset="1" stop-color="#241C16"/></linearGradient>
+      <linearGradient id="wpBeige" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9B09A"/><stop offset="1" stop-color="#8E8673"/></linearGradient>
+      <radialGradient id="wpLamp" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#FFC46B" stop-opacity=".55"/><stop offset="1" stop-color="#FFC46B" stop-opacity="0"/></radialGradient>
+      <radialGradient id="wpMoon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#DCE8FF" stop-opacity=".55"/><stop offset="1" stop-color="#DCE8FF" stop-opacity="0"/></radialGradient>
+      <radialGradient id="wpCrt" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#7CFFA8" stop-opacity=".35"/><stop offset="1" stop-color="#7CFFA8" stop-opacity="0"/></radialGradient>
+      <radialGradient id="wpVig" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".7"/></radialGradient>
+      <pattern id="wpPaper" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M7 0v14" stroke="#20252E" stroke-width="1"/><circle cx="0" cy="7" r="1" fill="#232832"/></pattern>
+      <pattern id="wpCarpet" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#131518"/><rect width="4" height="4" fill="#16181B"/></pattern></defs>`);
+    // pared con papel pintado de rayas y friso de madera
+    o.push(`<rect width="1600" height="900" fill="url(#wpWall)"/><rect width="1600" height="560" fill="url(#wpPaper)" opacity=".7"/>
+      <rect y="560" width="1600" height="200" fill="url(#wpWood)"/><rect y="556" width="1600" height="8" fill="#3A2F25"/><rect y="564" width="1600" height="2" fill="#120E0B"/>`);
+    for(let x=20;x<1600;x+=120) o.push(`<rect x="${x}" y="584" width="96" height="156" rx="3" fill="none" stroke="#120E0B" stroke-opacity=".7" stroke-width="2"/><rect x="${x+2}" y="586" width="92" height="2" fill="#3A2F25" opacity=".5"/>`);
+    o.push(`<rect y="760" width="1600" height="140" fill="url(#wpCarpet)"/><rect y="756" width="1600" height="6" fill="#0D0E0F"/>`);
+    // ventana: cielo nocturno, luna, ciudad con oficinas encendidas y persiana a medio bajar
+    const WX=760,WY=90,WW=430,WH=420;
+    o.push(`<rect x="${WX-14}" y="${WY-14}" width="${WW+28}" height="${WH+28}" rx="4" fill="#2B2F37"/><rect x="${WX}" y="${WY}" width="${WW}" height="${WH}" fill="url(#wpSky)"/>`);
+    for(let i=0;i<46;i++) o.push(`<circle cx="${(WX+rnd()*WW).toFixed(1)}" cy="${(WY+rnd()*WH*.55).toFixed(1)}" r="${(rnd()*.9+.4).toFixed(2)}" fill="#DCE8FF" opacity="${(rnd()*.6+.3).toFixed(2)}"/>`);
+    o.push(`<circle cx="${WX+120}" cy="${WY+180}" r="70" fill="url(#wpMoon)"/><circle cx="${WX+120}" cy="${WY+180}" r="24" fill="#E6EEFB"/><circle cx="${WX+112}" cy="${WY+174}" r="5" fill="#CBD6EA"/><circle cx="${WX+128}" cy="${WY+188}" r="3.5" fill="#CBD6EA"/>`);
+    let bx=WX-10; const lay=[]; while(bx<WX+WW){ const w=34+rnd()*58, h=110+rnd()*220; lay.push([bx,w,h]); bx+=w+2+rnd()*6; }
+    lay.forEach(([x,w,h],i)=>{ const y=WY+WH-h; o.push(`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${i%2?"#0A1120":"#181A1E"}"/>`);
+      if(rnd()>.6) o.push(`<rect x="${(x+w/2-1).toFixed(1)}" y="${(y-24).toFixed(1)}" width="2" height="24" fill="#0A1120"/><circle cx="${(x+w/2).toFixed(1)}" cy="${(y-25).toFixed(1)}" r="2.2" fill="#FF5C7A" opacity=".9"/>`);
+      for(let yy=y+10;yy<WY+WH-8;yy+=13) for(let xx=x+5;xx<x+w-6;xx+=9){ const r=rnd(); if(r>.72) o.push(`<rect x="${xx.toFixed(1)}" y="${yy.toFixed(1)}" width="5" height="7" fill="${r>.95?"#8CC8FF":"#FFD27A"}" opacity="${(.45+rnd()*.5).toFixed(2)}"/>`); } });
+    for(let i=0;i<11;i++) o.push(`<rect x="${WX}" y="${WY+i*11}" width="${WW}" height="9" fill="#3A3F48"/><rect x="${WX}" y="${WY+i*11+7}" width="${WW}" height="2" fill="#23272E"/>`);
+    o.push(`<rect x="${WX}" y="${WY+121}" width="${WW}" height="6" fill="#4A505A"/><path d="M${WX+40} ${WY+127}v90" stroke="#5A606A" stroke-width="1.5"/><circle cx="${WX+40}" cy="${WY+220}" r="4" fill="#6A707A"/>
+      <rect x="${WX+WW/2-5}" y="${WY}" width="10" height="${WH}" fill="#2B2F37"/><rect x="${WX}" y="${WY+260}" width="${WW}" height="10" fill="#2B2F37"/><rect x="${WX-24}" y="${WY+WH+10}" width="${WW+48}" height="14" rx="2" fill="#343841"/>`);
+    // luz de luna sobre la pared y el suelo
+    o.push(`<path d="M${WX} ${WY+WH+24} L${WX+WW} ${WY+WH+24} L${WX+WW+160} 900 L${WX-120} 900 Z" fill="#7FA8E6" opacity=".045"/>`);
+    // póster de sistemas en la pared
+    o.push(`<g transform="translate(250 70) rotate(-1.2)"><rect width="170" height="230" fill="#E8E3D6"/><rect x="10" y="10" width="150" height="150" fill="#0B1A33"/>
+      ${[0,1,2,3,4].map(i=>`<rect x="10" y="${100+i*12}" width="150" height="10" fill="${["#2997FF","#5AB0FF","#8CC8FF","#FFC46B","#FF8DA1"][i]}"/>`).join("")}
+      <circle cx="85" cy="60" r="28" fill="none" stroke="#8CC8FF" stroke-width="3"/><path d="M85 32v56M57 60h56" stroke="#8CC8FF" stroke-width="2"/>
+      <text x="85" y="190" text-anchor="middle" font-family="Helvetica,Arial" font-weight="800" font-size="22" fill="#1A1A1A">SYS ADMIN</text><text x="85" y="212" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#555">UPTIME IS A LIFESTYLE · 1987</text></g>`);
+    // estantería con archivadores, cajas de disquetes y manuales
+    const SX=24,SW=190; o.push(`<rect x="${SX}" y="110" width="${SW}" height="650" fill="#2A221C"/><rect x="${SX+8}" y="118" width="${SW-16}" height="634" fill="#18130F"/>`);
+    [190,330,470,610,750].forEach(y=>o.push(`<rect x="${SX}" y="${y}" width="${SW}" height="10" fill="#3A2F25"/>`));
+    [[120,190],[200,330],[340,470],[480,610],[620,750]].forEach(([t,b],r)=>{ let x=SX+12; while(x<SX+SW-24){ const w=12+rnd()*16, h=(b-t)*(.6+rnd()*.32), kind=rnd();
+      const col=kind>.8?"#B9B09A":["#2F5DA8","#3D4652","#7A3B33","#2E5E4A","#616973","#2B2F37","#8E6B2E"][Math.floor(rnd()*7)];
+      if(r===2&&x>SX+90){ o.push(`<rect x="${x}" y="${b-46}" width="${SX+SW-12-x}" height="46" fill="#C9C1AA"/><text x="${x+8}" y="${b-20}" font-family="Courier New,monospace" font-size="10" fill="#333">3½" DS/HD</text>`); break; }
+      o.push(`<rect x="${x.toFixed(1)}" y="${(b-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${col}"/><rect x="${(x+2).toFixed(1)}" y="${(b-h+8).toFixed(1)}" width="${(w-4).toFixed(1)}" height="7" fill="#E8E3D6" opacity=".6"/>`); x+=w+1.5; } });
+    o.push(`<g transform="translate(${SX+120} 60)"><rect x="-22" y="34" width="44" height="18" fill="#7A4B2A"/><path d="M0 34 C-30 0 -36 -10 -40 -30 M0 34 C-6 -5 6 -20 2 -46 M0 34 C20 0 34 -6 44 -26 M0 34 C12 10 -18 -14 -24 -10" stroke="#3E6B45" stroke-width="7" stroke-linecap="round" fill="none"/></g>`);
+    // mesa con lámpara, ordenador de sobremesa con pantalla verde, teclado, taza y planta
+    o.push(`<rect x="700" y="690" width="900" height="22" fill="url(#wpDesk)"/><rect x="700" y="712" width="900" height="8" fill="#17120E"/><rect x="740" y="720" width="18" height="40" fill="#17120E"/><rect x="1540" y="720" width="18" height="40" fill="#17120E"/>`);
+    o.push(`<path d="M820 690 L760 520 L1010 520 L1080 690 Z" fill="url(#wpLamp)" opacity=".55"/><ellipse cx="900" cy="692" rx="160" ry="10" fill="#FFC46B" opacity=".12"/>
+      <rect x="800" y="680" width="70" height="10" rx="3" fill="#2B2F37"/><path d="M835 680 L815 600 L880 540" stroke="#4A505A" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M860 520 L920 545 L900 575 L840 548 Z" fill="#2E5E4A"/><path d="M842 548 L900 575" stroke="#FFC46B" stroke-width="3" opacity=".8"/>`);
+    o.push(`<g transform="translate(1000 520)"><rect x="0" y="40" width="190" height="130" rx="10" fill="url(#wpBeige)"/><rect x="14" y="52" width="162" height="100" rx="12" fill="#121410"/>
+      <rect x="22" y="58" width="146" height="88" rx="10" fill="#07120B"/><circle cx="95" cy="102" r="80" fill="url(#wpCrt)"/>
+      ${[0,1,2,3,4].map(i=>`<rect x="32" y="${70+i*14}" width="${[90,120,60,100,40][i]}" height="5" fill="#7CFFA8" opacity="${.5+i*.08}"/>`).join("")}
+      <rect x="30" y="170" width="130" height="10" fill="#8E8673"/><rect x="-20" y="180" width="230" height="16" rx="4" fill="#B9B09A"/><rect x="-14" y="182" width="218" height="8" fill="#8E8673" opacity=".7"/>
+      <rect x="20" y="158" width="40" height="5" rx="2" fill="#5A5446"/><circle cx="160" cy="161" r="3" fill="#3DDC84"/></g>`);
+    o.push(`<g transform="translate(1218 650)"><rect x="0" y="0" width="34" height="40" rx="4" fill="#E8E3D6"/><path d="M34 10 a10 10 0 0 1 0 20" stroke="#E8E3D6" stroke-width="5" fill="none"/><path d="M8 -6 q6 -10 0 -18 M20 -6 q6 -10 0 -18" stroke="#AAB" stroke-opacity=".35" stroke-width="2" fill="none"/></g>`);
+    // disquetes y papeles sobre la mesa
+    o.push(`<g transform="translate(1268 674) scale(.75)"><rect width="46" height="46" rx="3" fill="#2B2F37" transform="rotate(-8)"/><rect x="10" y="-2" width="24" height="12" fill="#9AA0A8" transform="rotate(-8)"/><rect x="18" y="8" width="46" height="46" rx="3" fill="#2F5DA8" transform="rotate(6)"/></g>`);
+    o.push(`<rect width="1600" height="900" fill="url(#wpVig)"/>`);
+    return `<div class="dk-wall2" aria-hidden="true"><svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">${o.join("")}</svg></div>`; }
   /* ---------- vista como lista ---------- */
   let view="icons", showNote=true; try{ view=localStorage.getItem("dk-view")||"icons"; showNote=localStorage.getItem("dk-note")!=="0"; }catch(e){}
   const mod=()=>{ const d=(typeof LIVE!=="undefined"&&LIVE.commit)?new Date(LIVE.commit.date):new Date(document.lastModified); return isNaN(d)?"—":d.toLocaleDateString(LG()==="en"?"en-GB":"es-ES",{day:"2-digit",month:"short",year:"numeric"}); };
