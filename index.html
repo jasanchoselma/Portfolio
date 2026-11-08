@@ -1312,6 +1312,102 @@
   @media (max-width:700px){ .map .kpis>div{padding:11px 12px 11px 28px} .map .kpis .lamp{left:12px;top:14px} .map .kpis b{font-size:18px}
     .map .kpis svg,.map .kpis .segs{display:none} .map .kpis .bar{left:28px;right:12px} .map .syslog>div{font-size:9.5px;padding:0 10px} .map .syslog::after{left:24px} }
   @media (prefers-reduced-motion:reduce){ .map .kpis::after,.map .kpis .lamp,.map .syslog::after,.map .syslog>div:last-child{animation:none} }
+  /* ===================== v24 · fichas de proyecto: Mac clásico pasado por Apple ===================== */
+  /* --- tarjeta lateral de Proyectos: frontal de equipo --- */
+  #pr-panel{padding:22px 22px 0!important;background:linear-gradient(180deg,#232529 0%,#17181B 100%)!important;border:1px solid rgba(255,255,255,.09)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 40px 80px -40px rgba(0,0,0,.9)!important;backdrop-filter:none!important}
+  #pr-panel::before{content:"";position:absolute;left:22px;right:22px;top:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:.7;box-shadow:0 0 12px var(--c)}
+  #pr-panel .scp-ico{width:50px;height:50px;border-radius:14px;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 70%,#fff 10%),color-mix(in srgb,var(--c) 55%,#000));
+    border:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -2px 4px rgba(0,0,0,.25),0 6px 16px -6px var(--c)}
+  #pr-panel .scp-plate{padding:7px 12px 7px 14px;border-radius:7px;background:linear-gradient(180deg,#D4D5D8,#A9ABAF);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.6);position:relative}
+  #pr-panel .scp-plate::before,#pr-panel .scp-plate::after{content:"";position:absolute;left:5px;width:4px;height:4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#eee,#6d6f73);box-shadow:0 0 0 .5px rgba(0,0,0,.4)}
+  #pr-panel .scp-plate::before{top:5px} #pr-panel .scp-plate::after{bottom:5px}
+  #pr-panel .scp-plate small{white-space:nowrap;color:#3A3C40;font:500 10px/1.45 var(--mono);letter-spacing:.02em;text-shadow:0 1px 0 rgba(255,255,255,.45)}
+  #pr-panel .scp-plate small b{font-weight:700;color:#1C1D20}
+  #pr-panel h3{font-size:24px!important;letter-spacing:-.02em!important;margin-top:4px}
+  #pr-panel .scp-sub{border-left:2px solid color-mix(in srgb,var(--c) 60%,transparent);padding-left:12px}
+  /* chips como teclas del Apple Extended Keyboard */
+  #pr-panel .scp-chips span,.dlg-body .pj-keys .tags span{font:500 11px var(--mono);color:#2B2A26;border:0;border-radius:6px;padding:5px 10px 7px;
+    background:linear-gradient(180deg,#E9E3D2,#CFC6AE);box-shadow:inset 0 -3px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 2px 3px rgba(0,0,0,.5);transition:transform .12s,box-shadow .12s}
+  #pr-panel .scp-chips span:hover,.dlg-body .pj-keys .tags span:hover{transform:translateY(2px);box-shadow:inset 0 -1px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 1px 1px rgba(0,0,0,.5)}
+  /* contador estilo display ámbar del panel de operador */
+  #pr-panel .scp-n{font:500 12px var(--mono);color:rgba(255,181,71,.45);background:#0D0B07;padding:6px 9px;border-radius:6px;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06);letter-spacing:.08em}
+  #pr-panel .scp-n b{color:#FFB547;font-weight:600;text-shadow:0 0 6px rgba(255,181,71,.7)}
+  #pr-panel .scp-nav{background:linear-gradient(180deg,#34363B,#232428);border:0;box-shadow:inset 0 -3px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(0,0,0,.6);transition:transform .12s,box-shadow .12s,color .2s}
+  #pr-panel .scp-nav:hover{color:#fff} #pr-panel .scp-nav:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12)}
+  /* frontal inferior: pilotos, rejilla y chapa de modelo */
+  #pr-panel .scp-face{display:flex;align-items:center;gap:8px;margin:14px -22px 0;padding:11px 22px;border-top:1px solid rgba(0,0,0,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);background:#131417;border-radius:0 0 20px 20px}
+  #pr-panel .scp-face .led{width:6px;height:6px;border-radius:50%;background:#3DDC84;box-shadow:0 0 6px #3DDC84;animation:lampBlink 2.2s steps(1) infinite}
+  #pr-panel .scp-face .led.a{background:#FFB547;box-shadow:0 0 6px #FFB547;animation-duration:.7s}
+  #pr-panel .scp-face .scp-vent{flex:1;height:10px;margin:0 6px;background:repeating-linear-gradient(90deg,#08090A 0 3px,transparent 3px 7px);border-radius:2px;opacity:.9}
+  #pr-panel .scp-face .scp-badge{font:600 9px var(--mono);letter-spacing:.16em;color:#6E727A;text-transform:uppercase}
+
+  /* --- ficha (diálogo): ventana de Mac clásico en grafito --- */
+  dialog#dlg{border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#17181B;box-shadow:0 50px 120px -30px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.08)}
+  dialog#dlg::backdrop{background:radial-gradient(ellipse at center,rgba(10,12,16,.7),rgba(0,0,0,.92))}
+  dialog#dlg[open]{animation:winOpen .38s cubic-bezier(.2,.9,.25,1)}
+  @keyframes winOpen{0%{opacity:0;transform:scale(.6);clip-path:inset(30% 30% 30% 30% round 16px)}60%{opacity:1}100%{transform:none;clip-path:inset(0 0 0 0 round 16px)}}
+  #dlg .dlg-head{padding:48px 30px 20px;background:linear-gradient(180deg,#202226,#191A1D);border-bottom:1px solid rgba(0,0,0,.6);box-shadow:0 1px 0 rgba(255,255,255,.04)}
+  /* barra de título con rayas y caja de cierre, como System 7 */
+  #dlg .dlg-head::before{content:attr(data-file);position:absolute;left:0;right:0;top:0;height:30px;display:flex;align-items:center;justify-content:center;
+    font:600 11.5px var(--sans);color:#C7C9CE;letter-spacing:.01em;border-bottom:1px solid rgba(0,0,0,.7);
+    background:linear-gradient(#202226,#202226) center/calc(var(--tw,160px)) 100% no-repeat,repeating-linear-gradient(180deg,#2C2E33 0 1px,#1B1C1F 1px 3px);--tw:160px}
+  #dlg .dlg-head::after{content:"";position:absolute;left:14px;top:9px;width:11px;height:11px;border:1px solid #6E727A;background:#202226;box-shadow:0 0 0 2px #202226}
+  #dlg .dlg-head .path{font-size:11px;color:#5AB0FF}
+  #dlg .dlg-head h3{font:700 32px/1.12 var(--disp);letter-spacing:-.03em;margin-top:10px}
+  #dlg .dlg-head .dmeta{font:500 11px var(--mono);color:#3A3C40;background:linear-gradient(180deg,#D4D5D8,#A9ABAF);padding:3px 9px;border-radius:5px;margin-left:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 1px 2px rgba(0,0,0,.6)}
+  #dlg .close{margin-top:22px;font:500 13px var(--sans);color:#E6E7EA;background:linear-gradient(180deg,#34363B,#232428);border:0;border-radius:999px;padding:8px 16px;box-shadow:inset 0 -2px 0 #141517,inset 0 1px 0 rgba(255,255,255,.14),0 2px 4px rgba(0,0,0,.6);cursor:pointer}
+  #dlg .close:hover{color:#fff;background:linear-gradient(180deg,#3C3F45,#2A2C30)}
+  #dlg .dlg-body{padding:26px 30px 32px}
+  #dlg .dlg-body h4{font:600 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#7D828C}
+  /* diagrama dentro de un monitor: bisel, cristal curvo y líneas de barrido */
+  #dlg .pj-diagram{position:relative;padding:22px;border-radius:22px;border:0;background:#0B0D10;
+    box-shadow:0 0 0 10px #26282C,0 0 0 11px rgba(255,255,255,.07),inset 0 0 60px rgba(0,0,0,.9),0 20px 40px -20px rgba(0,0,0,.9);margin:12px 11px 34px;background-image:radial-gradient(rgba(90,176,255,.10) 1px,transparent 1.3px);background-size:18px 18px}
+  #dlg .pj-diagram::after{content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),radial-gradient(130% 120% at 30% 0%,rgba(255,255,255,.06),transparent 40%),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55))}
+  #dlg .pj-diagram::before{content:"";position:absolute;right:22px;bottom:-24px;width:44px;height:5px;border-radius:3px;background:#3DDC84;box-shadow:0 0 8px #3DDC84;opacity:.8}
+  /* el problema: parte de incidencia en papel de impresora matricial */
+  #dlg .pj-problem{position:relative;padding:18px 18px 18px 44px;border:0;border-radius:6px;background:linear-gradient(180deg,#2A1D21,#21181B);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 30px -15px rgba(0,0,0,.9)}
+  #dlg .pj-problem::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:12px;background:radial-gradient(circle,#121014 3px,transparent 3.5px) 0 0/12px 18px repeat-y}
+  #dlg .pj-problem::after{content:"";position:absolute;left:30px;top:0;bottom:0;border-left:1px dashed rgba(255,92,122,.25)}
+  #dlg .pj-tkt{position:absolute;right:14px;top:12px;font:600 10px var(--mono);letter-spacing:.12em;color:#FF8DA1;border:1px solid rgba(255,92,122,.45);border-radius:4px;padding:2px 7px;transform:rotate(2deg);opacity:.85}
+  #dlg .pj-problem .pj-ico{background:linear-gradient(180deg,#FF6B85,#C43A55);color:#fff;border:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 14px -6px #FF5C7A}
+  #dlg .dlg-body .pj-problem h4{color:#FF8DA1}
+  /* qué hice: números en teclas beige */
+  #dlg .pj-steps::before{left:17px;background:linear-gradient(#5AB0FF,rgba(41,151,255,.05));width:2px;border-radius:2px}
+  #dlg .pj-steps .n{width:34px;height:34px;border-radius:8px;font:700 12px var(--mono);color:#2B2A26;border:0;background:linear-gradient(180deg,#EEE8D7,#CFC6AE);
+    box-shadow:inset 0 -4px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.85),0 3px 6px rgba(0,0,0,.55)}
+  /* comandos: terminal de fósforo verde */
+  #dlg .pj-term{border:0;border-radius:16px;background:#26282C;padding:0 10px 10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 20px 40px -20px rgba(0,0,0,.9)}
+  #dlg .pj-term-bar{border:0;padding:10px 6px;color:#8E929A}
+  #dlg .pj-term-bar button{background:linear-gradient(180deg,#34363B,#232428);border:0;box-shadow:inset 0 -2px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12);border-radius:999px;color:#C7C9CE}
+  #dlg .pj-term pre{position:relative;border-radius:10px;background:#07120B;color:rgba(124,255,168,.85);text-shadow:0 0 6px rgba(124,255,168,.35);padding:16px 18px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),inset 0 0 40px rgba(0,0,0,.7)}
+  #dlg .pj-term pre::after{content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.5))}
+  #dlg .pj-term .pp{color:#B8FFD0}
+  /* ficha técnica: chapa de aluminio atornillada, como la etiqueta trasera de un Mac */
+  #dlg .pj-plate{border:0;border-radius:10px;padding:18px 22px 20px;background:
+      radial-gradient(circle at 35% 35%,#f4f4f4,#6d6f73 70%) 10px 10px/6px 6px no-repeat,radial-gradient(circle at 35% 35%,#f4f4f4,#6d6f73 70%) calc(100% - 10px) 10px/6px 6px no-repeat,
+      radial-gradient(circle at 35% 35%,#f4f4f4,#6d6f73 70%) 10px calc(100% - 10px)/6px 6px no-repeat,radial-gradient(circle at 35% 35%,#f4f4f4,#6d6f73 70%) calc(100% - 10px) calc(100% - 10px)/6px 6px no-repeat,
+      repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),linear-gradient(180deg,#DCDDE0,#AEB0B4);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 0 rgba(0,0,0,.3),0 12px 30px -12px rgba(0,0,0,.9)}
+  #dlg .dlg-body .pj-plate h4{color:#2A2B2F;display:flex;justify-content:space-between;border-bottom:1px solid rgba(0,0,0,.25);box-shadow:0 1px 0 rgba(255,255,255,.5);padding-bottom:8px;margin-bottom:12px}
+  #dlg .dlg-body .pj-plate h4 span{color:#5A5C61;letter-spacing:.06em}
+  #dlg .pj-plate .pj-dl dt{color:#55575C;text-shadow:0 1px 0 rgba(255,255,255,.5)} #dlg .pj-plate .pj-dl dd{color:#16171A;font-weight:600;text-shadow:0 1px 0 rgba(255,255,255,.45)}
+  #dlg .pj-plate .pill.ok{color:#11834F} #dlg .pj-plate .pill.wip{color:#A8650A}
+  #dlg .pj-plate .pill::before{box-shadow:0 0 0 1.5px rgba(0,0,0,.25),0 0 6px currentColor}
+  /* qué aprendí y tecnologías */
+  #dlg .pj-card:not(.pj-plate){background:linear-gradient(180deg,#202226,#1A1B1E);border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  #dlg .pj-quote{border-left:3px solid #2997FF!important}
+  #dlg .pj-quote::after{color:rgba(41,151,255,.18)}
+  #dlg .pj-keys .tags{gap:8px}
+  /* navegación anterior / siguiente: teclas grandes */
+  #dlg .pj-nav button{background:linear-gradient(180deg,#26282C,#1C1D20);border:0;border-radius:12px;box-shadow:inset 0 -3px 0 #111214,inset 0 1px 0 rgba(255,255,255,.08),0 4px 10px rgba(0,0,0,.5);transition:transform .12s,box-shadow .12s,color .2s}
+  #dlg .pj-nav button:hover{color:#fff;box-shadow:inset 0 -3px 0 #111214,inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(41,151,255,.5),0 4px 14px rgba(41,151,255,.15)}
+  #dlg .pj-nav button:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 #111214}
+  @media (max-width:700px){ #dlg .dlg-head{padding:44px 18px 16px} #dlg .dlg-head h3{font-size:24px} #dlg .dlg-body{padding:20px 16px 24px} #dlg .pj-diagram{margin:10px 8px 30px;padding:12px}
+    #dlg .dlg-head .dmeta{display:inline-block;margin:6px 0 0} }
+  @media (prefers-reduced-motion:reduce){ dialog#dlg[open]{animation:none} #pr-panel .scp-face .led{animation:none} }
 </style>
 </head>
 <body>
@@ -2328,15 +2424,19 @@ function flowSVG(flow,dir,label){
   const n=flow.length, Wd=780, Hd=190, bw=196, gap=n>1?(Wd-n*bw)/(n-1):0, id="g"+Math.random().toString(36).slice(2,7);
   const s=el("svg",{viewBox:`0 0 ${Wd} ${Hd}`,role:"img","aria-label":label});
   const d=el("defs",{},s); const f=el("filter",{id,x:"-50%",y:"-50%",width:"200%",height:"200%"},d); el("feGaussianBlur",{stdDeviation:"2.2",result:"b"},f); const m=el("feMerge",{},f); el("feMergeNode",{in:"b"},m); el("feMergeNode",{in:"SourceGraphic"},m);
-  const gr=el("linearGradient",{id:id+"n",x1:0,y1:0,x2:0,y2:1},d); el("stop",{offset:0,"stop-color":"#272A2F"},gr); el("stop",{offset:1,"stop-color":"#191B1F"},gr);
+  const gr=el("linearGradient",{id:id+"n",x1:0,y1:0,x2:0,y2:1},d); el("stop",{offset:0,"stop-color":"#2A2C31"},gr); el("stop",{offset:1,"stop-color":"#17181B"},gr);
   const xs=flow.map((_,i)=> n===1?(Wd-bw)/2 : i*(bw+gap));
   const midI=n===2?1:Math.floor((n-1)/2);
   flow.forEach((fl,i)=>{
     const x=xs[i], y=50, mid=i===midI;
     if(mid) el("rect",{x:x-6,y:y-6,width:bw+12,height:102,rx:14,fill:"none",stroke:C.vio,"stroke-opacity":.25,"stroke-dasharray":"3 5"},s);
     el("rect",{x:x+1,y,width:bw-2,height:90,rx:11,fill:`url(#${id}n)`,stroke:mid?C.vio:C.line,"stroke-width":mid?1.6:1.2,filter:mid?`url(#${id})`:null},s);
+    el("rect",{x:x+1.5,y:y+.5,width:bw-3,height:1.2,rx:.6,fill:"#fff",opacity:.12},s);
+    for(let v=0;v<5;v++) el("rect",{x:x+bw-18-v*5,y:y+12,width:2,height:9,rx:1,fill:"#000",opacity:.45},s);
+    const ld=el("circle",{cx:x+16,cy:y+16.5,r:3,fill:mid?C.vio:C.ok},s); if(!reduce){ el("animate",{attributeName:"opacity",values:"1;.35;1",dur:(1.2+i*.37).toFixed(2)+"s",repeatCount:"indefinite"},ld); }
+    [[x+8,y+82],[x+bw-8,y+82]].forEach(([cx,cy])=>el("circle",{cx,cy,r:2,fill:"#000",opacity:.5,stroke:"#fff","stroke-opacity":.12},s));
     el("text",{x:x+bw/2,y:y+24,"text-anchor":"middle",fill:C.dim,"font-family":"Martian Mono,monospace","font-size":9.5},s).textContent=String(i+1).padStart(2,"0");
-    el("text",{x:x+bw/2,y:y+50,"text-anchor":"middle",fill:C.text,"font-family":"Geist,sans-serif","font-size":17,"font-weight":600},s).textContent=fl[0];
+    el("text",{x:x+bw/2,y:y+50,"text-anchor":"middle",fill:C.text,"font-family":"-apple-system,BlinkMacSystemFont,SF Pro Display,Helvetica Neue,sans-serif","font-size":17,"font-weight":600},s).textContent=fl[0];
     el("text",{x:x+bw/2,y:y+71,"text-anchor":"middle",fill:C.muted,"font-family":"Martian Mono,monospace","font-size":11},s).textContent=fl[1];
     if(i<n-1){
       const x1=x+bw+10, x2=xs[i+1]-10, ym=y+45, back=dir[i]<0;
@@ -2353,21 +2453,21 @@ function flowSVG(flow,dir,label){
 /* ---- ficha de proyecto (expediente) ---- */
 function fillProject(p){
   const lp=L(p), i=PROJECTS.indexOf(p), prev=PROJECTS[(i-1+PROJECTS.length)%PROJECTS.length], next=PROJECTS[(i+1)%PROJECTS.length], en=LANG==="en";
-  $("#dlg-path").textContent=t("projPath")+p.id+".md";
+  $("#dlg-path").textContent=t("projPath")+p.id+".md"; document.querySelector("#dlg .dlg-head").dataset.file=p.id+".md";
   $("#dlg-status").innerHTML=pill(p.status)+`<span class="dmeta">${esc(p.host)} · ${PIP[p.id]} · ${esc(tx(PZONE[p.id]))}</span>`;
   $("#dlg-title").textContent=lp.title;
   const cmds=(PCMD[p.id]||[]).map(c=>`<span class="pp">$</span> ${esc(c)}`).join("\n");
   $("#dlg-body").innerHTML=`<div class="diagram pj-diagram" id="dg"></div>
     <div class="pj-grid">
       <div class="pj-main">
-        <section class="pj-problem" style="--s:0"><div class="pj-ico">${ICON("alert")}</div><div><h4>${t("problem")}</h4><p>${esc(lp.problem)}</p></div></section>
+        <section class="pj-problem" style="--s:0"><span class="pj-tkt">INC-${String(i+1).padStart(3,"0")}</span><div class="pj-ico">${ICON("alert")}</div><div><h4>${t("problem")}</h4><p>${esc(lp.problem)}</p></div></section>
         <section style="--s:1"><h4>${t("did")}</h4><ol class="pj-steps">${lp.did.map((x,k)=>`<li style="--d:${k}"><span class="n">${String(k+1).padStart(2,"0")}</span><p>${esc(x)}</p></li>`).join("")}</ol></section>
         <section style="--s:2"><h4>// ${en?"key commands":"comandos clave"}</h4><div class="pj-term"><div class="pj-term-bar"><span>jasancho@${esc(p.host)}: ~</span><button type="button" class="pj-copy">${ICON("copy")}<span>${en?"copy":"copiar"}</span></button></div><pre>${cmds}</pre></div></section>
       </div>
       <aside class="pj-side">
-        <div class="pj-card"><h4>// ${en?"spec sheet":"ficha técnica"}</h4><dl class="pj-dl"><dt>host</dt><dd>${esc(p.host)}</dd><dt>ip</dt><dd>${PIP[p.id]}</dd><dt>${en?"zone":"zona"}</dt><dd>${esc(tx(PZONE[p.id]))}</dd><dt>${en?"area":"área"}</dt><dd>${esc(lp.area)}</dd><dt>${en?"status":"estado"}</dt><dd>${pill(p.status)}</dd></dl></div>
+        <div class="pj-card pj-plate"><h4>${en?"SPEC SHEET":"FICHA TÉCNICA"}<span>MODEL ${esc(p.host.toUpperCase())}</span></h4><dl class="pj-dl"><dt>host</dt><dd>${esc(p.host)}</dd><dt>ip</dt><dd>${PIP[p.id]}</dd><dt>${en?"zone":"zona"}</dt><dd>${esc(tx(PZONE[p.id]))}</dd><dt>${en?"area":"área"}</dt><dd>${esc(lp.area)}</dd><dt>${en?"status":"estado"}</dt><dd>${pill(p.status)}</dd></dl></div>
         <div class="pj-card pj-quote"><h4>${t("learned")}</h4><p>${esc(lp.learned)}</p></div>
-        <div class="pj-card"><h4>${t("tech")}</h4><div class="tags">${p.stack.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>
+        <div class="pj-card pj-keys"><h4>${t("tech")}</h4><div class="tags">${p.stack.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>
       </aside>
     </div>
     <nav class="pj-nav" aria-label="${en?"Other projects":"Otros proyectos"}">
@@ -3135,12 +3235,13 @@ function prShow(i, fly = true, hoverOnly = false){
   prSel = i; const p = PROJECTS[i]; if(!p) return; const lp = L(p), c = prColor(p), en = LANG === "en", panel = $("#pr-panel"); if(!panel) return;
   panel.style.setProperty("--c", c);
   panel.innerHTML = `<div class="scp">
-    <div class="scp-top"><span class="scp-ico">${ICON(AU_ICON_P[p.area] || "server")}</span><div><small>rack-0${i + 1} · ${esc(p.host)}</small><small>${esc(PIP[p.id] || "")} · ${esc(tx(PZONE[p.id] || ""))}</small></div>${pill(p.status)}</div>
+    <div class="scp-top"><span class="scp-ico">${ICON(AU_ICON_P[p.area] || "server")}</span><div class="scp-plate"><small><b>RACK-0${i + 1}</b> · ${esc(p.host)}</small><small>${esc(PIP[p.id] || "")} · ${esc(tx(PZONE[p.id] || ""))}</small></div>${pill(p.status)}</div>
     <h3>${esc(lp.title)}</h3><p>${esc(lp.short)}.</p><p class="scp-sub">${esc(lp.problem)}</p>
     <div class="scp-chips">${p.stack.map(s => `<span>${esc(s)}</span>`).join("")}</div>
     <div class="scp-act"><button type="button" class="btn primary" id="pr-open">${en ? "Open file" : "Abrir ficha"} →</button>
-      <span class="scp-n">${String(i + 1).padStart(2, "0")}/${String(PROJECTS.length).padStart(2, "0")}</span>
-      <button type="button" class="scp-nav" id="pr-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="pr-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+      <span class="scp-n"><b>${String(i + 1).padStart(2, "0")}</b>/${String(PROJECTS.length).padStart(2, "0")}</span>
+      <button type="button" class="scp-nav" id="pr-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="pr-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div>
+    <div class="scp-face" aria-hidden="true"><i class="led"></i><i class="led a"></i><span class="scp-vent"></span><span class="scp-badge">JASANCHO · ${esc(p.area || "")}</span></div></div>`;
   $("#pr-open").onclick = () => openProject(p);
   $("#pr-prev").onclick = () => prShow((i - 1 + PROJECTS.length) % PROJECTS.length);
   $("#pr-next").onclick = () => prShow((i + 1) % PROJECTS.length);
