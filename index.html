@@ -1314,33 +1314,33 @@
   @media (prefers-reduced-motion:reduce){ .map .kpis::after,.map .kpis .lamp,.map .syslog::after,.map .syslog>div:last-child{animation:none} }
   /* ===================== v24 · fichas de proyecto: Mac clásico pasado por Apple ===================== */
   /* --- tarjeta lateral de Proyectos: frontal de equipo --- */
-  #pr-panel{padding:22px 22px 0!important;background:linear-gradient(180deg,#232529 0%,#17181B 100%)!important;border:1px solid rgba(255,255,255,.09)!important;
+  :is(#pr-panel,#rk-panel){padding:22px 22px 0!important;background:linear-gradient(180deg,#232529 0%,#17181B 100%)!important;border:1px solid rgba(255,255,255,.09)!important;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 40px 80px -40px rgba(0,0,0,.9)!important;backdrop-filter:none!important}
-  #pr-panel::before{content:"";position:absolute;left:22px;right:22px;top:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:.7;box-shadow:0 0 12px var(--c)}
-  #pr-panel .scp-ico{width:50px;height:50px;border-radius:14px;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 70%,#fff 10%),color-mix(in srgb,var(--c) 55%,#000));
+  :is(#pr-panel,#rk-panel)::before{content:"";position:absolute;left:22px;right:22px;top:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:.7;box-shadow:0 0 12px var(--c)}
+  :is(#pr-panel,#rk-panel) .scp-ico{width:50px;height:50px;border-radius:14px;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 70%,#fff 10%),color-mix(in srgb,var(--c) 55%,#000));
     border:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -2px 4px rgba(0,0,0,.25),0 6px 16px -6px var(--c)}
-  #pr-panel .scp-plate{padding:7px 12px 7px 14px;border-radius:7px;background:linear-gradient(180deg,#D4D5D8,#A9ABAF);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.6);position:relative}
-  #pr-panel .scp-plate::before,#pr-panel .scp-plate::after{content:"";position:absolute;left:5px;width:4px;height:4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#eee,#6d6f73);box-shadow:0 0 0 .5px rgba(0,0,0,.4)}
-  #pr-panel .scp-plate::before{top:5px} #pr-panel .scp-plate::after{bottom:5px}
-  #pr-panel .scp-plate small{white-space:nowrap;color:#3A3C40;font:500 10px/1.45 var(--mono);letter-spacing:.02em;text-shadow:0 1px 0 rgba(255,255,255,.45)}
-  #pr-panel .scp-plate small b{font-weight:700;color:#1C1D20}
-  #pr-panel h3{font-size:24px!important;letter-spacing:-.02em!important;margin-top:4px}
-  #pr-panel .scp-sub{border-left:2px solid color-mix(in srgb,var(--c) 60%,transparent);padding-left:12px}
+  :is(#pr-panel,#rk-panel) .scp-plate{padding:7px 12px 7px 14px;border-radius:7px;background:linear-gradient(180deg,#D4D5D8,#A9ABAF);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.6);position:relative}
+  :is(#pr-panel,#rk-panel) .scp-plate::before,:is(#pr-panel,#rk-panel) .scp-plate::after{content:"";position:absolute;left:5px;width:4px;height:4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#eee,#6d6f73);box-shadow:0 0 0 .5px rgba(0,0,0,.4)}
+  :is(#pr-panel,#rk-panel) .scp-plate::before{top:5px} :is(#pr-panel,#rk-panel) .scp-plate::after{bottom:5px}
+  :is(#pr-panel,#rk-panel) .scp-plate small{white-space:nowrap;color:#3A3C40;font:500 10px/1.45 var(--mono);letter-spacing:.02em;text-shadow:0 1px 0 rgba(255,255,255,.45)}
+  :is(#pr-panel,#rk-panel) .scp-plate small b{font-weight:700;color:#1C1D20}
+  :is(#pr-panel,#rk-panel) h3{font-size:24px!important;letter-spacing:-.02em!important;margin-top:4px}
+  :is(#pr-panel,#rk-panel) .scp-sub{border-left:2px solid color-mix(in srgb,var(--c) 60%,transparent);padding-left:12px}
   /* chips como teclas del Apple Extended Keyboard */
-  #pr-panel .scp-chips span,.dlg-body .pj-keys .tags span{font:500 11px var(--mono);color:#2B2A26;border:0;border-radius:6px;padding:5px 10px 7px;
+  :is(#pr-panel,#rk-panel) .scp-chips span,.dlg-body .pj-keys .tags span{font:500 11px var(--mono);color:#2B2A26;border:0;border-radius:6px;padding:5px 10px 7px;
     background:linear-gradient(180deg,#E9E3D2,#CFC6AE);box-shadow:inset 0 -3px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 2px 3px rgba(0,0,0,.5);transition:transform .12s,box-shadow .12s}
-  #pr-panel .scp-chips span:hover,.dlg-body .pj-keys .tags span:hover{transform:translateY(2px);box-shadow:inset 0 -1px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 1px 1px rgba(0,0,0,.5)}
+  :is(#pr-panel,#rk-panel) .scp-chips span:hover,.dlg-body .pj-keys .tags span:hover{transform:translateY(2px);box-shadow:inset 0 -1px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 1px 1px rgba(0,0,0,.5)}
   /* contador estilo display ámbar del panel de operador */
-  #pr-panel .scp-n{font:500 12px var(--mono);color:rgba(255,181,71,.45);background:#0D0B07;padding:6px 9px;border-radius:6px;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06);letter-spacing:.08em}
-  #pr-panel .scp-n b{color:#FFB547;font-weight:600;text-shadow:0 0 6px rgba(255,181,71,.7)}
-  #pr-panel .scp-nav{background:linear-gradient(180deg,#34363B,#232428);border:0;box-shadow:inset 0 -3px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(0,0,0,.6);transition:transform .12s,box-shadow .12s,color .2s}
-  #pr-panel .scp-nav:hover{color:#fff} #pr-panel .scp-nav:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12)}
+  :is(#pr-panel,#rk-panel) .scp-n{font:500 12px var(--mono);color:rgba(255,181,71,.45);background:#0D0B07;padding:6px 9px;border-radius:6px;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06);letter-spacing:.08em}
+  :is(#pr-panel,#rk-panel) .scp-n b{color:#FFB547;font-weight:600;text-shadow:0 0 6px rgba(255,181,71,.7)}
+  :is(#pr-panel,#rk-panel) .scp-nav{background:linear-gradient(180deg,#34363B,#232428);border:0;box-shadow:inset 0 -3px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(0,0,0,.6);transition:transform .12s,box-shadow .12s,color .2s}
+  :is(#pr-panel,#rk-panel) .scp-nav:hover{color:#fff} :is(#pr-panel,#rk-panel) .scp-nav:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 #141517,inset 0 1px 0 rgba(255,255,255,.12)}
   /* frontal inferior: pilotos, rejilla y chapa de modelo */
-  #pr-panel .scp-face{display:flex;align-items:center;gap:8px;margin:14px -22px 0;padding:11px 22px;border-top:1px solid rgba(0,0,0,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);background:#131417;border-radius:0 0 20px 20px}
-  #pr-panel .scp-face .led{width:6px;height:6px;border-radius:50%;background:#3DDC84;box-shadow:0 0 6px #3DDC84;animation:lampBlink 2.2s steps(1) infinite}
-  #pr-panel .scp-face .led.a{background:#FFB547;box-shadow:0 0 6px #FFB547;animation-duration:.7s}
-  #pr-panel .scp-face .scp-vent{flex:1;height:10px;margin:0 6px;background:repeating-linear-gradient(90deg,#08090A 0 3px,transparent 3px 7px);border-radius:2px;opacity:.9}
-  #pr-panel .scp-face .scp-badge{font:600 9px var(--mono);letter-spacing:.16em;color:#6E727A;text-transform:uppercase}
+  :is(#pr-panel,#rk-panel) .scp-face{display:flex;align-items:center;gap:8px;margin:14px -22px 0;padding:11px 22px;border-top:1px solid rgba(0,0,0,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);background:#131417;border-radius:0 0 20px 20px}
+  :is(#pr-panel,#rk-panel) .scp-face .led{width:6px;height:6px;border-radius:50%;background:#3DDC84;box-shadow:0 0 6px #3DDC84;animation:lampBlink 2.2s steps(1) infinite}
+  :is(#pr-panel,#rk-panel) .scp-face .led.a{background:#FFB547;box-shadow:0 0 6px #FFB547;animation-duration:.7s}
+  :is(#pr-panel,#rk-panel) .scp-face .scp-vent{flex:1;height:10px;margin:0 6px;background:repeating-linear-gradient(90deg,#08090A 0 3px,transparent 3px 7px);border-radius:2px;opacity:.9}
+  :is(#pr-panel,#rk-panel) .scp-face .scp-badge{font:600 9px var(--mono);letter-spacing:.16em;color:#6E727A;text-transform:uppercase}
 
   /* --- ficha (diálogo): ventana de Mac clásico en grafito --- */
   dialog#dlg{border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#17181B;box-shadow:0 50px 120px -30px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.08)}
@@ -1408,6 +1408,85 @@
   @media (max-width:700px){ #dlg .dlg-head{padding:44px 18px 16px} #dlg .dlg-head h3{font-size:24px} #dlg .dlg-body{padding:20px 16px 24px} #dlg .pj-diagram{margin:10px 8px 30px;padding:12px}
     #dlg .dlg-head .dmeta{display:inline-block;margin:6px 0 0} }
   @media (prefers-reduced-motion:reduce){ dialog#dlg[open]{animation:none} #pr-panel .scp-face .led{animation:none} }
+
+  /* ===================== v25 · tarjeta del Stack ===================== */
+  #rk-panel .scp-act{justify-content:flex-end} #rk-panel .scp-n{margin-left:0;margin-right:auto}
+  #rk-panel .au-st{font:600 10.5px var(--mono);color:#3DDC84;background:#0B1A11;border:0;border-radius:999px;padding:5px 11px 5px 22px;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06)}
+  #rk-panel .au-st::before{content:"";position:absolute;left:10px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#3DDC84;box-shadow:0 0 7px #3DDC84;animation:lampBlink 2s steps(1) infinite}
+  /* módulos como bahías de disco: ranura hundida, piloto y tirador */
+  #rk-panel .rk3-mods{gap:7px}
+  #rk-panel .rk3-mods>div{position:relative;border:0;border-radius:7px;padding:9px 12px 9px 26px;background:linear-gradient(180deg,#121316,#1B1C20);
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.06),0 1px 0 rgba(255,255,255,.04)}
+  #rk-panel .rk3-mods>div::after{content:"";position:absolute;right:9px;top:50%;width:14px;height:4px;margin-top:-2px;border-radius:2px;background:linear-gradient(180deg,#5B5E64,#2C2E32);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+  #rk-panel .rk3-mods i{position:absolute;left:11px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--c);box-shadow:0 0 7px var(--c);animation:lampBlink calc(1.4s + var(--j)*.23s) steps(1) infinite}
+  #rk-panel .rk3-mods span{font:500 12px var(--mono);color:#E6E7EA;padding-right:18px}
+  #rk-panel .sk-use button{font:500 11px var(--mono);color:#2B2A26;border:0;border-radius:6px;padding:5px 10px 7px;cursor:pointer;background:linear-gradient(180deg,#E9E3D2,#CFC6AE);
+    box-shadow:inset 0 -3px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 2px 3px rgba(0,0,0,.5);transition:transform .12s,box-shadow .12s}
+  #rk-panel .sk-use button:hover{transform:translateY(2px);box-shadow:inset 0 -1px 0 #B3A98E,inset 0 1px 0 rgba(255,255,255,.8),0 1px 1px rgba(0,0,0,.5)}
+  #rk-panel .scp-lbl{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#7D828C}
+  @media (prefers-reduced-motion:reduce){ #rk-panel .rk3-mods i,#rk-panel .au-st::before{animation:none} }
+  /* ficha que nace del armario 3D (efecto "zoom" del Finder clásico) */
+  dialog#dlg.zoom{transform-origin:var(--ox,50%) var(--oy,50%)}
+  dialog#dlg.zoom[open]{animation:dlgZoom .5s cubic-bezier(.2,.9,.25,1)}
+  dialog#dlg.zoom.closing{animation:dlgZoomOut .34s cubic-bezier(.5,0,.75,0) forwards}
+  dialog#dlg.zoom::backdrop{background:radial-gradient(ellipse at center,rgba(10,12,16,.55),rgba(0,0,0,.86));animation:bdIn .5s ease-out}
+  dialog#dlg.zoom.closing::backdrop{animation:bdOut .34s ease-in forwards}
+  @keyframes dlgZoom{0%{opacity:0;transform:scale(.05);filter:brightness(2)}35%{opacity:1}100%{transform:none;filter:none}}
+  @keyframes dlgZoomOut{to{opacity:0;transform:scale(.05);filter:brightness(2)}}
+  @keyframes bdIn{from{opacity:0}} @keyframes bdOut{to{opacity:0}}
+  /* ===================== v25 · pie: la trasera del equipo ===================== */
+  footer{padding:40px 0 56px}
+  footer .wrap{display:block!important;border-top:0!important;padding-top:0!important}
+  .rear{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:18px 26px;padding:22px 26px 24px;border-radius:22px;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),linear-gradient(180deg,#26282C,#1A1B1E);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.5),0 40px 80px -40px rgba(0,0,0,.9)}
+  .rear::before,.rear::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;top:12px;background:radial-gradient(circle at 35% 35%,#d8d8d8,#55575b 70%);box-shadow:0 0 0 1px rgba(0,0,0,.5)}
+  .rear::before{left:12px} .rear::after{right:12px}
+  .rear-top{grid-column:1/-1;display:flex;align-items:center;gap:22px}
+  .rear-vent{flex:1;height:46px;border-radius:10px;background:radial-gradient(circle,#08090A 2.1px,transparent 2.6px) 0 0/9px 9px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.4);opacity:.95}
+  .rear-fan{position:relative;width:64px;height:64px;border-radius:50%;flex:none;background:radial-gradient(circle,#2A2C30 30%,#0B0C0E 31%,#0B0C0E 33%,transparent 34%),repeating-conic-gradient(#0A0B0D 0 8deg,#1E2024 8deg 30deg);
+    box-shadow:inset 0 0 0 4px #2E3035,inset 0 0 0 5px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.06);animation:fanSpin 1.6s linear infinite}
+  .rear-fan i{position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(0deg,transparent 0 7px,rgba(60,62,68,.9) 7px 8px),repeating-linear-gradient(90deg,transparent 0 7px,rgba(60,62,68,.9) 7px 8px);
+    -webkit-mask:radial-gradient(circle,#000 62%,transparent 63%);mask:radial-gradient(circle,#000 62%,transparent 63%);animation:fanSpin 1.6s linear infinite reverse}
+  @keyframes fanSpin{to{transform:rotate(360deg)}}
+  .rear-ports{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 18px;align-content:end}
+  .port{display:flex;flex-direction:column;align-items:center;gap:7px;text-decoration:none;color:#7D828C}
+  .port small{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#7D828C;transition:color .2s}
+  a.port:hover small{color:#5AB0FF} a.port:focus-visible{outline:2px solid #2997FF;outline-offset:4px;border-radius:6px}
+  .port i{position:relative;display:block;background:#08090A;box-shadow:inset 0 2px 4px rgba(0,0,0,.95),0 0 0 2px #3A3D42,0 0 0 3px rgba(0,0,0,.5),0 1px 0 3px rgba(255,255,255,.05);transition:box-shadow .2s}
+  a.port:hover i{box-shadow:inset 0 2px 4px rgba(0,0,0,.95),0 0 0 2px #2997FF,0 0 14px 2px rgba(41,151,255,.35)}
+  .port.pw i{width:46px;height:30px;border-radius:7px 7px 12px 12px;background:radial-gradient(circle,#2E3035 2.5px,transparent 3px) 12px 13px/22px 4px no-repeat,#08090A}
+  .port.pw i::before,.port.pw i::after{content:"";position:absolute;top:10px;width:4px;height:10px;border-radius:1px;background:#8A8D92} .port.pw i::before{left:11px} .port.pw i::after{right:11px}
+  .port.rj i{width:36px;height:30px;border-radius:3px}
+  .port.rj i::before{content:"";position:absolute;left:9px;right:9px;bottom:0;height:8px;background:#3A3D42;border-radius:2px 2px 0 0}
+  .port.rj i::after{content:"";position:absolute;left:6px;right:6px;top:5px;height:5px;background:repeating-linear-gradient(90deg,#C9A44C 0 2px,transparent 2px 3.5px)}
+  .port.rj b{position:absolute;top:-9px;width:6px;height:4px;border-radius:1px;background:#3DDC84;box-shadow:0 0 6px #3DDC84;animation:lampBlink .9s steps(1) infinite}
+  .port.rj b:first-child{left:2px} .port.rj b+b{right:2px;background:#FFB547;box-shadow:0 0 6px #FFB547;animation-duration:1.7s}
+  .port.db i{width:54px;height:24px;clip-path:polygon(0 0,100% 0,90% 100%,10% 100%);border-radius:4px;background:radial-gradient(circle,#C9A44C 1.6px,transparent 2px) 8px 6px/9px 12px repeat-x,#08090A;box-shadow:none;outline:2px solid #3A3D42}
+  a.port.db:hover i{outline-color:#2997FF}
+  .port.usb i{width:30px;height:13px;border-radius:2px}
+  .port.usb i::before{content:"";position:absolute;left:4px;right:4px;top:3px;height:4px;background:#E8E8EA;border-radius:1px}
+  .port.jack i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#000 4px,#2E3035 5px,#08090A 6px)}
+  /* etiqueta de número de serie */
+  .rear-label{position:relative;align-self:stretch;padding:14px 16px 12px;border-radius:8px;color:#2A2B2F;
+    background:linear-gradient(180deg,#E9EAEC,#C9CBCF);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 0 rgba(0,0,0,.3),0 10px 24px -12px rgba(0,0,0,.9);transform:rotate(-.4deg)}
+  .rear-label .rl-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:1px solid rgba(0,0,0,.25);padding-bottom:7px;margin-bottom:8px}
+  .rear-label .rl-head b{font:700 16px var(--disp);letter-spacing:-.02em;color:#111214} .rear-label .rl-head span{font:600 9.5px var(--mono);letter-spacing:.1em;color:#55575C}
+  .rear-label p{margin:0;font:400 11px/1.6 var(--mono);color:#3A3C40} .rear-label a{color:#0060C8}
+  .rear-label .rl-designed{font:600 13.5px var(--disp);letter-spacing:-.01em;color:#16171A;margin-bottom:4px}
+  .rear-label .rl-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 6px;font:500 10px var(--mono);color:#55575C}
+  .rear-label .rl-foot b{color:#16171A;font-weight:700}
+  .rear-label .rl-bar{width:84px;height:24px;background:repeating-linear-gradient(90deg,#111 0 1px,transparent 1px 3px,#111 3px 5px,transparent 5px 6px,#111 6px 7px,transparent 7px 10px)}
+  .rear-label .rl-copy{font-size:10px;color:#6E7075}
+  @media (max-width:860px){ .rear{grid-template-columns:1fr;padding:20px 18px} .rear-ports{justify-content:center} .rear-fan{width:52px;height:52px} .rear-label{transform:none} }
+  @media (prefers-reduced-motion:reduce){ .rear-fan,.rear-fan i,.port.rj b{animation:none} }
+  :is(#pr-panel,#rk-panel) .scp-plate{min-width:0;flex:1 1 auto} :is(#pr-panel,#rk-panel) .scp-plate small{overflow:hidden;text-overflow:ellipsis}
+  :is(#pr-panel,#rk-panel) .scp-top>.pill,:is(#pr-panel,#rk-panel) .scp-top>.au-st{flex:none}
+  .rear-ports{align-content:center;align-self:center;position:relative;padding-top:26px}
+  .rear-ports::before{content:"REAR I/O  ·  JASANCHO@SOC";position:absolute;left:0;top:0;font:600 9.5px var(--mono);letter-spacing:.22em;color:#5D6168;text-shadow:0 1px 0 rgba(0,0,0,.8)}
+  .rear-vent{height:34px}
+  /* archivador: la fecha ya va en el tarjetero; la etiqueta flotante solo aparece al elegir o pasar por encima */
+  .l3d.ar{transition:opacity .25s} .l3d.ar:not(.hv){opacity:0!important}
 </style>
 </head>
 <body>
@@ -1574,8 +1653,25 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 José Antonio Sancho Selma · <a href="/.well-known/security.txt">security.txt</a> · <a href="/humans.txt">humans.txt</a></span>
-    <span>HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a></span>
+    <div class="rear">
+      <div class="rear-top" aria-hidden="true"><span class="rear-vent"></span><span class="rear-fan"><i></i></span></div>
+      <nav class="rear-ports" aria-label="Enlaces del pie">
+        <span class="port pw" aria-hidden="true"><i></i><small>~230V</small></span>
+        <a class="port rj" href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener"><i><b></b><b></b></i><small>github</small></a>
+        <a class="port rj" href="https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368" target="_blank" rel="noopener"><i><b></b><b></b></i><small>linkedin</small></a>
+        <a class="port db" href="/.well-known/security.txt"><i></i><small>security.txt</small></a>
+        <a class="port usb" href="/humans.txt"><i></i><small>humans.txt</small></a>
+        <a class="port jack" href="mailto:sanchoselmajoseantonio@gmail.com"><i></i><small>mail</small></a>
+        <a class="port usb" href="cv-jose-antonio-sancho-selma.pdf"><i></i><small>cv.pdf</small></a>
+      </nav>
+      <div class="rear-label">
+        <div class="rl-head"><b>jasancho.com</b><span>MODEL JS-ASIR · 2027</span></div>
+        <p class="rl-designed">Designed by José Antonio in Valencia.</p>
+        <p class="ft-made">HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a></p>
+        <div class="rl-foot"><span class="rl-bar" aria-hidden="true"></span><span class="rl-sn">S/N <b id="ft-sn">JASS-2026</b></span><span class="rl-upd"><span id="ft-upd-l">última actualización</span> <b id="ft-upd">—</b></span></div>
+        <p class="rl-copy">© 2026 José Antonio Sancho Selma</p>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -1603,7 +1699,8 @@
 <script src="/vendor/ScrollTrigger.min.js"></script>
 <script src="/vendor/lenis.min.js"></script>
 <script type="module" src="/vendor/lab3d.js"></script>
-<script>
+<script>window.TL_MODE="archive"; /* trayectoria 3D: "archive" = archivador · "board" = placa base */
+
 /* =================== DATOS: edita aquí =================== */
 const PROJECTS = [
   { id:"teleport", host:"bastion01", title:"Bastión SSH con Teleport",
@@ -1798,7 +1895,7 @@ const STATIC = [
  [".contact > div > p:not(.path)","Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.","If you're looking for a systems or cybersecurity intern, write to me. I reply the same day."],
  ["#copy-mail small",EMAIL+" · copiar",EMAIL+" · copy"],
  [".links a[href$='.pdf']","<span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small>","<span>Résumé</span><small>PDF · or press Ctrl+P on this page</small>",1],
- ["footer .wrap span:last-child",'HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Hand-written HTML, CSS and JS · self-hosted three.js, GSAP and Lenis · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
+ ["footer .ft-made",'HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Hand-written HTML, CSS and JS · self-hosted three.js, GSAP and Lenis · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
  ["#dlg-close","Cerrar","Close"],["#hello-x","Cerrar","Close"],["#hello code","conexión entrante","incoming connection"]
 ];
 
@@ -2072,9 +2169,10 @@ function fillProject(p){ const lp=L(p);
   $("#dg").appendChild(flowSVG(lp.flow,p.dir,t("archPrefix")+lp.flow.map(f=>f[0]).join(", ")));
 }
 function openProject(p){ curProj=p; fillProject(p); if(!dlg.open) dlg.showModal(); try{history.replaceState(null,"","#"+p.id)}catch(e){} }
-$("#dlg-close").onclick=()=>dlg.close();
-dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
-dlg.addEventListener("close",()=>{ curProj=null; try{history.replaceState(null,"",location.pathname+location.search)}catch(e){} });
+$("#dlg-close").onclick=()=>closeDlg();
+dlg.addEventListener("click",e=>{ if(e.target===dlg) closeDlg(); });
+dlg.addEventListener("cancel",e=>{ if(dlg.classList.contains("zoom")){ e.preventDefault(); closeDlg(); } });
+dlg.addEventListener("close",()=>{ if(dlgFocus){ dlgFocus=false; const L=window.LAB; if(L&&L.pr&&L.pr.unfocus) setTimeout(()=>L.pr.unfocus(),120); } curProj=null; try{history.replaceState(null,"",location.pathname+location.search)}catch(e){} });
 
 /* =================== despliegue =================== */
 function drawPipe(){
@@ -2092,6 +2190,10 @@ function drawPipe(){
   el("text",{x:320,y:250,"text-anchor":"middle",fill:C.muted,"font-family":"Geist,sans-serif","font-size":13},s).textContent=t("pipeFoot");
 }
 const LIVE={commit:null,commitState:"checking"};
+window.footStamp=footStamp; function footStamp(){ const en=LANG==="en", d=LIVE.commit?new Date(LIVE.commit.date):new Date(document.lastModified), u=$("#ft-upd"), sn=$("#ft-sn"), l=$("#ft-upd-l"); if(!u) return;
+  u.textContent=isNaN(d)?"—":d.toLocaleDateString(en?"en-GB":"es-ES",{day:"2-digit",month:"short",year:"numeric"}); if(l) l.textContent=en?"last update":"última actualización";
+  if(sn) sn.textContent="JASS-"+(LIVE.commit?LIVE.commit.sha.toUpperCase():(isNaN(d)?"2026":d.toISOString().slice(0,10).replace(/-/g,""))); }
+document.addEventListener("DOMContentLoaded",footStamp);
 function fillLive(){
   const proto=location.protocol==="https:", n=performance.getEntriesByType("navigation")[0];
   const ago=d=>{ const s=(Date.now()-d)/1000, a=t("ago"); if(s<3600) return a[0](Math.max(1,Math.round(s/60))); if(s<86400) return a[1](Math.round(s/3600)); return a[2](Math.round(s/86400)); };
@@ -2103,7 +2205,7 @@ function fillLive(){
 addEventListener("load",()=>setTimeout(fillLive,60));
 try{
   fetch("https://api.github.com/repos/jasanchoselma/Portfolio/commits?per_page=1").then(r=>r.ok?r.json():Promise.reject())
-    .then(j=>{ LIVE.commit={date:j[0].commit.author.date,sha:j[0].sha.slice(0,7)}; fillLive(); })
+    .then(j=>{ LIVE.commit={date:j[0].commit.author.date,sha:j[0].sha.slice(0,7)}; fillLive(); footStamp(); })
     .catch(()=>{ LIVE.commitState="na"; fillLive(); });
 }catch(e){ LIVE.commitState="na"; }
 
@@ -2480,10 +2582,19 @@ function fillProject(p){
   $("#dlg-body").querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>swapProject(P(b.dataset.go)));
 }
 function swapProject(p){ curProj=p; const b=$("#dlg-body"); b.classList.remove("swap"); void b.offsetWidth; fillProject(p); b.classList.add("swap"); dlg.scrollTop=0; try{history.replaceState(null,"","#"+p.id)}catch(e){} }
+/* la ficha nace del armario del proyecto: primero se abre en 3D y luego la ventana crece desde él (y al cerrar vuelve) */
+let dlgFocus=false;
+function prStageOn(){ const L=window.LAB, st=$("#pr-stage"); if(!L||!L.pr||!L.pr.focus||!st||reduce) return false; const r=st.getBoundingClientRect(); return r.bottom>innerHeight*.25 && r.top<innerHeight*.75; }
+function showDlg(p,org){ curProj=p; fillProject(p); if(org){ dlg.style.setProperty("--ox",org.x+"px"); dlg.style.setProperty("--oy",org.y+"px"); dlg.classList.add("zoom"); } else dlg.classList.remove("zoom");
+  dlg.showModal(); dlg.scrollTop=0; try{history.replaceState(null,"","#"+p.id)}catch(e){} }
 function openProject(p){
-  if(dlg.open){ swapProject(p); return; }
-  curtain(`open ${t("projPath")}${p.id}.md`,()=>{ curProj=p; fillProject(p); dlg.showModal(); dlg.scrollTop=0; try{history.replaceState(null,"","#"+p.id)}catch(e){} });
+  if(dlg.open){ swapProject(p); const L=window.LAB; if(dlgFocus&&L&&L.pr) L.pr.focus(PROJECTS.indexOf(p)); return; }
+  if(prStageOn()){ const L=window.LAB, i=PROJECTS.indexOf(p); dlgFocus=true; L.pr.focus(i); if(window.prShow) window.prShow(i,false);
+    setTimeout(()=>{ const o=L.pr.screenOf(i); showDlg(p,o&&{x:o.x-(innerWidth-Math.min(1060,innerWidth-32))/2,y:o.y-24}); },950); return; }
+  curtain(`open ${t("projPath")}${p.id}.md`,()=>showDlg(p,null));
 }
+function closeDlg(){ if(!dlg.open||dlg.classList.contains("closing")) return; if(!dlg.classList.contains("zoom")){ dlg.close(); return; }
+  dlg.classList.add("closing"); setTimeout(()=>{ dlg.classList.remove("closing"); dlg.close(); },340); }
 dlg.addEventListener("keydown",e=>{ if(!curProj) return; const i=PROJECTS.indexOf(curProj);
   if(e.key==="ArrowRight"){ e.preventDefault(); swapProject(PROJECTS[(i+1)%PROJECTS.length]); }
   if(e.key==="ArrowLeft"){ e.preventDefault(); swapProject(PROJECTS[(i-1+PROJECTS.length)%PROJECTS.length]); } });
@@ -3324,11 +3435,12 @@ function rkPanel(i){
   const c = STACK[i], en = LANG === "en", panel = $("#rk-panel"); if(!panel) return;
   panel.style.setProperty("--c", c.color);
   panel.innerHTML = `<div class="scp">
-    <div class="scp-top"><span class="scp-ico">${ICON(c.icon)}</span><div><small>srv-0${i + 1} · ${c.path}</small><small>${c.items.length} ${en ? "modules" : "módulos"}</small></div><span class="au-st pass">online</span></div>
+    <div class="scp-top"><span class="scp-ico">${ICON(c.icon)}</span><div class="scp-plate"><small><b>SRV-0${i + 1}</b> · ${c.path}</small><small>${c.items.length} ${en ? "modules" : "módulos"} · 3U</small></div><span class="au-st pass">online</span></div>
     <h3>${esc(c.name[LANG])}</h3><p>${esc(STACK_DESC[c.k][LANG])}</p>
     <div class="rk3-mods">${c.items.map((it, j) => `<div style="--j:${j}"><i></i><span>${esc(tx(it))}</span></div>`).join("")}</div>
     <div class="sk-use"><span class="scp-lbl">${en ? "used in" : "usado en"} →</span>${c.use.map(id => `<button type="button" data-p="${id}">${esc(P(id).host)}</button>`).join("")}</div>
-    <div class="scp-act"><span class="scp-n">${String(i + 1).padStart(2, "0")}/${String(STACK.length).padStart(2, "0")}</span><button type="button" class="scp-nav" id="rk-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="rk-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
+    <div class="scp-act"><span class="scp-n"><b>${String(i + 1).padStart(2, "0")}</b>/${String(STACK.length).padStart(2, "0")}</span><button type="button" class="scp-nav" id="rk-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="rk-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div>
+    <div class="scp-face" aria-hidden="true"><i class="led"></i><i class="led a"></i><span class="scp-vent"></span><span class="scp-badge">JASANCHO SYSTEM/87</span></div></div>`;
   panel.querySelectorAll("[data-p]").forEach(b => b.onclick = () => openProject(P(b.dataset.p)));
   $("#rk-prev").onclick = () => { rkUser3 = true; rkShow3((i - 1 + STACK.length) % STACK.length); };
   $("#rk-next").onclick = () => { rkUser3 = true; rkShow3((i + 1) % STACK.length); };
@@ -3344,7 +3456,9 @@ function renderTimeline(){
   $("#tr-bio").innerHTML = en ? "<p>I started in health sciences and ended up in systems. What hooks me is understanding how every piece fits and leaving it running on its own.</p><p>Before ASIR I tutored students and worked with customers. That gave me something that matters a lot in support: explaining things patiently to non-technical people.</p>"
     : "<p>Empecé por las ciencias de la salud y acabé en sistemas. Lo que me engancha es entender cómo encaja cada pieza y dejarla funcionando sola.</p><p>Antes de ASIR di clases particulares y trabajé de cara al público. De ahí me viene algo que en soporte cuenta mucho: explicar las cosas con paciencia a quien no es técnico.</p>";
   $("#tr-chips").innerHTML = (en ? ["Valencia, Spain", "Driving licence", "Spanish · Valencian C1 · English B2", "Available Mar 2027"] : ["Valencia", "Carnet B", "Español · Valenciano C1 · Inglés B2", "Disponible mar 2027"]).map(x => `<span><i></i>${esc(x)}</span>`).join("");
-  const ld = $("#tr-lead"); if(ld) ld.textContent = en ? "My path, wired like a motherboard: every stage is a chip and the signal runs through them in order. The empty socket is waiting for my internship." : "Mi recorrido, cableado como una placa base: cada etapa es un chip y la señal pasa por todas en orden. El zócalo vacío espera a mi FCT.";
+  const ld = $("#tr-lead"); if(ld) ld.textContent = window.TL_MODE === "board"
+    ? (en ? "My path, wired like a motherboard: every stage is a chip and the signal runs through them in order. The empty socket is waiting for my internship." : "Mi recorrido, cableado como una placa base: cada etapa es un chip y la señal pasa por todas en orden. El zócalo vacío espera a mi FCT.")
+    : (en ? "My path, filed away: every stage has its own drawer and its file. Pick one and it slides out. The last drawer is still empty, saved for my internship." : "Mi recorrido, archivado: cada etapa tiene su cajón y su expediente. Elige uno y el cajón se abre. El último sigue vacío, reservado para mi FCT.");
   const lab = LABX(); if(lab && lab.tl) lab.tl.relabel();
   tlShow(tlSel, false);
   clearInterval(tlTimer); if(!reduce) tlTimer = setInterval(() => { if(!tlHold && !document.hidden && isVisible($("#tl-stage"))) tlShow((tlSel + 1) % TIMELINE.length); }, 6500);
@@ -3359,7 +3473,7 @@ function tlShow(i, fly = true){
   const col = TL_COLORS[e.type]; panel.style.setProperty("--c", col);
   const order = TIMELINE.length - i;
   panel.innerHTML = `<div class="scp">
-    <div class="scp-top"><span class="scp-ico">${ICON(TL_ICON[e.type])}</span><div><small>chip JA-${String(order).padStart(2, "0")}</small><small>${esc(tx(e.date))}</small></div><span class="au-st" style="color:${col};border-color:${col}55;background:${col}12">${esc(TL_LABEL[e.type][LANG])}</span></div>
+    <div class="scp-top"><span class="scp-ico">${ICON(TL_ICON[e.type])}</span><div><small>${window.TL_MODE === "board" ? "chip JA-" : (en ? "file " : "exp. ")}${String(order).padStart(2, "0")}</small><small>${esc(tx(e.date))}</small></div><span class="au-st" style="color:${col};border-color:${col}55;background:${col}12">${esc(TL_LABEL[e.type][LANG])}</span></div>
     <h3 id="tl-h"></h3><p>${esc(tx(e.sub))}</p>${extra}
     <div class="tl-dots">${TIMELINE.map((x, k) => `<button type="button" data-i="${k}" style="--c:${TL_COLORS[x.type]}" aria-pressed="${k === i}" aria-label="${esc(tx(x.title))}"></button>`).reverse().join("")}</div>
     <div class="scp-act"><span class="scp-n">${order}/${TIMELINE.length}</span><button type="button" class="scp-nav" id="tl-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="tl-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div></div>`;
@@ -3458,7 +3572,7 @@ function stageCaps(){
     "pr-stage":[en ? "room-01 · 7 racks" : "sala-01 · 7 racks", en ? "all online" : "todo en línea", en ? "click a rack to open it" : "pulsa un rack para abrirlo"],
     "au-stage":[en ? "audit room · 12 checks" : "sala de auditoría · 12 checks", en ? "live" : "en directo", en ? "every object is a check · click it" : "cada objeto es una comprobación · púlsalo"],
     "rk-stage":[en ? "rack-01 · 6 servers" : "rack-01 · 6 servidores", "online", en ? "click a server to pull it out" : "pulsa un servidor para sacarlo"],
-    "tl-stage":[en ? "motherboard · 6 chips" : "placa base · 6 chips", en ? "signal on" : "señal activa", en ? "click a chip to read it" : "pulsa un chip para leerlo"],
+    "tl-stage":window.TL_MODE === "board" ? [en ? "motherboard · 6 chips" : "placa base · 6 chips", en ? "signal on" : "señal activa", en ? "click a chip to read it" : "pulsa un chip para leerlo"] : [en ? "archive · 6 drawers" : "archivo · 6 cajones", en ? "indexing" : "indexando", en ? "click a drawer to open it" : "pulsa un cajón para abrirlo"],
     "dp-stage":[en ? "request path · 4 hops" : "ruta de la petición · 4 saltos", "HTTPS", en ? "live from your browser" : "en directo desde tu navegador"]
   };
   Object.entries(C).forEach(([id, [a, b, c]]) => { const el = document.getElementById(id); if(!el) return; let cap = el.querySelector(".stage-cap");
@@ -3466,7 +3580,7 @@ function stageCaps(){
     cap.innerHTML = `${esc(a)} <b>${esc(b)}</b> <span>· ${esc(c)}</span>`; });
 }
 /* =================== cambio de idioma =================== */
-function setLang(l, save){
+function setLang(l, save){ setTimeout(()=>window.footStamp&&footStamp(),0);
   LANG=l; document.documentElement.lang=l; document.title=t("title");
   STATIC.forEach(([sel,es,en,html])=>{ const n=document.querySelector(sel); if(!n) return; const v=l==="en"?en:es; if(html) n.innerHTML=v; else n.textContent=v; });
   const b=$("#btn-lang"); b.textContent=t("langBtn"); b.setAttribute("aria-label",t("langLabel")); b.title=t("langLabel");
