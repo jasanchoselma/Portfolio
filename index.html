@@ -1250,6 +1250,68 @@
   }
   @media (min-width:1041px) and (max-width:1320px){ #hero-stage{margin:-30px -40px -10px -20px!important} }
   #hero-stage .l3d.hn>b{font-size:11.5px;padding:4px 10px;border-radius:999px;letter-spacing:.01em}
+  /* ===== consola SOC bajo la portada: a juego con la plataforma 3D =====
+     aluminio grafito, perfil cromado, tira LED azul como la de la plataforma y pantalla de fósforo verde */
+  .map .kpis,.map .syslog,.map .map-foot{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .map .kpis{position:relative;border:1px solid rgba(255,255,255,.09)!important;border-bottom:0!important;border-radius:20px 20px 0 0;
+    background:linear-gradient(180deg,#24262B 0%,#191A1E 100%)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.6);overflow:hidden}
+  /* tira LED superior con un destello que la recorre */
+  .map .kpis::before{content:"";position:absolute;left:18px;right:18px;top:0;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,transparent,rgba(41,151,255,.25) 12%,rgba(41,151,255,.25) 88%,transparent);box-shadow:0 0 14px rgba(41,151,255,.45)}
+  .map .kpis::after{content:"";position:absolute;top:0;left:0;width:140px;height:2px;background:linear-gradient(90deg,transparent,#8CC8FF,transparent);
+    filter:drop-shadow(0 0 6px #2997FF);animation:ledSweep 5.5s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes ledSweep{0%{transform:translateX(-160px)}60%,100%{transform:translateX(calc(100vw))}}
+  .map.alarm .kpis::before{background:linear-gradient(90deg,transparent,rgba(255,92,122,.5) 12%,rgba(255,92,122,.5) 88%,transparent);box-shadow:0 0 16px rgba(255,92,122,.6)}
+  .map.alarm .kpis::after{background:linear-gradient(90deg,transparent,#FF9BAE,transparent);animation-duration:1.6s}
+  .map .kpis>div{padding:14px 18px 13px 34px;border-right:0;box-shadow:inset -1px 0 0 rgba(0,0,0,.55),inset -2px 0 0 rgba(255,255,255,.05)}
+  .map .kpis>div:last-child{box-shadow:none}
+  .map .kpis span{font:600 9.5px/1.2 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#7D828C}
+  .map .kpis b{font:600 22px/1.25 var(--disp);letter-spacing:-.02em;color:#F5F5F7;margin-top:3px}
+  .map .kpis b.flash{color:#FF6B85}
+  /* pilotos de estado: los mismos LED de los equipos 3D */
+  .map .kpis .lamp{position:absolute;left:16px;top:17px;width:7px;height:7px;border-radius:50%;background:#3DDC84;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 8px #3DDC84;animation:lampBlink 2.4s steps(1) infinite}
+  .map .kpis .k-ev .lamp{background:#2997FF;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 8px #2997FF;animation-duration:.9s}
+  .map .kpis .k-bl .lamp{background:#FFB547;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 8px #FFB547;animation:none;opacity:.55}
+  .map .kpis .k-bl.hit .lamp{animation:lampHit .35s ease-out}
+  .map .kpis .k-mt .lamp{background:#8E8E93;box-shadow:0 0 0 2px rgba(0,0,0,.45);animation:none}
+  .map.alarm .kpis .k-up .lamp{background:#FF5C7A;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 10px #FF5C7A;animation-duration:.5s}
+  @keyframes lampBlink{0%{opacity:1}92%{opacity:.35}}
+  @keyframes lampHit{0%{opacity:1;transform:scale(1.5)}100%{opacity:.55;transform:scale(1)}}
+  .map .kpis svg{right:16px;bottom:15px;width:70px;height:24px;overflow:visible}
+  /* vúmetro de bloqueos y barra de disponibilidad */
+  .map .kpis .segs{position:absolute;right:16px;bottom:18px;display:flex;gap:2px;font-style:normal}
+  .map .kpis .segs i{width:3px;height:12px;border-radius:1px;background:rgba(255,181,71,.13);transition:background .5s}
+  .map .kpis .segs i.on{background:#FFB547;box-shadow:0 0 5px rgba(255,181,71,.7);transition:none}
+  .map .kpis .bar{position:absolute;left:34px;right:18px;bottom:9px;height:3px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+  .map .kpis .bar i{position:absolute;inset:0;transform-origin:left;background:linear-gradient(90deg,#1F7A4D,#3DDC84);box-shadow:0 0 8px rgba(61,220,132,.6);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+  .map .kpis .bar i.bad{background:linear-gradient(90deg,#7A1F33,#FF5C7A)}
+  /* registro: pantalla de fósforo como los CRT de la escena */
+  .map .syslog{margin:0 -14px!important;border-left:1px solid rgba(255,255,255,.09)!important;border-right:1px solid rgba(255,255,255,.09)!important;
+    background:#191A1E!important;border-top:0}
+  .map .syslog::before{inset:12px 12px 14px;height:auto;border-radius:12px;z-index:2;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px),radial-gradient(120% 140% at 50% 50%,transparent 55%,rgba(0,0,0,.55) 100%);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),inset 0 2px 10px rgba(0,0,0,.8)}
+  .map .syslog::after{content:"▌";position:absolute;right:28px;bottom:22px;color:#7CFFA8;text-shadow:0 0 6px #7CFFA8;font:400 11px var(--mono);animation:lampBlink 1s steps(1) infinite;z-index:3}
+  .map .syslog>div{position:relative;z-index:1;margin:0 2px;padding:0 14px;font:400 11px/1.95 var(--mono);color:rgba(124,255,168,.62);text-shadow:0 0 5px rgba(124,255,168,.25)}
+  .map .syslog>div:first-child{margin-top:4px;opacity:.55}
+  .map .syslog>div:last-child{animation:phos 1.4s ease-out}
+  .map .syslog{background-image:linear-gradient(#0A110D,#0A110D)!important;background-clip:content-box!important;padding:12px 12px 14px!important;height:168px!important}
+  .map .syslog .ts{color:rgba(124,255,168,.38)} .map .syslog .h{color:#B8FFD0;font-weight:600}
+  .map .syslog .crit{color:#FF6B85;text-shadow:0 0 6px rgba(255,92,122,.5)} .map .syslog .okk{color:#7CFFA8;text-shadow:0 0 6px rgba(124,255,168,.55)} .map .syslog .wrn{color:#FFC46B;text-shadow:0 0 6px rgba(255,181,71,.45)}
+  @keyframes phos{0%{color:#EFFFF4;text-shadow:0 0 12px #7CFFA8;transform:translateY(4px);opacity:0}15%{opacity:1;transform:none}100%{}}
+  /* pie: leyenda con pilotos y placa de resumen */
+  .map .map-foot{border:1px solid rgba(255,255,255,.09)!important;border-top:0!important;border-radius:0 0 20px 20px;background:linear-gradient(180deg,#191A1E,#141518)!important;
+    box-shadow:inset 0 -1px 0 rgba(255,255,255,.05),0 30px 60px -30px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4);padding:4px 20px 14px!important;align-items:center}
+  .map .map-foot .lg span{display:inline-flex;align-items:center;letter-spacing:.06em;text-transform:uppercase;font-size:9.5px;color:#7D828C}
+  .map .map-foot i{width:7px;height:7px;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 7px currentColor}
+  .map .map-foot .lg span:nth-child(1) i{color:#3DDC84} .map .map-foot .lg span:nth-child(2) i{color:#FFB547} .map .map-foot .lg span:nth-child(3) i{color:#FF5C7A}
+  .map #map-sum{font:500 10.5px var(--mono);color:#A1A6AF;padding:5px 11px;border-radius:999px;background:#0E0F12;box-shadow:inset 0 1px 2px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.06)}
+  .map.alarm #map-sum{color:#FF8DA1}
+  .map.alarm .kpis,.map.alarm .syslog,.map.alarm .map-foot{border-color:rgba(255,92,122,.35)!important}
+  @media (max-width:700px){ .map .kpis>div{padding:11px 12px 11px 28px} .map .kpis .lamp{left:12px;top:14px} .map .kpis b{font-size:18px}
+    .map .kpis svg,.map .kpis .segs{display:none} .map .kpis .bar{left:28px;right:12px} .map .syslog>div{font-size:9.5px;padding:0 10px} .map .syslog::after{left:24px} }
+  @media (prefers-reduced-motion:reduce){ .map .kpis::after,.map .kpis .lamp,.map .syslog::after,.map .syslog>div:last-child{animation:none} }
 </style>
 </head>
 <body>
@@ -1305,10 +1367,10 @@
       <svg id="net" viewBox="0 0 700 480" role="group" aria-label="Mapa de red con mis proyectos. Pulsa un nodo para abrir su ficha."></svg>
       <div class="tip" id="tip"></div>
       <div class="kpis" aria-hidden="true">
-        <div><span id="kl-ev">eventos/min</span><b id="k-ev">0</b><svg viewBox="0 0 60 18" preserveAspectRatio="none"><polyline id="k-line" fill="none" stroke="#52A5FF" stroke-width="1.3" points=""/></svg></div>
-        <div><span id="kl-bl">ataques bloqueados</span><b id="k-bl">0</b></div>
-        <div><span id="kl-up">disponibilidad</span><b id="k-up">100%</b></div>
-        <div><span id="kl-mt">MTTR medio</span><b id="k-mt">—</b></div>
+        <div class="k-ev"><i class="lamp"></i><span id="kl-ev">eventos/min</span><b id="k-ev">0</b><svg viewBox="0 0 60 18" preserveAspectRatio="none"><defs><linearGradient id="k-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2997FF" stop-opacity=".45"/><stop offset="1" stop-color="#2997FF" stop-opacity="0"/></linearGradient></defs><polygon id="k-area" fill="url(#k-grad)" points=""/><polyline id="k-line" fill="none" stroke="#5AB0FF" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke" points=""/></svg></div>
+        <div class="k-bl"><i class="lamp"></i><span id="kl-bl">ataques bloqueados</span><b id="k-bl">0</b><em class="segs"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></em></div>
+        <div class="k-up"><i class="lamp"></i><span id="kl-up">disponibilidad</span><b id="k-up">100%</b><em class="bar"><i id="k-upbar"></i></em></div>
+        <div class="k-mt"><i class="lamp"></i><span id="kl-mt">MTTR medio</span><b id="k-mt">—</b></div>
       </div>
       <div class="syslog" id="syslog" aria-label="Registro de eventos simulado" role="log" aria-live="off"></div>
       <div class="map-foot">
@@ -2076,7 +2138,9 @@ function drawAudit(){
     $("#k-mt").textContent=incDur.length?(incDur.reduce((a,b)=>a+b,0)/incDur.length).toFixed(1)+" s":"—";
     if(nowMs-binT>5000){ bins.push(0); bins.shift(); binT=nowMs; }
     const mx=Math.max(3,...bins);
-    $("#k-line").setAttribute("points",bins.map((v,i)=>`${(i/(bins.length-1)*60).toFixed(1)},${(17-v/mx*15).toFixed(1)}`).join(" "));
+    const pts=bins.map((v,i)=>`${(i/(bins.length-1)*60).toFixed(1)},${(17-v/mx*15).toFixed(1)}`).join(" ");
+    $("#k-line").setAttribute("points",pts); $("#k-area").setAttribute("points",`0,18 ${pts} 60,18`);
+    const ub=$("#k-upbar"); if(ub){ ub.style.transform=`scaleX(${Math.max(0,Math.min(1,(up-99)/1))})`; ub.classList.toggle("bad",!!incStart); }
   }
   setInterval(kpis,1000);
 
@@ -2124,6 +2188,7 @@ function drawAudit(){
   function hitFW(){
     blocked++; ring(FW.x,FW.y,C.alert,16,50,650,1.6); floatText(FW.x+(Math.random()*50-25),FW.y-28,"DROP",C.alert);
     const kb=$("#k-bl"); kb.classList.add("flash"); setTimeout(()=>kb.classList.remove("flash"),250);
+    { const sg=document.querySelectorAll(".k-bl .segs i"); const kc=kb.parentNode; kc.classList.remove("hit"); void kc.offsetWidth; kc.classList.add("hit"); sg.forEach((e,i)=>{ e.classList.toggle("on",Math.random()<.35+.4*(i/sg.length)); }); }
     if(Math.random()<.4&&window.sysAdd) window.sysAdd("fw01",`nftables: DROP IN=eth0 SRC=${pickIP()} DPT=${[22,23,445,3389,5900][Math.floor(Math.random()*5)]} PROTO=TCP`);
     else window.kpiEvent();
   }
@@ -2676,7 +2741,7 @@ function buildMarquees(){
   const mk=(id,words,cls,before)=>{ let m=document.getElementById(id);
     if(!m){ m=document.createElement("div"); m.id=id; m.className="mq "+(cls||""); m.setAttribute("aria-hidden","true"); before.parentNode.insertBefore(m,before); }
     const s=`<span>${mqHTML(words)}</span>`; m.innerHTML=`<div class="mq-track">${s+s+s+s}</div>`; };
-  mk("mq1",W1,"",document.getElementById("proyectos"));
+  /* banda de tecnologías retirada (v22) */ void mk; void W1;
 }
 function decorateHeads(){
   document.querySelectorAll("section.block").forEach((s,i)=>{
