@@ -1643,13 +1643,109 @@
   @media (prefers-reduced-motion:reduce){ .dk-win{animation:none} .desk{transition:none} }
   .dk-alert[hidden]{display:none}
   .dk-right{display:none}
-  html.desk-on main,html.desk-on footer{visibility:hidden}
+  html.desk-on main,html.desk-on body>footer{visibility:hidden}
   .dk-stats>div{display:flex;flex-direction:column;gap:1px} .dk-stats b{font:700 20px/1.1 var(--disp)!important;letter-spacing:-.02em} .dk-stats span{font:500 11px var(--mono)!important;color:#555!important}
   @media (max-width:860px){ .dk-menu .mi:not(.b),.dk-st{display:none} .dk-menu{gap:12px} }
   .win-close{margin-right:0} @media (min-width:1041px){ .win-close{margin-right:-14px} }
   .desk{background:radial-gradient(ellipse at 50% 120%,rgba(41,151,255,.12),transparent 55%),radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.5)),repeating-conic-gradient(rgba(255,255,255,.035) 0 25%,transparent 0 50%) 0 0/4px 4px,rgba(10,10,12,.6)}
   /* la terminal se abre por encima del escritorio */
   html.desk-on .term{z-index:97}
+  /* ===================== v31 · escritorio: fondo, menús, lista y ventanas ===================== */
+  @media print{ .desk,.dk-off{display:none!important} }
+  /* fondo: la topología del laboratorio en líneas finas y un JA enorme */
+  .dk-wall{position:absolute;inset:28px 0 0;display:grid;place-items:center;pointer-events:none;overflow:hidden}
+  .dk-wall b{position:absolute;font:800 min(52vw,820px)/1 var(--disp);letter-spacing:-.08em;color:transparent;-webkit-text-stroke:1px rgba(41,151,255,.07);text-stroke:1px rgba(41,151,255,.07);transform:translateX(-4%)}
+  .dk-wall svg{position:relative;width:min(1000px,72vw);height:auto;transform:translateX(-6%)}
+  .dk-wall path{stroke:rgba(90,176,255,.22);stroke-width:1;fill:none;stroke-dasharray:4 5}
+  .dk-wall rect{fill:rgba(10,12,16,.6);stroke:rgba(90,176,255,.35);stroke-width:1}
+  .dk-wall .ld{fill:#3DDC84;opacity:.7} .dk-wall .pk{fill:#8CC8FF;opacity:.8;filter:drop-shadow(0 0 3px #2997FF)}
+  .dk-wall text{font:500 9px var(--mono);fill:rgba(160,200,255,.32);text-anchor:middle}
+  /* menús desplegables */
+  .dk-menu{gap:4px;padding:0 10px}
+  .dk-mn{position:relative;height:100%;display:flex;align-items:center}
+  .dk-mn .mi{all:unset;height:100%;display:flex;align-items:center;padding:0 10px;font:500 13px var(--sans);color:#111;cursor:default}
+  .dk-mn.b .mi{font-weight:700}
+  .dk-mn.open .mi,.dk-mn .mi:focus-visible{background:#111;color:#fff}
+  .dk-mn.open .dk-logo{box-shadow:0 0 0 2px #fff}
+  .dk-dd{display:none;position:absolute;left:0;top:28px;min-width:230px;padding:4px 0;background:#F4F4F5;border:1px solid #111;box-shadow:3px 3px 0 rgba(0,0,0,.85);z-index:20}
+  .dk-mn.open .dk-dd{display:block}
+  .dk-dd button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:8px;padding:4px 14px 4px 8px;font:500 13px var(--sans);color:#111;cursor:default}
+  .dk-dd button:hover,.dk-dd button:focus-visible{background:#111;color:#fff}
+  .dk-dd .ck{width:12px;font-style:normal;text-align:center}
+  .dk-dd button.on .ck::before{content:"✓"}
+  .dk-dd kbd{margin-left:auto;font:500 12px var(--sans);color:inherit;opacity:.65;background:none;border:0;padding:0}
+  .dk-dd hr{border:0;border-top:1px dotted #888;margin:4px 0}
+  .dk-menu .dk-st,.dk-menu .dk-lang,.dk-menu .dk-cv,.dk-menu .dk-clock{margin-left:10px}
+  .desk.no-note .dk-note{display:none}
+  /* vista como lista */
+  .dk-list{display:none;left:auto;right:24px;top:52px;transform:none;width:min(640px,calc(100vw - 48px))}
+  .desk.v-list .dk-list{display:block} .desk.v-list .dk-icons{display:none}
+  .dk-lb{background:#fff;border-top:1px solid #111;margin-top:2px;max-height:min(520px,calc(100vh - 170px));overflow:auto}
+  .dk-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:1.6fr 1fr .8fr .9fr;gap:10px;align-items:center;padding:5px 12px;font:500 12.5px var(--sans);color:#111;cursor:default}
+  .dk-row:nth-child(odd):not(.dk-hd){background:#F6F7F9}
+  .dk-row.dk-hd{position:sticky;top:0;background:#E8E8EB;border-bottom:1px solid #111;font-weight:700;font-size:11.5px}
+  .dk-row .nm{display:flex;align-items:center;gap:8px;font-weight:600} .dk-row svg{width:22px;height:22px;flex:none}
+  .dk-row span:not(.nm){color:#444;font-size:12px}
+  .dk-row.on{background:#0071E3!important;color:#fff} .dk-row.on span{color:#fff!important}
+  /* ventanas de carpeta (Finder) */
+  .dk-fd{top:96px;left:36%;transform:none;width:min(620px,calc(100vw - 40px));animation:none}
+  .dk-fdb{background:#fff;border-top:1px solid #111;margin-top:2px;padding:12px 14px 6px;max-height:min(440px,calc(100vh - 260px));overflow:auto}
+  .dk-fdh{margin:0 0 10px;font:500 11.5px var(--sans);color:#555}
+  .dk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px}
+  .dk-it{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:8px;text-align:center;cursor:default;min-width:0}
+  .dk-it svg{width:44px;height:44px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+  .dk-it span{font:600 12px/1.25 var(--sans);color:#111;padding:1px 5px;border-radius:4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dk-it small{font:400 10.5px/1.25 var(--sans);color:#666;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .dk-it:hover{background:#F0F4FA}
+  .dk-it.on span,.dk-it:focus-visible span{background:#0071E3;color:#fff}
+  .dk-it:focus-visible{outline:none}
+  .dk-fdf{display:flex;justify-content:flex-end;padding:10px 14px;border-top:1px solid #111;background:#ECECEE}
+  .dk-fdf .btn{font:600 13px var(--sans);border-radius:8px;padding:7px 14px;cursor:pointer;border:2px solid #111;background:#0071E3;color:#fff;box-shadow:0 0 0 2px #ECECEE,0 0 0 3.5px #111}
+  .dk-sm{left:50%!important;top:30%!important;transform:translateX(-50%)!important;width:min(420px,calc(100vw - 32px))}
+  .dk-ab{display:flex;gap:16px;align-items:flex-start} .dk-ab h2{margin:0 0 6px;font:700 20px var(--disp)} .dk-ab p{margin:0 0 3px;font:400 13px var(--sans);color:#333} .dk-ab .dim{color:#888;margin-top:8px}
+  .dk-zm{cursor:pointer}
+  /* apagado y reinicio: la pantalla se cierra como un tubo */
+  .desk.crt-off{animation:crtOff .6s cubic-bezier(.6,0,.4,1) forwards}
+  @keyframes crtOff{0%{filter:brightness(1)}40%{transform:scaleY(.01);filter:brightness(3)}75%{transform:scale(.01,.01);filter:brightness(5)}100%{transform:scale(0,0);opacity:0}}
+  .dk-off{position:fixed;inset:0;z-index:120;background:#000;display:grid;place-items:center;animation:bdIn .4s ease .1s both}
+  .dk-offbox{background:#ECECEE;border:2px solid #111;box-shadow:4px 4px 0 #444;padding:20px 24px;text-align:center;max-width:min(420px,calc(100vw - 32px))}
+  .dk-offbox p{margin:0 0 14px;font:700 14px var(--sans);color:#111}
+  .dk-offbox button{font:700 13px var(--sans);background:#fff;border:2px solid #111;border-radius:8px;padding:5px 22px;box-shadow:0 0 0 2px #ECECEE,0 0 0 4px #111;cursor:pointer}
+  html.desk-on .toast{z-index:99}
+  @media (max-width:860px){
+    .dk-mn:not(.lg):not(.b){display:none} .dk-wall svg{width:120vw;transform:translate(-4%,-18%)} .dk-wall b{font-size:90vw}
+    .dk-fd,.dk-list{left:12px!important;right:12px!important;top:42px!important;width:auto} .dk-grid{grid-template-columns:repeat(3,1fr)} .dk-row{grid-template-columns:1.4fr 1fr;} .dk-row span:nth-child(3),.dk-row span:nth-child(4){display:none}
+    .dk-fdb{max-height:calc(100vh - 380px)} }
+  @media (prefers-reduced-motion:reduce){ .desk.crt-off{animation:none;opacity:0} }
+
+  /* ===================== v31 · terminal: Mac clásico en grafito con pantalla de fósforo ===================== */
+  .term{background:radial-gradient(ellipse at center,rgba(10,12,16,.55),rgba(0,0,0,.88))!important;backdrop-filter:none!important}
+  .term-win{position:relative;border:1px solid rgba(255,255,255,.12)!important;border-radius:18px!important;background:linear-gradient(180deg,#26282C,#18191C)!important;padding:0 14px 44px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 50px 120px -30px rgba(0,0,0,.95)!important;animation:winOpen .38s cubic-bezier(.2,.9,.25,1)!important}
+  .term-bar{position:relative;margin:0 -14px 12px;padding:0 14px!important;height:30px;border-bottom:1px solid rgba(0,0,0,.7)!important;color:#C7C9CE!important;font:600 11.5px var(--sans)!important;
+    background:linear-gradient(#202226,#202226) center/240px 100% no-repeat,repeating-linear-gradient(180deg,#2C2E33 0 1px,#1B1C1F 1px 3px);border-radius:18px 18px 0 0}
+  .term-bar .dots{gap:0!important} .term-bar .dots i{width:11px!important;height:11px!important;border-radius:0!important;background:#202226!important;border:1px solid #6E727A;box-shadow:0 0 0 2px #202226} .term-bar .dots i+i{display:none}
+  .term-bar>span:nth-child(2){background:#202226;flex:0 0 auto!important;margin:0 auto;padding:0 12px}
+  .term-bar button{font:500 11px var(--sans)!important;color:#E6E7EA!important;background:linear-gradient(180deg,#34363B,#232428)!important;border:0!important;border-radius:999px!important;padding:3px 11px!important;box-shadow:inset 0 -2px 0 #141517,inset 0 1px 0 rgba(255,255,255,.14)}
+  /* pantalla: fósforo verde con líneas de barrido y bisel */
+  .term-out,.term-in{background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px),#07120B!important;color:rgba(124,255,168,.86)!important;text-shadow:0 0 6px rgba(124,255,168,.3)}
+  .term-out{border-radius:14px 14px 0 0;box-shadow:inset 0 1px 0 rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.8);margin:0}
+  .term-in{border-radius:0 0 14px 14px;border-top:1px solid rgba(124,255,168,.12)!important;box-shadow:0 0 0 1px rgba(0,0,0,.8),0 10px 0 -2px #121316}
+  .term-in label{color:#B8FFD0!important} .term-in input{color:#E8FFF0!important;caret-color:#7CFFA8!important}
+  .term-out .tline{color:#E8FFF0!important}
+  .term .tp-u,.term .tc{color:#B8FFD0!important} .term .tp-d,.term .tv{color:#7CFFA8!important}
+  .term .tk,.term .tdir{color:#FFC46B!important;text-shadow:0 0 6px rgba(255,181,71,.4)}
+  .term-out .err{color:#FF8DA1!important;text-shadow:0 0 6px rgba(255,92,122,.4)} .term .tok{color:#7CFFA8!important} .term .twarn{color:#FFC46B!important} .term-out .dim{color:rgba(124,255,168,.5)!important}
+  .term-out::-webkit-scrollbar{width:8px} .term-out::-webkit-scrollbar-thumb{background:rgba(124,255,168,.25);border-radius:4px}
+  /* frontal del equipo bajo la pantalla */
+  .term-win::after{content:"SOC-SH 1.0  ·  JASANCHO";position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;justify-content:flex-end;padding:0 22px;
+    font:600 9px var(--mono);letter-spacing:.18em;color:#6E727A;border-radius:0 0 18px 18px;
+    background:radial-gradient(circle,#3DDC84 2.6px,transparent 3.2px) 22px 50%/8px 8px no-repeat,radial-gradient(circle,#FFB547 2.6px,transparent 3.2px) 36px 50%/8px 8px no-repeat,repeating-linear-gradient(90deg,#08090A 0 3px,transparent 3px 7px) 54px 50%/30% 10px no-repeat}
+  @media (max-width:700px){ .term-win{border-radius:0!important;padding:0 8px 40px} .term-bar{margin:0 -8px 8px;border-radius:0} .term-bar{background:repeating-linear-gradient(180deg,#2C2E33 0 1px,#1B1C1F 1px 3px)} }
+  .dk-row{height:auto} .dk-row span{text-shadow:none!important;background:none!important;padding:0!important;max-width:none!important;color:inherit;border-radius:0}
+  .dk-row .nm{color:#111} .dk-row.on .nm{color:#fff}
+  .dk-off{z-index:9999}
+  @media (max-width:860px){ .dk-mn .mi{display:flex!important} }
 </style>
 </head>
 <body>
@@ -3934,10 +4030,28 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   const T={
     es:{menu:["Archivo","Edición","Visualización","Especial"],hd:"JASANCHO HD",inicio:"Portada",proyectos:"Proyectos",despliegue:"Despliegue",auditoria:"Auditoría",stack:"Stack",trayectoria:"Trayectoria",contacto:"Contacto",cv:"CV.pdf",term:"Terminal",trash:"Papelera",
       readme:"Léeme — jasancho",items:n=>`${n} elementos`,free:"112 MB libres",open:"Abrir portfolio",projects:"Ver proyectos",note:"Doble clic en una carpeta para abrirla.<br>El botón □ de arriba a la izquierda te devuelve aquí.",noteTouch:"Toca una carpeta para abrirla.<br>El botón □ de arriba te devuelve aquí.",
-      trashT:"La Papelera está vacía.",trashP:"Aquí no tiro nada: cada práctica, incluso la que salió mal, acaba en el portfolio.",ok:"Aceptar",region:"Escritorio",back:"Volver al escritorio",lang:"EN"},
+      trashT:"La Papelera está vacía.",
+      mFile:[["open","Abrir portfolio","⌘O"],["print","Imprimir CV","⌘P"],["cvdl","Descargar CV",""],"-",["closew","Cerrar ventana","⌘W"]],
+      mEdit:[["mail","Copiar email","⌘C"],["link","Copiar enlace del portfolio",""],"-",["all","Seleccionar todo","⌘A"]],
+      mView:[["icons","como Iconos",""],["list","como Lista",""],"-",["note","Mostrar nota",""]],
+      mSpec:[["restart","Reiniciar…",""],["shutdown","Apagar…",""]],
+      mLogo:[["about","Acerca de este portfolio…",""]],
+      copied:"Copiado al portapapeles",colName:"Nombre",colDate:"Modificado",colSize:"Tamaño",colKind:"Clase",kFolder:"carpeta",kDisk:"disco",kDoc:"documento PDF",kApp:"aplicación",kTrash:"papelera",
+      openFull:"Abrir sección completa",offT:"Ya puedes apagar el ordenador con seguridad.",offOn:"Encender",aboutT:"Acerca de este portfolio",
+      aboutP:["Sistema: jasancho.com · versión 31","Hecho a mano: HTML, CSS y JavaScript","3D: three.js · animación: GSAP y Lenis","Alojado en GitHub Pages · HTTPS de Let's Encrypt"],
+      fd:{proyectos:"Doble clic en un proyecto para abrir su ficha.",stack:"Doble clic en un grupo para verlo en el rack.",trayectoria:"Doble clic en una etapa para abrir su cajón.",auditoria:"Doble clic en un archivo para leerlo.",despliegue:"Los archivos que forman esta web.",contacto:"Doble clic para escribirme o ver mis perfiles."},trashP:"Aquí no tiro nada: cada práctica, incluso la que salió mal, acaba en el portfolio.",ok:"Aceptar",region:"Escritorio",back:"Volver al escritorio",lang:"EN"},
     en:{menu:["File","Edit","View","Special"],hd:"JASANCHO HD",inicio:"Home",proyectos:"Projects",despliegue:"Deployment",auditoria:"Audit",stack:"Stack",trayectoria:"Background",contacto:"Contact",cv:"CV.pdf",term:"Terminal",trash:"Trash",
       readme:"Read Me — jasancho",items:n=>`${n} items`,free:"112 MB free",open:"Open portfolio",projects:"See projects",note:"Double-click a folder to open it.<br>The □ button at the top left brings you back here.",noteTouch:"Tap a folder to open it.<br>The □ button at the top brings you back here.",
-      trashT:"The Trash is empty.",trashP:"I don't throw anything away: every lab, even the one that went wrong, ends up in the portfolio.",ok:"OK",region:"Desktop",back:"Back to desktop",lang:"ES"}
+      trashT:"The Trash is empty.",
+      mFile:[["open","Open portfolio","⌘O"],["print","Print CV","⌘P"],["cvdl","Download CV",""],"-",["closew","Close window","⌘W"]],
+      mEdit:[["mail","Copy email","⌘C"],["link","Copy portfolio link",""],"-",["all","Select all","⌘A"]],
+      mView:[["icons","as Icons",""],["list","as List",""],"-",["note","Show note",""]],
+      mSpec:[["restart","Restart…",""],["shutdown","Shut down…",""]],
+      mLogo:[["about","About this portfolio…",""]],
+      copied:"Copied to clipboard",colName:"Name",colDate:"Modified",colSize:"Size",colKind:"Kind",kFolder:"folder",kDisk:"disk",kDoc:"PDF document",kApp:"application",kTrash:"trash",
+      openFull:"Open full section",offT:"It is now safe to switch off your computer.",offOn:"Power on",aboutT:"About this portfolio",
+      aboutP:["System: jasancho.com · version 31","Hand-made: HTML, CSS and JavaScript","3D: three.js · motion: GSAP and Lenis","Hosted on GitHub Pages · HTTPS by Let's Encrypt"],
+      fd:{proyectos:"Double-click a project to open its file.",stack:"Double-click a group to see it in the rack.",trayectoria:"Double-click a stage to open its drawer.",auditoria:"Double-click a file to read it.",despliegue:"The files that make up this site.",contacto:"Double-click to email me or see my profiles."},trashP:"I don't throw anything away: every lab, even the one that went wrong, ends up in the portfolio.",ok:"OK",region:"Desktop",back:"Back to desktop",lang:"ES"}
   };
   const LG=()=>typeof LANG!=="undefined"?LANG:"es"; const L=()=>T[LG()==="en"?"en":"es"];
   // emblemas dentro de las carpetas (iconos del propio sitio)
@@ -3954,6 +4068,12 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     term:`<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="5" width="34" height="32" rx="4" fill="#D9D1BC"/><rect x="11" y="9" width="26" height="19" rx="2.5" fill="#07120B"/><path d="M15 15l4 3-4 3M21 22h6" stroke="#7CFFA8" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="14" y="31" width="10" height="1.6" rx=".8" fill="#8C846E"/><rect x="12" y="38" width="24" height="5" rx="1.5" fill="#BFB69E"/></svg>`,
     trash:`<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="9" width="28" height="4" rx="1.5" fill="#C9CBCF"/><rect x="20" y="6" width="8" height="3" rx="1" fill="#C9CBCF"/><path d="M12 14h24l-2.2 28H14.2z" fill="#B5B7BB"/><g stroke="#7D8087" stroke-width="1.4"><path d="M18 18l.8 20M24 18v20M30 18l-.8 20"/></g></svg>`
   };
+  SVG.md=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 5h19l9 9v29H11z" fill="#F5F5F7"/><path d="M30 5v9h9" fill="#D5D6DA"/><path d="M11 5h19l9 9v29H11z" fill="none" stroke="#000" stroke-opacity=".3"/><g stroke="#A1A6AF" stroke-width="1.6"><path d="M15 20h18M15 24h18M15 28h14M15 32h16"/></g><rect x="13" y="36" width="13" height="6" rx="1.5" fill="#0071E3"/><text x="19.5" y="40.6" font-size="4.2" font-weight="700" fill="#fff" text-anchor="middle" font-family="-apple-system,Helvetica,Arial">MD</text></svg>`;
+  SVG.txt=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 5h19l9 9v29H11z" fill="#F5F5F7"/><path d="M30 5v9h9" fill="#D5D6DA"/><path d="M11 5h19l9 9v29H11z" fill="none" stroke="#000" stroke-opacity=".3"/><g stroke="#A1A6AF" stroke-width="1.6"><path d="M15 18h18M15 22h18M15 26h18M15 30h12M15 34h16"/></g></svg>`;
+  SVG.html=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M11 5h19l9 9v29H11z" fill="#F5F5F7"/><path d="M30 5v9h9" fill="#D5D6DA"/><path d="M11 5h19l9 9v29H11z" fill="none" stroke="#000" stroke-opacity=".3"/><path d="M19 22l-4 5 4 5M29 22l4 5-4 5M26 20l-4 14" stroke="#E5484D" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`;
+  SVG.link=`<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="5" fill="#F5F5F7" stroke="#000" stroke-opacity=".3"/><rect x="6" y="9" width="36" height="7" rx="3" fill="#D5D6DA"/><circle cx="24" cy="28" r="7" fill="none" stroke="#0071E3" stroke-width="2"/><path d="M17 28h14M24 21c3 3 3 11 0 14M24 21c-3 3-3 11 0 14" stroke="#0071E3" stroke-width="1.4" fill="none"/></svg>`;
+  SVG.mail=`<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="12" width="36" height="25" rx="3" fill="#F5F5F7" stroke="#000" stroke-opacity=".3"/><path d="M7 14l17 13 17-13" stroke="#0071E3" stroke-width="2" fill="none"/></svg>`;
+  const sub=(k)=>`<svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="sf-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ACFFF"/><stop offset="1" stop-color="#3A8FEF"/></linearGradient></defs><path d="M4 11.5A2.5 2.5 0 0 1 6.5 9H18l3.5 3.5H41.5A2.5 2.5 0 0 1 44 15v21.5a2.5 2.5 0 0 1-2.5 2.5h-35A2.5 2.5 0 0 1 4 36.5z" fill="url(#sf-${k})"/><path d="M4.5 17h39" stroke="#fff" stroke-opacity=".45"/></svg>`;
   const ICONS_DESK=[["inicio","hd"],["proyectos","folder"],["despliegue","folder"],["auditoria","folder"],["stack","folder"],["trayectoria","folder"],["contacto","folder"],["cv","cv"],["term","term"],["trash","trash"]];
 
   let desk=null, sel=null, clockT=null;
@@ -3963,7 +4083,8 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   function render(){
     const l=L(), role=$(".hero .role"), stats=$("#stats"), status=$(".hero .status");
     desk.setAttribute("aria-label",l.region);
-    desk.innerHTML=`<div class="dk-menu"><span class="dk-logo" aria-hidden="true">JA</span>${l.menu.map((m,i)=>`<span class="${i?"mi":"mi b"}" aria-hidden="true">${m}</span>`).join("")}
+    const mn=(id,label,items,cls="")=>`<div class="dk-mn ${cls}" data-m="${id}"><button type="button" class="mi" aria-haspopup="true" aria-expanded="false">${label}</button><div class="dk-dd" role="menu">${items.map(it=>it==="-"?'<hr>':`<button type="button" role="menuitem" data-cmd="${it[0]}"><i class="ck"></i>${it[1]}<kbd>${it[2]}</kbd></button>`).join("")}</div></div>`;
+    desk.innerHTML=`${wallpaper()}<div class="dk-menu">${mn("logo",'<span class="dk-logo">JA</span>',l.mLogo,"lg")}${mn("file",l.menu[0],l.mFile,"b")}${mn("edit",l.menu[1],l.mEdit)}${mn("view",l.menu[2],l.mView)}${mn("spec",l.menu[3],l.mSpec)}
         <span class="dk-sp"></span><span class="dk-st" aria-hidden="true"><i></i>soc · online</span><button type="button" class="dk-lang" id="dk-lang">${l.lang}</button><a class="dk-cv" href="cv-jose-antonio-sancho-selma.pdf">${l.cv}</a><span class="dk-clock" id="dk-clock"></span></div>
       <div class="dk-icons" role="list">${ICONS_DESK.map(iconHTML).join("")}</div>
       ${win("dk-readme",l.readme,`<div class="dk-info"><span>${l.items(7)}</span><span>${l.free}</span></div>
@@ -3972,15 +4093,104 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
           <div class="dk-status">${status?status.innerHTML:""}</div>
           <div class="dk-act"><button type="button" class="btn primary" data-open="inicio">${l.open} →</button><button type="button" class="btn" data-open="proyectos">${l.projects}</button></div></div>`)}
       <div class="dk-note" aria-hidden="true"><p>${TOUCH?l.noteTouch:l.note}</p></div>
+      ${listWin()}
       <div class="dk-alert" id="dk-alert" hidden role="alertdialog" aria-labelledby="dk-at"><svg viewBox="0 0 32 32" aria-hidden="true">${SVG.trash.replace(/<\/?svg[^>]*>/g,"")}</svg><div><b id="dk-at">${l.trashT}</b><p>${l.trashP}</p><button type="button" class="dk-ok">${l.ok}</button></div></div>`;
-    bind(); tick();
+    bind(); tick(); applyView(); menus();
+    Object.keys(openFd).forEach(k=>{ delete openFd[k]; });
   }
+  /* ---------- fondo de escritorio: la topología del laboratorio en líneas finas y un "JA" enorme ---------- */
+  function wallpaper(){ if(typeof NODES==="undefined") return ""; const N=Object.fromEntries(NODES.map(n=>[n.k,n]));
+    const lab=n=>n.p&&typeof P==="function"&&P(n.p)?P(n.p).host:n.t;
+    const lines=LINKS.map(([a,b],i)=>`<path id="wl${i}" d="M${N[a].x} ${N[a].y} L${N[b].x} ${N[b].y}"/>`).join("");
+    const dots=RM?"":LINKS.filter((_,i)=>i%2===0).map((_,j)=>`<circle r="2.4" class="pk"><animateMotion dur="${4+j*.9}s" repeatCount="indefinite" begin="-${j*1.3}s"><mpath href="#wl${j*2}"/></animateMotion></circle>`).join("");
+    const nodes=NODES.map(n=>`<g transform="translate(${n.x} ${n.y})"><rect x="-13" y="-9" width="26" height="18" rx="4"/><circle cx="8" cy="-3" r="1.6" class="ld"/><text y="24">${lab(n)}</text></g>`).join("");
+    return `<div class="dk-wall" aria-hidden="true"><b>JA</b><svg viewBox="-40 -20 780 520">${lines}${dots}${nodes}</svg></div>`; }
+  /* ---------- vista como lista ---------- */
+  let view="icons", showNote=true; try{ view=localStorage.getItem("dk-view")||"icons"; showNote=localStorage.getItem("dk-note")!=="0"; }catch(e){}
+  const mod=()=>{ const d=(typeof LIVE!=="undefined"&&LIVE.commit)?new Date(LIVE.commit.date):new Date(document.lastModified); return isNaN(d)?"—":d.toLocaleDateString(LG()==="en"?"en-GB":"es-ES",{day:"2-digit",month:"short",year:"numeric"}); };
+  function sizeOf(k){ const l=L(), n={proyectos:typeof PROJECTS!=="undefined"?PROJECTS.length:7,stack:typeof STACK!=="undefined"?STACK.length:6,trayectoria:typeof TIMELINE!=="undefined"?TIMELINE.length:6,auditoria:typeof FILES!=="undefined"?Object.keys(FILES).length:3,despliegue:5,contacto:4}[k];
+    if(n!=null) return l.items(n); return {inicio:"112 MB",cv:cvSize||"—",term:"48 KB",trash:"0 KB"}[k]||"—"; }
+  const kindOf=(type)=>{ const l=L(); return {folder:l.kFolder,hd:l.kDisk,cv:l.kDoc,term:l.kApp,trash:l.kTrash}[type]; };
+  let cvSize=""; try{ fetch("cv-jose-antonio-sancho-selma.pdf",{method:"HEAD"}).then(r=>{ const b=+r.headers.get("content-length"); if(b){ cvSize=(b/1024).toFixed(0)+" KB"; const c=document.querySelector('.dk-row[data-k="cv"] .sz'); if(c) c.textContent=cvSize; } }).catch(()=>{}); }catch(e){}
+  function listWin(){ const l=L(); return `<section class="dk-win dk-list" id="dk-list" aria-label="${l.hd}"><header class="dk-tb"><button type="button" class="dk-box dk-x" data-view="icons" aria-label="${l.ok}"></button><b>${l.hd}</b><span class="dk-box dk-zm" aria-hidden="true"></span></header>
+      <div class="dk-info"><span>${l.items(ICONS_DESK.length)}</span><span>${l.free}</span></div>
+      <div class="dk-lb"><div class="dk-row dk-hd"><span>${l.colName}</span><span>${l.colDate}</span><span>${l.colSize}</span><span>${l.colKind}</span></div>
+      ${ICONS_DESK.map(([k,type])=>`<button type="button" class="dk-row dk-ic" data-k="${k}"><span class="nm">${type==="folder"?SVG.folder(k):SVG[type]}${l[k]}</span><span>${mod()}</span><span class="sz">${sizeOf(k)}</span><span>${kindOf(type)}</span></button>`).join("")}</div></section>`; }
+  function applyView(){ desk.classList.toggle("v-list",view==="list"); desk.classList.toggle("no-note",!showNote);
+    desk.querySelectorAll('[data-cmd="icons"],[data-cmd="list"]').forEach(b=>b.classList.toggle("on",b.dataset.cmd===view));
+    const nb=desk.querySelector('[data-cmd="note"]'); if(nb) nb.classList.toggle("on",showNote); }
+  /* ---------- menús ---------- */
+  function menus(){ const all=[...desk.querySelectorAll(".dk-mn")]; let open=null; desk.addEventListener("pointerdown",e=>{ if(!e.target.closest(".dk-mn")) open=null; },{once:true});
+    const shut=()=>{ all.forEach(m=>{ m.classList.remove("open"); m.querySelector(".mi").setAttribute("aria-expanded","false"); }); open=null; };
+    all.forEach(m=>{ const b=m.querySelector(".mi");
+      b.addEventListener("click",e=>{ e.stopPropagation(); const was=m.classList.contains("open"); shut(); if(!was){ m.classList.add("open"); b.setAttribute("aria-expanded","true"); open=m; } });
+      b.addEventListener("pointerenter",()=>{ const cur=desk.querySelector(".dk-mn.open"); if(cur&&cur!==m){ shut(); m.classList.add("open"); b.setAttribute("aria-expanded","true"); open=m; } });
+      m.querySelectorAll("[data-cmd]").forEach(it=>it.addEventListener("click",e=>{ e.stopPropagation(); shut(); cmd(it.dataset.cmd); })); });
+    if(!desk.dataset.mb){ desk.dataset.mb=1; const shutAll=()=>desk.querySelectorAll(".dk-mn.open").forEach(m=>{ m.classList.remove("open"); m.querySelector(".mi").setAttribute("aria-expanded","false"); });
+      desk.addEventListener("pointerdown",e=>{ if(!e.target.closest(".dk-mn")) shutAll(); });
+      desk.addEventListener("keydown",e=>{ if(e.key==="Escape") shutAll(); }); } }
+  function note(msg){ if(typeof toast==="function") toast(msg); }
+  function cmd(c){ const l=L();
+    if(c==="open") openSection("inicio",desk.querySelector('.dk-ic[data-k="inicio"]'));
+    else if(c==="print") window.print();
+    else if(c==="cvdl") location.href="cv-jose-antonio-sancho-selma.pdf";
+    else if(c==="closew"){ const w=[...desk.querySelectorAll(".dk-win:not(.min)")].sort((a,b)=>(+b.style.zIndex||0)-(+a.style.zIndex||0))[0]; if(w) closeWin(w); }
+    else if(c==="mail"){ const e=typeof EMAIL!=="undefined"?EMAIL:""; try{ navigator.clipboard.writeText(e).catch(()=>{}); }catch(x){} note(`${l.copied}: <b>${e}</b>`); }
+    else if(c==="link"){ try{ navigator.clipboard.writeText(location.origin+"/").catch(()=>{}); }catch(x){} note(`${l.copied}: <b>${location.host||"jasancho.com"}</b>`); }
+    else if(c==="all") desk.querySelectorAll(".dk-icons .dk-ic").forEach(b=>b.classList.add("on"));
+    else if(c==="icons"||c==="list"){ view=c; try{ localStorage.setItem("dk-view",c); }catch(e){} applyView(); }
+    else if(c==="note"){ showNote=!showNote; try{ localStorage.setItem("dk-note",showNote?"1":"0"); }catch(e){} applyView(); }
+    else if(c==="restart"){ try{ sessionStorage.removeItem("booted"); }catch(e){} desk.classList.add("crt-off"); setTimeout(()=>{ location.href=location.pathname; },RM?0:600); }
+    else if(c==="shutdown") shutdown();
+    else if(c==="about") about(); }
+  function shutdown(){ const l=L(); desk.classList.add("crt-off");
+    setTimeout(()=>{ const o=document.createElement("div"); o.className="dk-off"; o.innerHTML=`<div class="dk-offbox" role="alertdialog" aria-label="${l.offT}"><p>${l.offT}</p><button type="button">${l.offOn}</button></div>`; document.body.appendChild(o);
+      const b=o.querySelector("button"); b.focus(); b.onclick=()=>{ try{ sessionStorage.removeItem("booted"); }catch(e){} location.href=location.pathname; }; },RM?0:650); }
+  function about(){ const l=L(); let w=desk.querySelector("#dk-about"); if(w){ raise(w); return; }
+    desk.insertAdjacentHTML("beforeend",win("dk-about",l.aboutT,`<div class="dk-body dk-ab"><span class="dk-av">JA</span><div><h2>jasancho.com</h2>${l.aboutP.map(x=>`<p>${x}</p>`).join("")}<p class="dim">© 2026 José Antonio Sancho Selma</p></div></div>`,"dk-sm"));
+    w=desk.querySelector("#dk-about"); wire(w); raise(w); }
+  /* ---------- ventanas del Finder para cada carpeta ---------- */
+  const FOLDERS=["proyectos","despliegue","auditoria","stack","trayectoria","contacto"]; const openFd={}; let zTop=10;
+  function raise(w){ w.style.zIndex=++zTop; }
+  function closeWin(w){ if(w.id==="dk-readme"||w.id==="dk-list"){ if(w.id==="dk-list"){ view="icons"; applyView(); } else w.classList.add("min"); return; } const k=w.dataset.k; if(k) delete openFd[k]; w.remove(); }
+  function itemsOf(k){ const LANGX=LG(), en=LANGX==="en";
+    const tr=v=>typeof v==="object"&&v?(v[LANGX]||v.es):v;
+    if(k==="proyectos"&&typeof PROJECTS!=="undefined") return PROJECTS.map(p=>({ic:SVG.md,t:p.id+".md",s:p.host,go:()=>{ if(typeof showDlg==="function") showDlg(p,null); }}));
+    if(k==="stack"&&typeof STACK!=="undefined") return STACK.map((c,i)=>({ic:sub("st"+i),t:tr(c.name),s:c.path,go:()=>openSection("stack",null,()=>{ if(typeof rkShow3==="function") rkShow3(i); })}));
+    if(k==="trayectoria"&&typeof TIMELINE!=="undefined") return TIMELINE.map((e,i)=>({ic:SVG.txt,t:tr(e.date),s:tr(e.title),go:()=>openSection("trayectoria",null,()=>{ if(typeof tlShow==="function") tlShow(i); })})).reverse();
+    if(k==="auditoria"&&typeof FILES!=="undefined") return Object.keys(FILES).map(f=>({ic:SVG.txt,t:f.split("/").pop(),s:f,go:()=>{ if(typeof viewFile==="function") viewFile(f); }}));
+    if(k==="despliegue") return [["index.html",SVG.html],["404.html",SVG.html],["CNAME",SVG.txt],[".well-known/",sub("wk")],["vendor/",sub("vd")]].map(([t,ic])=>({ic,t,s:"github.com/jasanchoselma/Portfolio",go:()=>openSection("despliegue")}));
+    if(k==="contacto") return [["Email",SVG.mail,"mailto:"+(typeof EMAIL!=="undefined"?EMAIL:"")],["LinkedIn",SVG.link,"https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368"],["GitHub",SVG.link,"https://github.com/jasanchoselma"],["CV.pdf",SVG.cv,"cv-jose-antonio-sancho-selma.pdf"]]
+      .map(([t,ic,h])=>({ic,t,s:h.replace(/^mailto:|^https:\/\/(www\.)?/,""),go:()=>{ if(h.startsWith("http")) window.open(h,"_blank","noopener"); else location.href=h; }}));
+    return []; }
+  function openFolder(k,from){ const l=L(); if(openFd[k]){ raise(openFd[k]); openFd[k].querySelector(".dk-it")?.focus(); return; }
+    const items=itemsOf(k), n=Object.keys(openFd).length;
+    desk.insertAdjacentHTML("beforeend",win("dk-fd-"+k,l[k],`<div class="dk-info"><span>${l.items(items.length)}</span><span>${l.free}</span></div>
+      <div class="dk-fdb"><p class="dk-fdh">${l.fd[k]||""}</p><div class="dk-grid">${items.map((it,i)=>`<button type="button" class="dk-it" data-i="${i}">${it.ic}<span>${it.t}</span><small>${it.s||""}</small></button>`).join("")}</div></div>
+      <footer class="dk-fdf"><button type="button" class="btn primary dk-full">${l.openFull} →</button></footer>`,"dk-fd"));
+    const w=desk.querySelector("#dk-fd-"+k); w.dataset.k=k; openFd[k]=w;
+    if(innerWidth>860){ w.style.left=(Math.min(innerWidth-680,innerWidth*.34)+n*28)+"px"; w.style.top=(90+n*28)+"px"; }
+    wire(w); raise(w);
+    const its=[...w.querySelectorAll(".dk-it")];
+    its.forEach((b,i)=>{ b.addEventListener("click",()=>{ if(TOUCH){ items[i].go(); return; } its.forEach(x=>x.classList.remove("on")); b.classList.add("on"); });
+      b.addEventListener("dblclick",()=>items[i].go()); b.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); items[i].go(); } }); });
+    w.querySelector(".dk-full").onclick=()=>openSection(k,w);
+    w.querySelector(".dk-zm").onclick=()=>openSection(k,w);
+    if(from&&!RM){ const fr=from.getBoundingClientRect(); w.style.visibility="hidden"; requestAnimationFrame(()=>{ zoom(fr,w.getBoundingClientRect(),()=>{ w.style.visibility=""; its[0]&&its[0].focus({preventScroll:true}); }); }); }
+    else its[0]&&its[0].focus({preventScroll:true}); }
+  // cierre, arrastre y foco de cualquier ventana
+  function wire(w){ const x=w.querySelector(".dk-x"); if(x) x.onclick=()=>closeWin(w); w.addEventListener("pointerdown",()=>raise(w)); drag(w); }
+  function drag(w){ const tb=w.querySelector(".dk-tb"); if(!tb||tb.dataset.d) return; tb.dataset.d=1; let sx,sy,ox,oy,dr=false;
+    tb.addEventListener("pointerdown",e=>{ if(e.target.closest(".dk-box")||TOUCH) return; dr=true; tb.setPointerCapture(e.pointerId); const r=w.getBoundingClientRect(); sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; w.classList.add("drag"); });
+    tb.addEventListener("pointermove",e=>{ if(!dr) return; w.style.left=Math.max(0,Math.min(innerWidth-120,ox+e.clientX-sx))+"px"; w.style.top=Math.max(28,Math.min(innerHeight-60,oy+e.clientY-sy))+"px"; w.style.transform="none"; });
+    tb.addEventListener("pointerup",()=>{ dr=false; w.classList.remove("drag"); }); }
   function tick(){ const c=$("#dk-clock"); if(!c) return; const d=new Date(); c.textContent=d.toLocaleTimeString(LG()==="en"?"en-GB":"es-ES",{weekday:"short",hour:"2-digit",minute:"2-digit"}); }
   function select(b){ desk.querySelectorAll(".dk-ic.on").forEach(x=>x.classList.remove("on")); sel=b; if(b) b.classList.add("on"); }
   function act(b){ const k=b.dataset.k;
     if(k==="cv"){ location.href="cv-jose-antonio-sancho-selma.pdf"; return; }
     if(k==="term"){ if(window.openTerminal) window.openTerminal(); return; }
     if(k==="trash"){ const a=$("#dk-alert"); a.hidden=false; a.querySelector(".dk-ok").focus(); return; }
+    if(FOLDERS.includes(k)){ openFolder(k,b); return; }
     openSection(k,b); }
   function bind(){
     desk.querySelectorAll(".dk-ic").forEach(b=>{
@@ -3990,14 +4200,9 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       b.addEventListener("focus",()=>select(b)); });
     desk.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openSection(b.dataset.open,b));
     desk.querySelector(".dk-ok").onclick=()=>{ $("#dk-alert").hidden=true; };
-    desk.querySelectorAll(".dk-x").forEach(x=>x.onclick=()=>{ const w=x.closest(".dk-win"); w.classList.add("min"); });
+    desk.querySelectorAll(".dk-win").forEach(w=>wire(w));
     desk.querySelector("#dk-lang").onclick=()=>{ const b=$("#btn-lang"); if(b) b.click(); };
     desk.addEventListener("pointerdown",e=>{ if(!e.target.closest(".dk-ic")) select(null); });
-    // ventanas arrastrables por la barra de título
-    desk.querySelectorAll(".dk-win .dk-tb").forEach(tb=>{ const w=tb.parentNode; let sx,sy,ox,oy,drag=false;
-      tb.addEventListener("pointerdown",e=>{ if(e.target.closest(".dk-box")||TOUCH) return; drag=true; tb.setPointerCapture(e.pointerId); const r=w.getBoundingClientRect(); sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; w.classList.add("drag"); });
-      tb.addEventListener("pointermove",e=>{ if(!drag) return; w.style.left=Math.max(0,Math.min(innerWidth-120,ox+e.clientX-sx))+"px"; w.style.top=Math.max(28,Math.min(innerHeight-60,oy+e.clientY-sy))+"px"; w.style.transform="none"; });
-      tb.addEventListener("pointerup",()=>{ drag=false; w.classList.remove("drag"); }); });
   }
   // efecto "zoom" del Finder: rectángulos que crecen del icono a la pantalla (o al revés)
   function zoom(from,to,cb){ if(RM||!from){ cb(); return; } const N=7, els=[];
@@ -4006,20 +4211,23 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       Object.assign(d.style,{left:x+"px",top:y+"px",width:w+"px",height:h+"px",animationDelay:(i*32)+"ms"}); document.body.appendChild(d); els.push(d); }
     setTimeout(()=>{ els.forEach(e=>e.remove()); cb(); },N*32+170); }
   const full=()=>({left:0,top:0,width:innerWidth,height:innerHeight});
-  function openSection(k,from){ const fr=from&&from.getBoundingClientRect();
+  function openSection(k,from,after){ const fr=from&&from.getBoundingClientRect();
     zoom(fr,full(),()=>{ root.classList.remove("desk-on"); desk.classList.add("out"); desk.setAttribute("aria-hidden","true"); desk.inert=true;
       const tg=k==="inicio"?0:document.getElementById(k), lz=window.v7lenis;
       if(lz){ lz.start(); lz.scrollTo(tg,{immediate:true,force:true}); } else window.scrollTo(0,tg?tg.getBoundingClientRect().top+scrollY:0);
       try{ history.replaceState(null,"",k==="inicio"?location.pathname+location.search:"#"+k); }catch(e){}
       if(window.ScrollTrigger) requestAnimationFrame(()=>ScrollTrigger.refresh());
       const h=k==="inicio"?$("#inicio h1"):document.querySelector(`#${k} h2`); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
-      clearInterval(clockT); });
+      clearInterval(clockT); if(after) setTimeout(after,120); });
   }
   function showDesk(anim){ const sec=root.dataset.sec||"inicio", ic=desk.querySelector(`.dk-ic[data-k="${sec}"]`)||desk.querySelector(".dk-ic");
     const go=()=>{ render(); desk.classList.remove("out"); desk.removeAttribute("aria-hidden"); desk.inert=false; root.classList.add("desk-on"); if(window.v7lenis) v7lenis.stop();
       desk.querySelectorAll(".dk-win.min").forEach(w=>w.classList.remove("min")); select(ic); clockT=setInterval(tick,15000); tick(); setTimeout(()=>ic&&ic.focus({preventScroll:true}),60); };
     if(anim){ zoom(full(),ic.getBoundingClientRect(),go); } else go(); }
   window.deskShow=()=>showDesk(true);
+  addEventListener("keydown",e=>{ if(!root.classList.contains("desk-on")||!(e.metaKey||e.ctrlKey)) return; const k=e.key.toLowerCase();
+    const map={o:()=>{ if(sel) act(sel); else cmd("open"); },p:()=>cmd("print"),w:()=>cmd("closew"),a:()=>cmd("all")};
+    if(map[k]){ e.preventDefault(); map[k](); } });
 
   function init(){
     desk=document.createElement("div"); desk.id="desk"; desk.className="desk out"; desk.setAttribute("role","region"); desk.inert=true; desk.setAttribute("aria-hidden","true");
