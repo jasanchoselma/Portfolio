@@ -1924,7 +1924,6 @@
       <span class="meter"><span id="uptime">uptime <b>--</b></span><br><span id="rxl">rx <b>0.0</b> KB</span></span>
       <button type="button" class="hdr-btn" id="btn-term"><span aria-hidden="true">&gt;_</span><span class="lbl"> terminal</span></button>
       <button type="button" class="hdr-btn" id="btn-lang">EN</button>
-      <a class="btn-cv" href="cv-jose-antonio-sancho-selma.pdf">Descargar CV</a>
     </div>
   </div>
   <div class="rx" id="rx" aria-hidden="true"></div>
@@ -2325,7 +2324,6 @@ const UI = {
 const STATIC = [
  ['nav.main a[href="#proyectos"]',"Proyectos","Projects"],['nav.main a[href="#despliegue"]',"Despliegue","Deployment"],['nav.main a[href="#stack"]',"Stack","Stack"],
  ['nav.main a[href="#trayectoria"]',"Trayectoria","Background"],['nav.main a[href="#contacto"]',"Contacto","Contact"],
- [".btn-cv","Descargar CV","Download CV"],
  [".hero .role","Monto, conecto y protejo servicios: Linux, Docker, AWS y Active Directory. Este es mi laboratorio, monitorizado nodo a nodo.","I build, connect and secure services: Linux, Docker, AWS and Active Directory. This is my lab, monitored node by node."],
  [".hero .status",'<span class="led" aria-hidden="true"></span>Buscando FCT · marzo a julio de 2027','<span class="led" aria-hidden="true"></span>Looking for an internship · March to July 2027',1],
  [".hero .actions a.primary","Ver proyectos","See projects"],[".hero .actions a:not(.primary)","Contactar","Get in touch"],
@@ -4149,7 +4147,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
       else txt(tr("jasancho no está en el archivo sudoers. Este incidente será reportado.","jasancho is not in the sudoers file. This incident will be reported."),"err"); },
     rm:a=>txt(a.join(" ").includes("-rf")?tr("Buen intento. Esta web es de solo lectura y tengo copias inmutables 😉","Nice try. This site is read-only and I keep immutable backups 😉"):tr("rm: permiso denegado","rm: permission denied"),"err"),
     email:()=>{ txt(tr("✓ Mi correo no es público: te llevo al formulario de contacto.","✓ My address isn't public: taking you to the contact form."),"tok"); setTimeout(()=>{ close(); goContact(); },650); },
-    cv:()=>{ txt(tr("Abriendo el CV…","Opening résumé…")); location.href=$(".btn-cv").getAttribute("href"); },
+    cv:()=>{ txt(tr("Abriendo el CV…","Opening résumé…")); location.href="cv-jose-antonio-sancho-selma.pdf"; },
     goto:a=>{ const s=SECTIONS[(a[0]||"").toLowerCase()]; if(!s) return txt(tr("goto: secciones: proyectos, despliegue, stack, trayectoria, contacto","goto: sections: projects, deployment, stack, background, contact"),"err"); close(); location.hash=s; },
     lang:a=>{ if(a[0]!=="es"&&a[0]!=="en") return txt("lang es | lang en","err"); setLang(a[0],true); window.termLang(); txt(tr("Idioma: español","Language: English"),"tok"); },
     audit:()=>{ line(AUDIT.map(c=>{ const [st,cls]=auditStatus(c); return `<span class="${cls?"twarn":"tok"}">[ ${st} ]</span> ${esc(c[LANG][0])} <span class="dim">(${esc(c.tag)})</span>`; }).join("<br>")); },
