@@ -344,7 +344,7 @@
     body{background:#fff;color:#111;font:10.5pt/1.5 var(--sans)}
     body::before,body::after,.spot,#boot,header,main,footer,dialog,.toast,.hello{display:none!important}
     .print-only{display:block!important}
-    .pcv h1{font:700 22pt/1.1 var(--mono);letter-spacing:-.03em;margin:0 0 4pt;color:#111}
+    .pcv .h1{font:700 22pt/1.1 var(--mono);letter-spacing:-.03em;margin:0 0 4pt;color:#111}
     .pcv .sub{font:500 10pt var(--sans);color:#6b798c;margin:0 0 4pt}
     .pcv .ct{font:9pt var(--mono);color:#444;margin:0 0 14pt}
     .pcv h2{font:600 9pt var(--mono);color:#6b798c;border-bottom:1px solid #ccc;padding-bottom:2pt;margin:14pt 0 6pt}
@@ -1608,7 +1608,7 @@
   .dk-who{display:flex;gap:18px;align-items:center}
   .dk-av{flex:none;width:72px;height:72px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(#2997FF,#0063CC);color:#fff;font:700 26px var(--disp);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 18px -8px #0071E3}
   .dk-pr{margin:0 0 4px;font:500 12px var(--mono);color:#0060C8} .dk-pr i{display:inline-block;width:7px;height:13px;background:#0060C8;vertical-align:-2px;margin-left:3px;animation:lampBlink 1s steps(1) infinite}
-  .dk-who h1{margin:0;font:700 34px/1.05 var(--disp);letter-spacing:-.03em;color:#111} .dk-who h1 span{color:#6E6E73}
+  .dk-who .dk-h1{margin:0;font:700 34px/1.05 var(--disp);letter-spacing:-.03em;color:#111} .dk-who .dk-h1 span{color:#6E6E73}
   .dk-role{margin:16px 0 14px;font:400 15px/1.55 var(--sans);color:#333}
   .dk-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
   .dk-stats>*{flex:1;min-width:110px;margin:0!important;padding:8px 12px!important;border:1px solid #111!important;border-radius:0!important;background:#F4F4F5!important;color:#111!important;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #BBB}
@@ -1638,7 +1638,7 @@
     .dk-icons{position:absolute;left:12px;right:12px;top:auto;bottom:16px;grid-template-rows:none;grid-auto-flow:row;grid-template-columns:repeat(5,1fr);grid-auto-columns:auto;direction:ltr;gap:2px}
     .dk-ic{width:auto;height:84px} .dk-ic svg{width:42px;height:42px} .dk-ic span{font-size:10.5px}
     .dk-win{left:12px;right:12px;width:auto;top:42px;transform:none;animation-name:dkInM} @keyframes dkInM{from{opacity:0;transform:scale(.96)}}
-    .dk-body{padding:16px} .dk-av{width:52px;height:52px;border-radius:14px;font-size:19px} .dk-who h1{font-size:25px} .dk-role{font-size:13.5px;margin:12px 0 10px}
+    .dk-body{padding:16px} .dk-av{width:52px;height:52px;border-radius:14px;font-size:19px} .dk-who .dk-h1{font-size:25px} .dk-role{font-size:13.5px;margin:12px 0 10px}
     .dk-stats>*{min-width:0;padding:6px 8px!important} .dk-note{display:none} .dk-act .btn{padding:8px 12px;font-size:13px} }
   @media (prefers-reduced-motion:reduce){ .dk-win{animation:none} .desk{transition:none} }
   .dk-alert[hidden]{display:none}
@@ -1988,6 +1988,11 @@
   .mon-f .btn{color:#111!important;background:#fff!important}
   @media (min-width:861px){ .dk-win.dk-mon{right:240px} }
   .ios-wt .dk-status{white-space:nowrap;font-size:10px!important}
+
+  /* v40 · contraste AA en contacto y monitor */
+  .ct-seg small{color:rgba(255,181,71,.78)} .cm-box-h{color:#9095A0} .cm-mb small{color:#9399A3} .cm-mb.on small{color:#fff}
+  .cm-box-f small{color:#8C919B} .cm-ts{color:#9399A3} .cm-amber small{color:rgba(255,181,71,.75)} .cm-note{color:#959AA4}
+  .mon-h{color:rgba(255,181,71,.72)} .mon-n small{color:#A39B82} .dk-pr{color:#0A5BD6}
 </style>
 </head>
 <body>
@@ -2789,7 +2794,7 @@ function printCV(){
   const en=LANG==="en";
   const stack=[...document.querySelectorAll("#stackgrid > div")].map(d=>`<p><b>${esc(d.querySelector("h3").firstChild.textContent.trim())}:</b> ${esc(d.querySelector("p").innerText.replace(/\n/g," · "))}</p>`).join("");
   const tl=[...document.querySelectorAll("#timeline li")].map(li=>`<p><b>${esc(li.querySelector("strong").textContent)}</b> · ${esc(li.querySelector("span").textContent)} <span class="tg">(${esc(li.querySelector("time").textContent)})</span></p>`).join("");
-  $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
+  $("#pcv").innerHTML=`<p class="h1">José Antonio Sancho Selma</p>
     <p class="sub">${en?"ASIR (Network Systems Administration) student · Systems, IT support and cybersecurity":"Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad"}</p>
     <p class="ct">Valencia · jasancho.com/#contacto · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
     <h2>${en?"PROFILE":"PERFIL"}</h2><p>${en?"Second-year ASIR student with hands-on practice in Linux, Active Directory with Samba, Docker, AWS and service hardening. Available for an internship from March to July 2027.":"Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027."}</p>
@@ -3361,7 +3366,7 @@ function timelinePlain(){ return TIMELINE.map(e=>`${tx(e.date).padEnd(16)} ${tx(
 /* ---- CV imprimible desde los datos ---- */
 function printCV(){
   const en=LANG==="en";
-  $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
+  $("#pcv").innerHTML=`<p class="h1">José Antonio Sancho Selma</p>
     <p class="sub">${en?"ASIR (Network Systems Administration) student · Systems, IT support and cybersecurity":"Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad"}</p>
     <p class="ct">Valencia · jasancho.com/#contacto · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
     <h2>${en?"PROFILE":"PERFIL"}</h2><p>${en?"Second-year ASIR student with hands-on practice in Linux, Active Directory with Samba, Docker, AWS and service hardening. Available for an internship from March to July 2027.":"Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027."}</p>
@@ -4316,7 +4321,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   const root=document.documentElement, $=s=>document.querySelector(s);
   const RM=matchMedia("(prefers-reduced-motion: reduce)").matches, TOUCH=matchMedia("(pointer:coarse)").matches;
   const T={
-    es:{menu:["Archivo","Edición","Visualización","Especial"],hd:"JASANCHO HD",inicio:"Portada",proyectos:"Proyectos",despliegue:"Despliegue",auditoria:"Auditoría",stack:"Stack",trayectoria:"Trayectoria",contacto:"Contacto",cv:"CV.pdf",term:"Terminal",trash:"Papelera",
+    es:{menu:["Archivo","Edición","Visualización","Especial"],hd:"JASANCHO HD",inicio:"whoami",proyectos:"Proyectos",despliegue:"Despliegue",auditoria:"Auditoría",stack:"Stack",trayectoria:"Trayectoria",contacto:"Contacto",cv:"CV.pdf",term:"Terminal",trash:"Papelera",
       readme:"Léeme — jasancho",items:n=>`${n} elementos`,free:"112 MB libres",open:"Abrir portfolio",projects:"Ver proyectos",note:"Doble clic en una carpeta para abrirla.<br>El botón □ de arriba a la izquierda te devuelve aquí.",noteTouch:"Toca una carpeta para abrirla.<br>El botón □ de arriba te devuelve aquí.",
       trashT:"La Papelera está vacía.",
       mFile:[["open","Abrir portfolio","⌘O"],["mail","Nuevo mensaje…","⌘M"],"-",["closew","Cerrar ventana","⌘W"]],
@@ -4334,7 +4339,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       openFull:"Abrir sección completa",offT:"Ya puedes apagar el ordenador con seguridad.",offOn:"Encender",aboutT:"Acerca de este portfolio",
       aboutP:["Sistema: jasancho.com · versión 39","Hecho a mano: HTML, CSS y JavaScript","3D: three.js · animación: GSAP y Lenis","Alojado en GitHub Pages · HTTPS de Let's Encrypt"],
       fd:{proyectos:"Doble clic en un proyecto para abrir su ficha.",stack:"Doble clic en un grupo para verlo en el rack.",trayectoria:"Doble clic en una etapa para abrir su cajón.",auditoria:"Doble clic en un archivo para leerlo.",despliegue:"Los archivos que forman esta web.",contacto:"Doble clic para escribirme o ver mis perfiles."},trashP:"Aquí no tiro nada: cada práctica, incluso la que salió mal, acaba en el portfolio.",ok:"Aceptar",region:"Escritorio",back:"Volver al escritorio",lang:"EN"},
-    en:{menu:["File","Edit","View","Special"],hd:"JASANCHO HD",inicio:"Home",proyectos:"Projects",despliegue:"Deployment",auditoria:"Audit",stack:"Stack",trayectoria:"Background",contacto:"Contact",cv:"CV.pdf",term:"Terminal",trash:"Trash",
+    en:{menu:["File","Edit","View","Special"],hd:"JASANCHO HD",inicio:"whoami",proyectos:"Projects",despliegue:"Deployment",auditoria:"Audit",stack:"Stack",trayectoria:"Background",contacto:"Contact",cv:"CV.pdf",term:"Terminal",trash:"Trash",
       readme:"Read Me — jasancho",items:n=>`${n} items`,free:"112 MB free",open:"Open portfolio",projects:"See projects",note:"Double-click a folder to open it.<br>The □ button at the top left brings you back here.",noteTouch:"Tap a folder to open it.<br>The □ button at the top brings you back here.",
       trashT:"The Trash is empty.",
       mFile:[["open","Open portfolio","⌘O"],["mail","New message…","⌘M"],"-",["closew","Close window","⌘W"]],
@@ -4390,7 +4395,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
         <span class="dk-sp"></span><span class="dk-st" aria-hidden="true"><i></i>soc · online</span><button type="button" class="dk-lang" id="dk-lang">${l.lang}</button><span class="dk-clock" id="dk-clock"></span></div>
       <div class="dk-icons" role="list">${ICONS_DESK.map(iconHTML).join("")}</div>
       ${win("dk-readme",l.readme,`<div class="dk-info"><span>${l.items(7)}</span><span>${l.free}</span></div>
-        <div class="dk-body"><div class="dk-who"><span class="dk-av">JA</span><div><p class="dk-pr">jasancho@soc:~$ whoami<i></i></p><h1>José Antonio<br><span>Sancho Selma</span></h1></div></div>
+        <div class="dk-body"><div class="dk-who"><span class="dk-av">JA</span><div><p class="dk-pr">jasancho@soc:~$ whoami<i></i></p><p class="dk-h1">José Antonio<br><span>Sancho Selma</span></p></div></div>
           <p class="dk-role">${role?role.textContent:""}</p><div class="dk-stats">${stats?[...stats.children].map(d=>{ const b=d.querySelector("b"), sp=d.querySelector("span"); return `<div><b>${b?b.dataset.v+b.dataset.s:""}</b><span>${sp?sp.textContent:""}</span></div>`; }).join(""):""}</div>
           <div class="dk-status">${status?status.innerHTML:""}</div>
           <div class="dk-act"><button type="button" class="btn primary" data-open="inicio">${l.open} →</button><button type="button" class="btn" data-open="proyectos">${l.projects}</button></div></div>`)}
