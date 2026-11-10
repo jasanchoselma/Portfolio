@@ -10,7 +10,7 @@
   ¿Mirando el código fuente? Buena señal: eres de los míos.
   Sin frameworks, sin plantillas. HTML, CSS y JavaScript escritos a mano.
   Si buscas alumno de FCT para sistemas o ciberseguridad:
-  sanchoselmajoseantonio@gmail.com
+  jasancho.com/#contacto (formulario, sin correo público)
 -->
 <html lang="es">
 <head>
@@ -1766,6 +1766,141 @@
   .dk-wall2 svg{width:100%;height:100%;display:block;filter:saturate(.92) brightness(.82)}
   .desk::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.08) 0 1px,transparent 1px 3px)}
   .desk>*:not(.dk-wall2){position:relative;z-index:1} .desk>.dk-icons,.desk>.dk-win,.desk>.dk-note,.desk>.dk-alert,.desk>.dk-menu{position:absolute}
+
+  /* =================== v34 · contacto: Mail System 7 + Turnstile (sin correo público) =================== */
+  .ct-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end}
+  .ct-lead{color:var(--soft);margin:16px 0 0;max-width:46ch;font-size:17px;line-height:1.55}
+  #contacto .ct-head .title{margin:0}
+  .ct-plate{position:relative;display:grid;gap:12px;padding:16px 18px 14px;border-radius:12px;min-width:270px;
+    background:linear-gradient(180deg,#D4D5D8,#A9ABAF);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.3),0 20px 40px -18px rgba(0,0,0,.9)}
+  .ct-plate .sc{position:absolute;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#EEE,#8B8E94 70%);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.4)}
+  .ct-plate .sc::after{content:"";position:absolute;left:1px;right:1px;top:3px;height:1px;background:rgba(0,0,0,.45);transform:rotate(35deg)}
+  .ct-plate .sc:nth-child(1){left:7px;top:7px}.ct-plate .sc:nth-child(2){right:7px;top:7px}.ct-plate .sc:nth-child(3){left:7px;bottom:7px}.ct-plate .sc:nth-child(4){right:7px;bottom:7px}
+  .ct-lamp{display:flex;align-items:center;gap:10px;padding:0 6px;font:600 13px var(--sans);color:#1D1E21;letter-spacing:-.01em}
+  .ct-lamp .lmp{width:10px;height:10px;border-radius:50%;background:#3BE38C;box-shadow:0 0 0 2px rgba(0,0,0,.25),0 0 10px #3BE38C;animation:ctLamp 2.4s ease-in-out infinite}
+  @keyframes ctLamp{50%{box-shadow:0 0 0 2px rgba(0,0,0,.25),0 0 3px #3BE38C;filter:brightness(.8)}}
+  .ct-segs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .ct-seg{display:grid;gap:2px;padding:8px 10px;border-radius:7px;background:#0D0B07;box-shadow:inset 0 1px 3px rgba(0,0,0,.95),0 1px 0 rgba(255,255,255,.5)}
+  .ct-seg small{font:600 8.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,181,71,.5)}
+  .ct-seg b{font:600 14px var(--mono);color:#FFB547;text-shadow:0 0 8px rgba(255,181,71,.65);letter-spacing:.06em;white-space:nowrap}
+
+  .cmail{position:relative;margin-top:48px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:#17181B;box-shadow:0 60px 120px -40px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.08);overflow:hidden}
+  .cm-tb{position:relative;height:30px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(0,0,0,.7);
+    background:linear-gradient(#202226,#202226) center/240px 100% no-repeat,repeating-linear-gradient(180deg,#2E3035 0 1px,#1B1C1F 1px 3px)}
+  .cm-tb b{font:600 12px var(--sans);color:#C7C9CE;letter-spacing:0}
+  .cm-tb i{position:absolute;top:9px;width:11px;height:11px;border:1px solid #6E727A;background:#202226;box-shadow:0 0 0 2px #202226}
+  .cm-tb i.x{left:14px}.cm-tb i.z{right:14px}
+  .cm-main{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:440px}
+
+  .cm-box{display:flex;flex-direction:column;gap:2px;padding:16px 10px 12px;background:#1C1D21;border-right:1px solid rgba(0,0,0,.65);box-shadow:inset -1px 0 0 rgba(255,255,255,.04)}
+  .cm-box-h{margin:0 0 8px;padding:0 10px;font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#6E727A}
+  .cm-mb{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;text-decoration:none;color:#D9DADD;transition:background .2s}
+  .cm-mb svg{width:18px;height:18px;flex:none;color:#9DA1A9}
+  .cm-mb span{display:grid;min-width:0;flex:1}
+  .cm-mb b{font:500 13.5px var(--sans);letter-spacing:-.01em}
+  .cm-mb small{font:400 11px var(--mono);color:#7D828C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-mb em{font-style:normal;color:#6E727A;font-size:12px;transition:transform .2s,color .2s}
+  .cm-mb:hover{background:rgba(255,255,255,.05)} .cm-mb:hover em{color:#2997FF;transform:translate(2px,-2px)}
+  .cm-mb.on{background:#0A64D6;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.18)} .cm-mb.on svg{color:#fff} .cm-mb.on small{color:rgba(255,255,255,.75)}
+  .cm-mb:focus-visible{outline:2px solid #2997FF;outline-offset:1px}
+  .cm-box-f{margin-top:auto;display:flex;align-items:center;gap:6px;padding:12px 10px 0;border-top:1px solid rgba(255,255,255,.06)}
+  .cm-box-f small{margin-left:auto;font:500 9.5px var(--mono);letter-spacing:.1em;color:#5C6068}
+  .cm-ld{width:6px;height:6px;border-radius:50%;background:#FFB547;box-shadow:0 0 6px #FFB547;animation:lampBlink 1.6s steps(1) infinite}
+  .cm-ld.g{background:#3BE38C;box-shadow:0 0 6px #3BE38C;animation-duration:2.3s}
+
+  .cm-comp{display:flex;flex-direction:column;min-width:0;background:#141518}
+  .cm-hd{border-bottom:1px solid rgba(0,0,0,.6);background:#18191C}
+  .cm-r{display:grid;grid-template-columns:76px minmax(0,1fr);align-items:center;gap:12px;min-height:50px;padding:6px 22px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s}
+  .cm-r:last-child{border-bottom:0}
+  .cm-k{font:500 13px var(--sans);color:#7D828C;text-align:right}
+  .cm-v{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+  .cm-to{display:inline-flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;background:rgba(41,151,255,.14);border:1px solid rgba(41,151,255,.35);font:500 13.5px var(--sans);color:#CFE6FF}
+  .cm-to i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#E4DCC6,#C9BFA5);color:#2A2722;font:700 9.5px var(--mono);font-style:normal;box-shadow:inset 0 -1px 0 rgba(0,0,0,.25)}
+  .cm-priv{display:inline-flex;align-items:center;gap:6px;font:500 11px var(--mono);color:#7D828C}
+  .cm-priv svg{width:12px;height:12px;color:#3BE38C}
+  .cm-from{flex-wrap:nowrap;gap:4px}
+  .cm-from input{min-width:0;border:0;background:none;color:#F5F5F7;font:400 15px var(--sans);padding:8px 4px;outline:none}
+  .cm-from #cm-name{flex:0 1 200px}
+  .cm-from #cm-email{flex:1 1 220px;font-family:var(--mono);font-size:13.5px}
+  .cm-lt{color:#4A4E56;font:500 15px var(--mono)}
+  .cm-from input::placeholder,.cm-txt textarea::placeholder{color:#555A63}
+  .cm-r:focus-within{background:rgba(41,151,255,.06)}
+  .cm-r.bad,.cm-txt.bad{background:rgba(255,92,122,.08)} .cm-r.bad .cm-k{color:#FF5C7A}
+  .cm-keys{gap:8px}
+  .kc{position:relative;cursor:pointer}
+  .kc input{position:absolute;opacity:0;pointer-events:none}
+  .kc span{display:inline-flex;align-items:center;gap:7px;padding:6px 11px 5px;border-radius:7px;background:linear-gradient(180deg,#E9E2CE,#CFC6AE);color:#2A2722;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 3px 0 #9C937A,0 4px 6px rgba(0,0,0,.5);transition:transform .12s,box-shadow .12s,filter .2s;transform:translateY(-2px)}
+  .kc b{font:600 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+  .kc i{width:6px;height:6px;border-radius:50%;background:#6E6754;box-shadow:inset 0 1px 1px rgba(0,0,0,.5);transition:background .2s,box-shadow .2s}
+  .kc:hover span{filter:brightness(1.05)}
+  .kc input:checked+span{transform:translateY(1px);box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 0 0 #9C937A,0 1px 2px rgba(0,0,0,.5);background:linear-gradient(180deg,#D8D0B9,#C6BDA3)}
+  .kc input:checked+span i{background:#3BE38C;box-shadow:0 0 6px #3BE38C}
+  .kc input:focus-visible+span{outline:2px solid #2997FF;outline-offset:3px}
+
+  .cm-txt{position:relative;flex:1;display:flex;transition:background .2s}
+  .cm-txt textarea{flex:1;min-height:210px;resize:vertical;border:0;outline:none;background:none;color:#F5F5F7;font:400 16px/1.6 var(--sans);padding:20px 22px 34px}
+  .cm-count{position:absolute;right:18px;bottom:10px;padding:3px 7px;border-radius:5px;background:#0D0B07;font:600 10.5px var(--mono);letter-spacing:.06em;color:#FFB547;text-shadow:0 0 6px rgba(255,181,71,.55);box-shadow:inset 0 1px 2px rgba(0,0,0,.9);pointer-events:none}
+  .cm-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+
+  .cm-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid rgba(0,0,0,.6);background:linear-gradient(180deg,#1E1F23,#18191C);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .cm-ts{min-height:65px;min-width:300px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#0B0D10;border:1px dashed #2F333A;color:#6E727A;font:500 11px var(--mono);text-align:center;padding:0 12px}
+  .cm-ts.on{background:none;border:0;padding:0;min-width:0}
+  .cm-amber{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#0D0B07;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06)}
+  .cm-amber small{font:600 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,181,71,.45)}
+  .cm-amber b{margin-left:auto;font:600 14.5px var(--mono);color:#FFB547;text-shadow:0 0 8px rgba(255,181,71,.7);letter-spacing:.06em;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-amber.ok b{color:#4FE0A6;text-shadow:0 0 8px rgba(79,224,166,.7)} .cm-amber.err b{color:#FF5C7A;text-shadow:0 0 8px rgba(255,92,122,.6)}
+  .cm-led{width:7px;height:7px;border-radius:50%;background:#FFB547;box-shadow:0 0 6px #FFB547;flex:none}
+  .cm-amber.ok .cm-led{background:#4FE0A6;box-shadow:0 0 6px #4FE0A6} .cm-amber.err .cm-led{background:#FF5C7A;box-shadow:0 0 6px #FF5C7A}
+  .cm-amber.busy .cm-led{animation:cmBlink .5s steps(1) infinite}
+  @keyframes cmBlink{50%{opacity:.25}}
+  .cm-send{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;background:#0071E3;color:#fff;font:500 16px var(--sans);padding:13px 26px;cursor:pointer;transition:filter .2s,opacity .2s,transform .15s}
+  .cm-send svg{width:17px;height:17px}
+  .cm-send:hover{filter:brightness(1.12)} .cm-send:active{transform:scale(.97)}
+  .cm-send:disabled{opacity:.4;cursor:not-allowed;filter:none;transform:none}
+  .cm-send:focus-visible{outline:2px solid #2997FF;outline-offset:3px}
+  .cm-note{margin:0;padding:0 18px 16px;background:#18191C;font:400 12px/1.5 var(--sans);color:#6E727A}
+
+  /* acuse de recibo: papel de impresora matricial */
+  .cm-done{position:absolute;inset:30px 0 0;display:grid;place-items:center;padding:24px;background:rgba(10,11,13,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .35s;z-index:3}
+  .cm-done[hidden]{display:none} .cm-done.on{opacity:1}
+  .rc{display:grid;justify-items:center;gap:18px;width:min(400px,100%)}
+  .rc-p{width:100%;box-sizing:border-box;padding:20px 36px 22px;color:#2A2722;font:500 12.5px/1.7 var(--mono);
+    background:radial-gradient(circle,#0A0B0D 3.5px,transparent 4px) 9px 6px/100% 20px repeat-y,radial-gradient(circle,#0A0B0D 3.5px,transparent 4px) calc(100% - 9px) 6px/100% 20px repeat-y,
+      repeating-linear-gradient(180deg,#F3EEDC 0 21px,#E7F0DE 21px 42px);
+    background-size:8px 20px,8px 20px,auto;box-shadow:0 30px 60px -20px rgba(0,0,0,.9);clip-path:inset(0 0 100% 0);transition:clip-path 1.4s steps(14)}
+  .cm-done.on .rc-p{clip-path:inset(0 0 0 0)}
+  .rc-t{text-align:center;font-weight:700;letter-spacing:.16em}
+  .rc-h{text-align:center;font-size:11px;color:#6E6754}
+  .rc-p hr{border:0;border-top:1px dashed #8C846C;margin:8px 0}
+  .rc-r{display:flex;justify-content:space-between;gap:12px} .rc-r span{color:#6E6754} .rc-r b{font-weight:600;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rc-ok b{color:#1E7A4A}
+  .rc-m{margin:10px 0 0;text-align:center}
+  .rc-bar{height:26px;margin-top:12px;background:repeating-linear-gradient(90deg,#2A2722 0 2px,transparent 2px 4px,#2A2722 4px 5px,transparent 5px 8px,#2A2722 8px 11px,transparent 11px 12px)}
+  .cm-again{border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.06);color:#F5F5F7;font:500 14px var(--sans);padding:10px 20px;cursor:pointer}
+  .cm-again:hover{background:rgba(255,255,255,.12)} .cm-again:focus-visible{outline:2px solid #2997FF;outline-offset:3px}
+
+  @media (max-width:980px){ .cm-main{grid-template-columns:190px minmax(0,1fr)} .cm-bar{flex-wrap:wrap} .cm-amber{order:3;flex-basis:100%} .cm-send{margin-left:auto} }
+  @media (max-width:860px){
+    .ct-head{grid-template-columns:minmax(0,1fr);gap:26px} .ct-plate{min-width:0}
+    .cmail{margin-top:30px}
+    .cm-main{grid-template-columns:minmax(0,1fr);min-height:0}
+    .cm-box{flex-direction:row;overflow-x:auto;gap:6px;padding:10px;border-right:0;border-bottom:1px solid rgba(0,0,0,.65);scrollbar-width:none}
+    .cm-box::-webkit-scrollbar{display:none}
+    .cm-box-h,.cm-box-f,.cm-mb small,.cm-mb em{display:none}
+    .cm-mb{flex:none;padding:8px 12px;border:1px solid rgba(255,255,255,.08)} .cm-mb.on{border-color:transparent}
+    .cm-r{grid-template-columns:minmax(0,1fr);gap:4px;padding:10px 16px} .cm-k{text-align:left;font-size:12px}
+    .cm-from{flex-wrap:wrap} .cm-from #cm-name,.cm-from #cm-email{flex:1 1 100%;padding:6px 0} .cm-lt{display:none}
+    .cm-from #cm-name{border-bottom:1px solid rgba(255,255,255,.06)}
+    .cm-txt textarea{padding:16px 16px 34px;min-height:180px}
+    .cm-bar{flex-direction:column;align-items:stretch;padding:14px 16px} .cm-ts{min-width:0} .cm-amber{order:0;flex-basis:auto} .cm-send{margin-left:0;width:100%}
+    .cm-note{padding:0 16px 14px}
+    .rc-p{padding:18px 30px 20px;font-size:11.5px}
+  }
+  @media (prefers-reduced-motion:reduce){ .cm-amber.busy .cm-led,.ct-lamp .lmp,.cm-ld{animation:none} .rc-p{transition:none} }
+  @media print{ .cmail,.ct-plate{display:none!important} }
+  .cm-from .cm-lt{display:none} .cm-from #cm-email{border-left:1px solid rgba(255,255,255,.08);padding-left:16px;margin-left:10px}
+  @media (max-width:860px){ .cm-from #cm-email{border-left:0;padding-left:0;margin-left:0} }
 </style>
 </head>
 <body>
@@ -1913,19 +2048,72 @@
 
   <section class="block" id="contacto" aria-labelledby="c-title">
     <div class="wrap">
-      <div class="contact">
+      <div class="ct-head">
         <div>
           <p class="path">~/contacto</p>
           <h2 class="title" id="c-title" data-scramble>¿Hablamos?</h2>
-          <p>Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.</p>
+          <p class="ct-lead" id="ct-lead">Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme aquí. El mensaje me llega al momento y respondo en el día.</p>
         </div>
-        <div class="links">
-          <button type="button" id="copy-mail"><span>Email</span><small>sanchoselmajoseantonio@gmail.com · copiar</small></button>
-          <a href="https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368" target="_blank" rel="noopener"><span>LinkedIn</span><small>jose-antonio-sancho-selma</small></a>
-          <a href="https://github.com/jasanchoselma" target="_blank" rel="noopener"><span>GitHub</span><small>jasanchoselma</small></a>
-          <a href="cv-jose-antonio-sancho-selma.pdf"><span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small></a>
+        <div class="ct-plate" aria-label="Disponibilidad">
+          <i class="sc" aria-hidden="true"></i><i class="sc" aria-hidden="true"></i><i class="sc" aria-hidden="true"></i><i class="sc" aria-hidden="true"></i>
+          <div class="ct-lamp"><span class="lmp" aria-hidden="true"></span><b id="ct-av">Disponible para FCT</b></div>
+          <div class="ct-segs">
+            <div class="ct-seg"><small id="ct-s1">prácticas</small><b>MAR–JUL 27</b></div>
+            <div class="ct-seg"><small id="ct-s2">respuesta</small><b>&lt; 24 H</b></div>
+          </div>
         </div>
       </div>
+
+      <section class="cmail" id="cmail" aria-labelledby="cm-title">
+        <div class="cm-tb"><i class="x" aria-hidden="true"></i><b id="cm-title">Nuevo mensaje — Mail</b><i class="z" aria-hidden="true"></i></div>
+        <div class="cm-main">
+          <nav class="cm-box" aria-labelledby="cm-box-h">
+            <p class="cm-box-h" id="cm-box-h">Buzones</p>
+            <a href="#cmail" class="cm-mb on" aria-current="true" id="cm-mb-new"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 14.5V16h1.5l8.6-8.6-1.5-1.5L4 14.5Zm11.3-8.2a.9.9 0 0 0 0-1.3l-1.3-1.3a.9.9 0 0 0-1.3 0l-1 1 2.6 2.6 1-1Z" fill="currentColor"/></svg><span><b id="cm-mb-new-t">Nuevo mensaje</b><small id="cm-mb-new-s">formulario privado</small></span></a>
+            <a href="https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368" class="cm-mb" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="2.5" width="15" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.3 8.6v5.2M6.3 6.2v.1M9.2 13.8V8.6m0 2.4c0-1.5 1-2.5 2.2-2.5s2 .9 2 2.4v2.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span><b>LinkedIn</b><small>jose-antonio-sancho-selma</small></span><em aria-hidden="true">↗</em></a>
+            <a href="https://github.com/jasanchoselma" class="cm-mb" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.2a7.8 7.8 0 0 0-2.5 15.2c.4.1.5-.2.5-.4v-1.4c-2.2.5-2.6-1-2.6-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.2 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.7-.2-3.6-.9-3.6-3.9 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.1.8a7.4 7.4 0 0 1 3.9 0c1.5-1 2.1-.8 2.1-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3-1.8 3.7-3.6 3.9.3.3.6.8.6 1.5V17c0 .2.1.5.6.4A7.8 7.8 0 0 0 10 2.2Z" fill="currentColor"/></svg><span><b>GitHub</b><small>jasanchoselma</small></span><em aria-hidden="true">↗</em></a>
+            <a href="cv-jose-antonio-sancho-selma.pdf" class="cm-mb" id="cm-mb-cv"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h6.5L15 6v11.5H5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M11.5 2.5V6H15M7.5 10h5M7.5 12.5h5M7.5 15h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span><b id="cm-mb-cv-t">Currículum</b><small id="cm-mb-cv-s">PDF · o Ctrl+P</small></span></a>
+            <div class="cm-box-f" aria-hidden="true"><span class="cm-ld"></span><span class="cm-ld g"></span><small>CF · TLS 1.3</small></div>
+          </nav>
+
+          <form class="cm-comp" id="cm-form" novalidate>
+            <div class="cm-hd">
+              <div class="cm-r"><span class="cm-k" id="cm-to-l">Para:</span>
+                <div class="cm-v"><span class="cm-to"><i>JA</i>José Antonio Sancho</span><span class="cm-priv"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4.5" y="8.5" width="11" height="8.5" rx="2" fill="currentColor"/><path d="M7 8.5V6.5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span id="cm-priv">Correo privado · entrega cifrada</span></span></div></div>
+              <div class="cm-r"><label class="cm-k" for="cm-name" id="cm-from-l">De:</label>
+                <div class="cm-v cm-from">
+                  <input name="name" id="cm-name" autocomplete="name" maxlength="100" required placeholder="Tu nombre" aria-label="Nombre">
+                  <span class="cm-lt" aria-hidden="true">&lt;</span><input name="email" id="cm-email" type="email" autocomplete="email" maxlength="254" required placeholder="tu@email.com" aria-label="Email" spellcheck="false"><span class="cm-lt" aria-hidden="true">&gt;</span>
+                </div></div>
+              <div class="cm-r"><span class="cm-k" id="cm-sub-l">Asunto:</span>
+                <div class="cm-v cm-keys" role="radiogroup" aria-labelledby="cm-sub-l">
+                  <label class="kc"><input type="radio" name="subject" value="fct" checked><span><i></i><b data-es="FCT / prácticas" data-en="Internship">FCT / prácticas</b></span></label>
+                  <label class="kc"><input type="radio" name="subject" value="job"><span><i></i><b data-es="Oferta de empleo" data-en="Job offer">Oferta de empleo</b></span></label>
+                  <label class="kc"><input type="radio" name="subject" value="proj"><span><i></i><b data-es="Proyecto" data-en="Project">Proyecto</b></span></label>
+                  <label class="kc"><input type="radio" name="subject" value="other"><span><i></i><b data-es="Otro" data-en="Other">Otro</b></span></label>
+                </div></div>
+            </div>
+            <div class="cm-txt">
+              <textarea name="message" id="cm-msg" minlength="10" maxlength="2950" required placeholder="Hola José Antonio, …" aria-label="Mensaje"></textarea>
+              <span class="cm-count" id="cm-count" aria-hidden="true">0000 / 2950</span>
+            </div>
+            <label class="cm-hp" aria-hidden="true">Web<input name="website" id="cm-hp" tabindex="-1" autocomplete="off"></label>
+            <div class="cm-bar">
+              <div class="cm-ts" id="cm-ts">Turnstile · Cloudflare</div>
+              <div class="cm-amber" id="cm-st" role="status" aria-live="polite"><span class="cm-led" aria-hidden="true"></span><small id="cm-st-l">estado</small><b id="cm-st-t">LISTO</b></div>
+              <button class="cm-send" id="cm-send" type="submit" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10 17 3.5 13.5 17l-3.2-5.3L3 10Zm7.3 1.7L17 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="cm-send-t">Enviar</span></button>
+            </div>
+            <p class="cm-note" id="cm-note">Protegido con Cloudflare Turnstile. Tu mensaje me llega directamente al correo y solo uso tus datos para responderte.</p>
+          </form>
+        </div>
+
+        <div class="cm-done" id="cm-done" hidden>
+          <div class="rc" role="status" aria-live="polite">
+            <div class="rc-p" id="cm-rc"></div>
+            <button type="button" class="cm-again" id="cm-again">Escribir otro mensaje</button>
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 </main>
@@ -1940,7 +2128,7 @@
         <a class="port rj" href="https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368" target="_blank" rel="noopener"><i><b></b><b></b></i><small>linkedin</small></a>
         <a class="port db" href="/.well-known/security.txt"><i></i><small>security.txt</small></a>
         <a class="port usb" href="/humans.txt"><i></i><small>humans.txt</small></a>
-        <a class="port jack" href="mailto:sanchoselmajoseantonio@gmail.com"><i></i><small>mail</small></a>
+        <a class="port jack" href="#contacto"><i></i><small>mail</small></a>
         <a class="port usb" href="cv-jose-antonio-sancho-selma.pdf"><i></i><small>cv.pdf</small></a>
       </nav>
       <div class="rear-label">
@@ -2102,7 +2290,7 @@ const COURSE = { start:"2026-09-07", end:"2027-07-02", blocks:[
   {name:"FCT", en:"Internship", fct:["2027-03-01","2027-07-02"]}
 ]};
 const ASIR_START = new Date("2025-09-15T08:00:00");
-const EMAIL = "sanchoselmajoseantonio@gmail.com";
+const CONTACT = "jasancho.com/#contacto";
 const LINKEDIN = "https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368";
 const GITHUB = "https://github.com/jasanchoselma";
 
@@ -2171,9 +2359,6 @@ const STATIC = [
   '<li class="next"><time>mar – jul 2027</time><strong>Formación en empresa (FCT)</strong><span>Buscando empresa de sistemas o ciberseguridad</span></li><li class="now"><time>2025 – 2027</time><strong>CFGS Administración de Sistemas Informáticos en Red</strong><span>CEP Sorolla, Valencia</span></li><li><time>may 2026</time><strong>Computer Hardware Basics</strong><span>Cisco Networking Academy</span></li><li><time>jun – sep 2025</time><strong>Atención al cliente</strong><span>Consum Cooperativa Valenciana</span></li><li><time>2022 – 2024</time><strong>Bachillerato de Ciencias de la Salud</strong><span>Maristas Valencia</span></li><li><time>2022 – 2023</time><strong>Profesor particular</strong><span>Matemáticas, física, química y biología</span></li>',
   '<li class="next"><time>Mar – Jul 2027</time><strong>Work placement (FCT internship)</strong><span>Looking for a systems or cybersecurity company</span></li><li class="now"><time>2025 – 2027</time><strong>Higher VET Diploma in Network Systems Administration (ASIR)</strong><span>CEP Sorolla, Valencia</span></li><li><time>May 2026</time><strong>Computer Hardware Basics</strong><span>Cisco Networking Academy</span></li><li><time>Jun – Sep 2025</time><strong>Customer service</strong><span>Consum Cooperativa Valenciana</span></li><li><time>2022 – 2024</time><strong>High school diploma, Health Sciences</strong><span>Maristas Valencia</span></li><li><time>2022 – 2023</time><strong>Private tutor</strong><span>Maths, physics, chemistry and biology</span></li>',1],
  ["#contacto .path","~/contacto","~/contact"],["#c-title","¿Hablamos?","Let's talk"],
- [".contact > div > p:not(.path)","Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme. Respondo en el día.","If you're looking for a systems or cybersecurity intern, write to me. I reply the same day."],
- ["#copy-mail small",EMAIL+" · copiar",EMAIL+" · copy"],
- [".links a[href$='.pdf']","<span>Currículum</span><small>PDF · o pulsa Ctrl+P en esta página</small>","<span>Résumé</span><small>PDF · or press Ctrl+P on this page</small>",1],
  ["footer .ft-made",'HTML, CSS y JS a mano · three.js, GSAP y Lenis autoalojados · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">código en GitHub</a>','Hand-written HTML, CSS and JS · self-hosted three.js, GSAP and Lenis · <a href="https://github.com/jasanchoselma/Portfolio" target="_blank" rel="noopener">source on GitHub</a>',1],
  ["#dlg-close","Cerrar","Close"],["#hello-x","Cerrar","Close"],["#hello code","conexión entrante","incoming connection"]
 ];
@@ -2202,7 +2387,7 @@ if(EMPRESA){ $("#hello").classList.add("show"); $("#hello-x").onclick=()=>$("#he
 
 /* =================== consola =================== */
 console.log("%c jasancho@soc ","background:#52A5FF;color:#0D0E10;font:700 14px monospace;padding:4px 8px;border-radius:4px");
-console.log("%c¿Abriendo las DevTools? Me caes bien. / Opening DevTools? I like you already.\nSin frameworks: HTML, CSS y JS escrito a mano. Pulsa ` para abrir la terminal.\nCódigo: https://github.com/jasanchoselma/Portfolio\nFCT / internship: "+EMAIL,"color:#D4D4DE;font:12px/1.6 monospace");
+console.log("%c¿Abriendo las DevTools? Me caes bien. / Opening DevTools? I like you already.\nSin frameworks: HTML, CSS y JS escrito a mano. Pulsa ` para abrir la terminal.\nCódigo: https://github.com/jasanchoselma/Portfolio\nFCT / internship: "+CONTACT,"color:#D4D4DE;font:12px/1.6 monospace");
 
 /* =================== arranque =================== */
 (function boot(){
@@ -2509,9 +2694,10 @@ function drawCourse(){
   $(".course-h").innerHTML=`<span>${t("weekly")}</span><span><b id="count">${count}</b> ${t("practices")}</span>`;
 }
 
-/* =================== copiar email =================== */
-async function copyEmail(){ try{ await navigator.clipboard.writeText(EMAIL); toast(t("copied")(EMAIL)); return true; }catch(e){ toast(t("copyFail")(EMAIL)); return false; } }
-$("#copy-mail").addEventListener("click",copyEmail);
+/* =================== ir al formulario de contacto (el correo no es público) =================== */
+function goContact(){ const f=document.getElementById("cmail"); if(!f) return; const go=()=>{ const r=matchMedia("(prefers-reduced-motion: reduce)").matches; if(typeof lenis!=="undefined"&&lenis) lenis.scrollTo(f,{offset:-90,immediate:r}); else f.scrollIntoView({behavior:r?"auto":"smooth",block:"start"}); setTimeout(()=>{ const n=document.getElementById("cm-name"); if(n) n.focus({preventScroll:true}); },700); };
+  if(document.documentElement.classList.contains("desk-on")&&window.deskOpen) window.deskOpen("contacto",go); else go(); }
+window.goContact=goContact;
 
 /* =================== versión imprimible (Ctrl+P = CV) =================== */
 function printCV(){
@@ -2520,7 +2706,7 @@ function printCV(){
   const tl=[...document.querySelectorAll("#timeline li")].map(li=>`<p><b>${esc(li.querySelector("strong").textContent)}</b> · ${esc(li.querySelector("span").textContent)} <span class="tg">(${esc(li.querySelector("time").textContent)})</span></p>`).join("");
   $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
     <p class="sub">${en?"ASIR (Network Systems Administration) student · Systems, IT support and cybersecurity":"Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad"}</p>
-    <p class="ct">Valencia · ${EMAIL} · jasancho.com · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
+    <p class="ct">Valencia · jasancho.com/#contacto · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
     <h2>${en?"PROFILE":"PERFIL"}</h2><p>${en?"Second-year ASIR student with hands-on practice in Linux, Active Directory with Samba, Docker, AWS and service hardening. Available for an internship from March to July 2027.":"Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027."}</p>
     <h2>${en?"PROJECTS":"PROYECTOS"}</h2>${PROJECTS.map(p=>{const lp=L(p); return `<div class="proj"><h3>${esc(lp.title)}${p.status==="wip"?(en?" (in progress)":" (en curso)"):""}</h3><ul>${lp.did.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="tg">${p.stack.join(" · ")}</p></div>`}).join("")}
     <h2>${en?"SKILLS":"COMPETENCIAS"}</h2>${stack}
@@ -2966,8 +3152,8 @@ $("#dp-replay").addEventListener("click",runJourney);
 /* ---- auditoría: escaneo animado, nota y visor de archivos ---- */
 const AU_ICON={TLS:"lock",DNS:"dns","RFC 9116":"shield",OWASP:"bug",UX:"route",web:"heart",CLI:"terminal",CSS:"printer",i18n:"lang",a11y:"a11y",privacy:"eyeoff",F12:"code"};
 const FILES={
- "/.well-known/security.txt":"# Política de divulgación de vulnerabilidades de jasancho.com (RFC 9116)\n# ¿Has encontrado un fallo en esta web? Gracias por avisar antes de publicarlo.\nContact: mailto:sanchoselmajoseantonio@gmail.com\nExpires: 2027-11-06T00:00:00.000Z\nPreferred-Languages: es, en\nCanonical: https://jasancho.com/.well-known/security.txt",
- "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: sanchoselmajoseantonio [at] gmail.com\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: three.js, GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
+ "/.well-known/security.txt":"# Política de divulgación de vulnerabilidades de jasancho.com (RFC 9116)\n# ¿Has encontrado un fallo en esta web? Gracias por avisar antes de publicarlo.\nContact: https://jasancho.com/#contacto\nExpires: 2027-11-06T00:00:00.000Z\nPreferred-Languages: es, en\nCanonical: https://jasancho.com/.well-known/security.txt",
+ "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: formulario en jasancho.com/#contacto\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: three.js, GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
  "/robots.txt":"# robots.txt de jasancho.com\nUser-agent: *\nAllow: /"
 };
 let auScanned=false, auRunning=false;
@@ -3092,7 +3278,7 @@ function printCV(){
   const en=LANG==="en";
   $("#pcv").innerHTML=`<h1>José Antonio Sancho Selma</h1>
     <p class="sub">${en?"ASIR (Network Systems Administration) student · Systems, IT support and cybersecurity":"Técnico Superior en ASIR · Sistemas, soporte técnico y ciberseguridad"}</p>
-    <p class="ct">Valencia · ${EMAIL} · jasancho.com · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
+    <p class="ct">Valencia · jasancho.com/#contacto · linkedin.com/in/jose-antonio-sancho-selma-705a4b368</p>
     <h2>${en?"PROFILE":"PERFIL"}</h2><p>${en?"Second-year ASIR student with hands-on practice in Linux, Active Directory with Samba, Docker, AWS and service hardening. Available for an internship from March to July 2027.":"Estudiante de segundo de ASIR con práctica en Linux, Active Directory con Samba, Docker, AWS y securización de servicios. Disponible para FCT de marzo a julio de 2027."}</p>
     <h2>${en?"PROJECTS":"PROYECTOS"}</h2>${PROJECTS.map(p=>{const lp=L(p); return `<div class="proj"><h3>${esc(lp.title)}${p.status==="wip"?(en?" (in progress)":" (en curso)"):""}</h3><ul>${lp.did.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="tg">${p.stack.join(" · ")}</p></div>`}).join("")}
     <h2>${en?"SKILLS":"COMPETENCIAS"}</h2>${STACK.map(c=>`<p><b>${esc(c.name[LANG])}:</b> ${esc(c.items.map(tx).join(" · "))}</p>`).join("")}
@@ -3258,10 +3444,7 @@ function decorateHeads(){
     g.textContent=(path.textContent.replace(/^\d+/,"").replace("~/","").trim()||"").toUpperCase();
   });
 }
-function decorateContact(){
-  const box=document.querySelector(".contact > div:first-child"); if(!box||box.querySelector(".mail-big")) return;
-  const a=document.createElement("a"); a.className="mail-big"; a.href="mailto:sanchoselmajoseantonio@gmail.com"; a.textContent="sanchoselmajoseantonio@gmail.com ↗"; box.appendChild(a);
-}
+function decorateContact(){ /* el correo ya no se muestra: el contacto va por el formulario */ }
 
 /* --- scroll suave + animaciones al hacer scroll --- */
 let v7ready=false, lenis=null;
@@ -3287,13 +3470,13 @@ function initMotion(){
   });
   // cabeceras: número, título y entradilla entran escalonados; el fantasma hace parallax
   document.querySelectorAll("section.block").forEach(s=>{
-    const head=s.querySelector(".sec-head")||s.querySelector(".contact > div:first-child")||s.querySelector(".wrap > div");
+    const head=s.querySelector(".sec-head")||s.querySelector(".ct-head > div:first-child")||s.querySelector(".wrap > div");
     const parts=head?head.querySelectorAll(".path,h2.title,.lead,.filters,p:not(.path)"):[];
     if(parts.length) gsap.from(parts,{y:46,opacity:0,duration:1,ease:"power4.out",stagger:.09,scrollTrigger:{trigger:head,start:"top 85%"}});
     const g=s.querySelector(".ghost"); if(g) gsap.fromTo(g,{xPercent:8},{xPercent:-14,ease:"none",scrollTrigger:{trigger:s,start:"top bottom",end:"bottom top",scrub:true}});
   });
   // tarjetas y filas aparecen en cascada
-  ScrollTrigger.batch(".dp-card,.contact .links > *",{start:"top 90%",once:true,
+  ScrollTrigger.batch(".dp-card",{start:"top 90%",once:true,
     onEnter:b=>gsap.from(b,{y:40,opacity:0,duration:.8,ease:"power3.out",stagger:.07,clearProps:"transform,opacity"})});
   v7ready=true;
   addEventListener("load",()=>ScrollTrigger.refresh());
@@ -3907,7 +4090,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
   const content={
     about:()=>tr("José Antonio Sancho Selma · Valencia\nEstudiante de 2º de ASIR en el CEP Sorolla (2025–2027).\nEmpecé por ciencias de la salud y acabé en sistemas.\nBusco FCT de marzo a julio de 2027 en sistemas, soporte o ciberseguridad.\nIdiomas: español, valenciano C1, inglés B2.",
                    "José Antonio Sancho Selma · Valencia, Spain\nSecond-year ASIR student at CEP Sorolla (2025–2027).\nStarted in health sciences, ended up in systems.\nLooking for an internship, March–July 2027: systems, IT support or cybersecurity.\nLanguages: Spanish, Valencian C1, English B2."),
-    contact:()=>`email     ${EMAIL}\nlinkedin  ${LINKEDIN}\ngithub    ${GITHUB}\n\n`+tr("Escribe 'email' para copiar el correo.","Type 'email' to copy the address."),
+    contact:()=>`mail      ${CONTACT}  (${tr("formulario","form")})\nlinkedin  ${LINKEDIN}\ngithub    ${GITHUB}\n\n`+tr("Escribe 'email' para abrir el formulario.","Type 'email' to open the form."),
     stack:()=>stackPlain(),
     timeline:()=>timelinePlain(),
     secret:()=>tr("¿Buscando archivos ocultos? Así me gusta.\nPista: prueba 'sudo hire jasancho'.","Looking for hidden files? Good instinct.\nHint: try 'sudo hire jasancho'."),
@@ -3965,7 +4148,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     sudo:a=>{ if(a.join(" ")==="hire jasancho"){ txt(tr("[sudo] contraseña para reclutador: ********\n✓ Permiso concedido. Abriendo canal de contacto…","[sudo] password for recruiter: ********\n✓ Access granted. Opening contact channel…"),"tok"); setTimeout(()=>{ close(); location.hash="#contacto"; },900); }
       else txt(tr("jasancho no está en el archivo sudoers. Este incidente será reportado.","jasancho is not in the sudoers file. This incident will be reported."),"err"); },
     rm:a=>txt(a.join(" ").includes("-rf")?tr("Buen intento. Esta web es de solo lectura y tengo copias inmutables 😉","Nice try. This site is read-only and I keep immutable backups 😉"):tr("rm: permiso denegado","rm: permission denied"),"err"),
-    email:async()=>{ const ok=await copyEmail(); txt(ok?tr(`✓ ${EMAIL} copiado al portapapeles`,`✓ ${EMAIL} copied to clipboard`):EMAIL,ok?"tok":""); },
+    email:()=>{ txt(tr("✓ Mi correo no es público: te llevo al formulario de contacto.","✓ My address isn't public: taking you to the contact form."),"tok"); setTimeout(()=>{ close(); goContact(); },650); },
     cv:()=>{ txt(tr("Abriendo el CV…","Opening résumé…")); location.href=$(".btn-cv").getAttribute("href"); },
     goto:a=>{ const s=SECTIONS[(a[0]||"").toLowerCase()]; if(!s) return txt(tr("goto: secciones: proyectos, despliegue, stack, trayectoria, contacto","goto: sections: projects, deployment, stack, background, contact"),"err"); close(); location.hash=s; },
     lang:a=>{ if(a[0]!=="es"&&a[0]!=="en") return txt("lang es | lang en","err"); setLang(a[0],true); window.termLang(); txt(tr("Idioma: español","Language: English"),"tok"); },
@@ -4052,7 +4235,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       readme:"Léeme — jasancho",items:n=>`${n} elementos`,free:"112 MB libres",open:"Abrir portfolio",projects:"Ver proyectos",note:"Doble clic en una carpeta para abrirla.<br>El botón □ de arriba a la izquierda te devuelve aquí.",noteTouch:"Toca una carpeta para abrirla.<br>El botón □ de arriba te devuelve aquí.",
       trashT:"La Papelera está vacía.",
       mFile:[["open","Abrir portfolio","⌘O"],["print","Imprimir CV","⌘P"],["cvdl","Descargar CV",""],"-",["closew","Cerrar ventana","⌘W"]],
-      mEdit:[["mail","Copiar email","⌘C"],["link","Copiar enlace del portfolio",""],"-",["all","Seleccionar todo","⌘A"]],
+      mEdit:[["mail","Nuevo mensaje…","⌘M"],["link","Copiar enlace del portfolio",""],"-",["all","Seleccionar todo","⌘A"]],
       mView:[["icons","como Iconos",""],["list","como Lista",""],"-",["note","Mostrar nota",""]],
       mSpec:[["restart","Reiniciar…",""],["shutdown","Apagar…",""]],
       mLogo:[["about","Acerca de este portfolio…",""]],
@@ -4064,7 +4247,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       readme:"Read Me — jasancho",items:n=>`${n} items`,free:"112 MB free",open:"Open portfolio",projects:"See projects",note:"Double-click a folder to open it.<br>The □ button at the top left brings you back here.",noteTouch:"Tap a folder to open it.<br>The □ button at the top brings you back here.",
       trashT:"The Trash is empty.",
       mFile:[["open","Open portfolio","⌘O"],["print","Print CV","⌘P"],["cvdl","Download CV",""],"-",["closew","Close window","⌘W"]],
-      mEdit:[["mail","Copy email","⌘C"],["link","Copy portfolio link",""],"-",["all","Select all","⌘A"]],
+      mEdit:[["mail","New message…","⌘M"],["link","Copy portfolio link",""],"-",["all","Select all","⌘A"]],
       mView:[["icons","as Icons",""],["list","as List",""],"-",["note","Show note",""]],
       mSpec:[["restart","Restart…",""],["shutdown","Shut down…",""]],
       mLogo:[["about","About this portfolio…",""]],
@@ -4206,12 +4389,14 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       desk.addEventListener("pointerdown",e=>{ if(!e.target.closest(".dk-mn")) shutAll(); });
       desk.addEventListener("keydown",e=>{ if(e.key==="Escape") shutAll(); }); } }
   function note(msg){ if(typeof toast==="function") toast(msg); }
+  function focusMail(){ const f=document.getElementById("cmail"); if(f) f.scrollIntoView({block:"center"}); setTimeout(()=>{ const n=document.getElementById("cm-name"); if(n) n.focus({preventScroll:true}); },400); }
+  window.deskOpen=(k,after)=>openSection(k,null,after);
   function cmd(c){ const l=L();
     if(c==="open") openSection("inicio",desk.querySelector('.dk-ic[data-k="inicio"]'));
     else if(c==="print") window.print();
     else if(c==="cvdl") location.href="cv-jose-antonio-sancho-selma.pdf";
     else if(c==="closew"){ const w=[...desk.querySelectorAll(".dk-win:not(.min)")].sort((a,b)=>(+b.style.zIndex||0)-(+a.style.zIndex||0))[0]; if(w) closeWin(w); }
-    else if(c==="mail"){ const e=typeof EMAIL!=="undefined"?EMAIL:""; try{ navigator.clipboard.writeText(e).catch(()=>{}); }catch(x){} note(`${l.copied}: <b>${e}</b>`); }
+    else if(c==="mail"){ openSection("contacto",desk.querySelector('.dk-ic[data-k="contacto"]'),focusMail); }
     else if(c==="link"){ try{ navigator.clipboard.writeText(location.origin+"/").catch(()=>{}); }catch(x){} note(`${l.copied}: <b>${location.host||"jasancho.com"}</b>`); }
     else if(c==="all") desk.querySelectorAll(".dk-icons .dk-ic").forEach(b=>b.classList.add("on"));
     else if(c==="icons"||c==="list"){ view=c; try{ localStorage.setItem("dk-view",c); }catch(e){} applyView(); }
@@ -4236,8 +4421,8 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     if(k==="trayectoria"&&typeof TIMELINE!=="undefined") return TIMELINE.map((e,i)=>({ic:SVG.txt,t:tr(e.date),s:tr(e.title),go:()=>openSection("trayectoria",null,()=>{ if(typeof tlShow==="function") tlShow(i); })})).reverse();
     if(k==="auditoria"&&typeof FILES!=="undefined") return Object.keys(FILES).map(f=>({ic:SVG.txt,t:f.split("/").pop(),s:f,go:()=>{ if(typeof viewFile==="function") viewFile(f); }}));
     if(k==="despliegue") return [["index.html",SVG.html],["404.html",SVG.html],["CNAME",SVG.txt],[".well-known/",sub("wk")],["vendor/",sub("vd")]].map(([t,ic])=>({ic,t,s:"github.com/jasanchoselma/Portfolio",go:()=>openSection("despliegue")}));
-    if(k==="contacto") return [["Email",SVG.mail,"mailto:"+(typeof EMAIL!=="undefined"?EMAIL:"")],["LinkedIn",SVG.link,"https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368"],["GitHub",SVG.link,"https://github.com/jasanchoselma"],["CV.pdf",SVG.cv,"cv-jose-antonio-sancho-selma.pdf"]]
-      .map(([t,ic,h])=>({ic,t,s:h.replace(/^mailto:|^https:\/\/(www\.)?/,""),go:()=>{ if(h.startsWith("http")) window.open(h,"_blank","noopener"); else location.href=h; }}));
+    if(k==="contacto") return [[LG()==="en"?"New message":"Nuevo mensaje",SVG.mail,"#cmail"],["LinkedIn",SVG.link,"https://www.linkedin.com/in/jose-antonio-sancho-selma-705a4b368"],["GitHub",SVG.link,"https://github.com/jasanchoselma"],["CV.pdf",SVG.cv,"cv-jose-antonio-sancho-selma.pdf"]]
+      .map(([t,ic,h])=>({ic,t,s:h.replace(/^mailto:|^https:\/\/(www\.)?/,""),go:()=>{ if(h==="#cmail") openSection("contacto",null,focusMail); else if(h.startsWith("http")) window.open(h,"_blank","noopener"); else location.href=h; }}));
     return []; }
   function openFolder(k,from){ const l=L(); if(openFd[k]){ raise(openFd[k]); openFd[k].querySelector(".dk-it")?.focus(); return; }
     const items=itemsOf(k), n=Object.keys(openFd).length;
@@ -4302,7 +4487,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     if(anim){ zoom(full(),ic.getBoundingClientRect(),go); } else go(); }
   window.deskShow=()=>showDesk(true);
   addEventListener("keydown",e=>{ if(!root.classList.contains("desk-on")||!(e.metaKey||e.ctrlKey)) return; const k=e.key.toLowerCase();
-    const map={o:()=>{ if(sel) act(sel); else cmd("open"); },p:()=>cmd("print"),w:()=>cmd("closew"),a:()=>cmd("all")};
+    const map={o:()=>{ if(sel) act(sel); else cmd("open"); },p:()=>cmd("print"),w:()=>cmd("closew"),a:()=>cmd("all"),m:()=>cmd("mail")};
     if(map[k]){ e.preventDefault(); map[k](); } });
 
   function init(){
@@ -4322,6 +4507,117 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       openSection(id,desk.querySelector(`.dk-ic[data-k="${id}"]`)); });
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+<script>
+/* =================== formulario de contacto · Mail System 7 + Cloudflare Turnstile ===================
+   El correo no aparece en ningún sitio de la web: el mensaje va al Worker (api.jasancho.com),
+   que verifica Turnstile en el servidor y me lo reenvía. */
+(function contactForm(){
+  const CFG = {
+    endpoint: "https://api.jasancho.com/contact",
+    sitekey: "0x4AAAAAAF7HgjwrSNWtUmXr"
+  };
+  const T = {
+    es:{title:"Nuevo mensaje — Mail",to:"Para:",from:"De:",sub:"Asunto:",priv:"Correo privado · entrega cifrada",name:"Tu nombre",mail:"tu@email.com",
+        ph:"Hola José Antonio, …",send:"Enviar",st:"estado",box:"Buzones",newT:"Nuevo mensaje",newS:"formulario privado",cvT:"Currículum",cvS:"PDF · o Ctrl+P",
+        lead:"Si buscas alumno de FCT para sistemas o ciberseguridad, escríbeme aquí. El mensaje me llega al momento y respondo en el día.",
+        av:"Disponible para FCT",s1:"prácticas",s2:"respuesta",
+        ready:"LISTO",verify:"VERIFICANDO",sending:"ENVIANDO…",ok:"ENVIADO",bad:"REVISA LOS DATOS",fail:"ERROR · REINTENTA",send_failed:"ERROR DE ENVÍO",captcha:"VERIFICACIÓN FALLIDA",nokey:"SIN CONFIGURAR",
+        loading:"Cargando verificación…",nokeyT:"Turnstile sin configurar",note:"Protegido con Cloudflare Turnstile. Tu mensaje me llega directamente al correo y solo uso tus datos para responderte.",
+        again:"Escribir otro mensaje",rcT:"ACUSE DE RECIBO",rcRef:"REF",rcDate:"FECHA",rcFrom:"DE",rcSub:"ASUNTO",rcSt:"ESTADO",rcOk:"ENTREGADO ✓",rcThanks:"Gracias. Te respondo en el día.",
+        subjLbl:"Asunto",msgLbl:"Mensaje",nameLbl:"Nombre"},
+    en:{title:"New message — Mail",to:"To:",from:"From:",sub:"Subject:",priv:"Private address · encrypted delivery",name:"Your name",mail:"you@email.com",
+        ph:"Hi José Antonio, …",send:"Send",st:"status",box:"Mailboxes",newT:"New message",newS:"private form",cvT:"Résumé",cvS:"PDF · or Ctrl+P",
+        lead:"If you're looking for a systems or cybersecurity intern, write to me here. Your message reaches me instantly and I reply the same day.",
+        av:"Available for internship",s1:"internship",s2:"reply",
+        ready:"READY",verify:"VERIFYING",sending:"SENDING…",ok:"SENT",bad:"CHECK THE FIELDS",fail:"ERROR · RETRY",send_failed:"DELIVERY ERROR",captcha:"VERIFICATION FAILED",nokey:"NOT CONFIGURED",
+        loading:"Loading verification…",nokeyT:"Turnstile not configured",note:"Protected by Cloudflare Turnstile. Your message goes straight to my inbox and I only use your details to reply.",
+        again:"Write another message",rcT:"DELIVERY RECEIPT",rcRef:"REF",rcDate:"DATE",rcFrom:"FROM",rcSub:"SUBJECT",rcSt:"STATUS",rcOk:"DELIVERED ✓",rcThanks:"Thanks. I'll reply within the day.",
+        subjLbl:"Subject",msgLbl:"Message",nameLbl:"Name"}
+  };
+  const $ = (s) => document.getElementById(s);
+  const form = $("cm-form"); if(!form) return;
+  const ts=$("cm-ts"), send=$("cm-send"), st=$("cm-st"), stt=$("cm-st-t"), msg=$("cm-msg"), cnt=$("cm-count"), done=$("cm-done"), rc=$("cm-rc");
+  const NOKEY = !CFG.sitekey || /PEGA_AQUI/.test(CFG.sitekey);
+  let token="", widget=null, loaded=false, state="ready";
+  const lang = () => (document.documentElement.lang === "en" ? "en" : "es");
+  const L = () => T[lang()];
+  const esc = (x) => String(x).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const set = (id, v, attr) => { const e=$(id); if(e){ if(attr) e.setAttribute(attr,v); else e.textContent=v; } };
+  const subj = () => { const r=form.querySelector('input[name="subject"]:checked'); return r ? r.nextElementSibling.querySelector("b").dataset[lang()] : ""; };
+
+  function setState(s){ state=s;
+    st.className="cm-amber"+(s==="ok"?" ok":(s==="bad"||s==="fail"||s==="send_failed"||s==="captcha"||s==="nokey")?" err":(s==="sending"||s==="verify")?" busy":"");
+    stt.textContent=L()[s]||L().ready; }
+  function texts(){ const l=L();
+    set("cm-title",l.title); set("cm-to-l",l.to); set("cm-from-l",l.from); set("cm-sub-l",l.sub); set("cm-priv",l.priv);
+    set("cm-name",l.name,"placeholder"); set("cm-email",l.mail,"placeholder"); set("cm-msg",l.ph,"placeholder");
+    set("cm-name",l.nameLbl,"aria-label"); set("cm-msg",l.msgLbl,"aria-label");
+    set("cm-send-t",l.send); set("cm-st-l",l.st); set("cm-note",l.note); set("cm-box-h",l.box);
+    set("cm-mb-new-t",l.newT); set("cm-mb-new-s",l.newS); set("cm-mb-cv-t",l.cvT); set("cm-mb-cv-s",l.cvS);
+    set("ct-lead",l.lead); set("ct-av",l.av); set("ct-s1",l.s1); set("ct-s2",l.s2); set("cm-again",l.again);
+    form.querySelectorAll(".kc b").forEach(b=>b.textContent=b.dataset[lang()]);
+    if(NOKEY) ts.textContent=l.nokeyT; else if(!loaded) ts.textContent=l.loading;
+    setState(state); }
+  function update(){
+    cnt.textContent=String(msg.value.length).padStart(4,"0")+" / 2950";
+    send.disabled = !token || state==="sending";
+    if(!token && (state==="ready"||state==="verify")) setState(NOKEY?"nokey":"verify");
+  }
+  function render(){
+    if(!window.turnstile || NOKEY) return;
+    if(widget!==null){ try{ turnstile.remove(widget); }catch(e){} widget=null; }
+    ts.textContent=""; ts.classList.add("on"); token="";
+    widget=turnstile.render(ts,{ sitekey:CFG.sitekey, theme:"dark", language:lang(), action:"contact", size:innerWidth<420?"compact":"normal",
+      callback:(t)=>{ token=t; if(state!=="sending") setState("ready"); update(); },
+      "expired-callback":()=>{ token=""; update(); },
+      "error-callback":()=>{ token=""; setState("captcha"); update(); } });
+    update();
+  }
+  window.__cmTsReady=()=>{ loaded=true; render(); };
+  function load(){ if(NOKEY || loaded || $("cf-ts-js")) return;
+    const s=document.createElement("script"); s.id="cf-ts-js"; s.async=true; s.defer=true;
+    s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__cmTsReady"; document.head.appendChild(s); }
+  /* carga perezosa: Turnstile solo se descarga cuando el formulario se acerca a la pantalla */
+  if("IntersectionObserver" in window){ const io=new IntersectionObserver((e)=>{ if(e.some(x=>x.isIntersecting)){ load(); io.disconnect(); } },{rootMargin:"600px"}); io.observe(form); } else load();
+  form.addEventListener("focusin",load,{once:true});
+  msg.addEventListener("input",update);
+  form.querySelectorAll("input,textarea").forEach(i=>i.addEventListener("input",()=>{ i.closest(".cm-r,.cm-txt")?.classList.remove("bad"); if(state==="bad") setState(token?"ready":"verify"); }));
+  $("cm-mb-new").addEventListener("click",(e)=>{ e.preventDefault(); $("cm-name").focus(); });
+  new MutationObserver(()=>{ texts(); if(loaded) render(); }).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+
+  function receipt(name){
+    const l=L(), d=new Date(), p=n=>String(n).padStart(2,"0");
+    const ref="JA-"+Math.random().toString(36).slice(2,7).toUpperCase();
+    const when=`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    const row=(k,v)=>`<div class="rc-r"><span>${k}</span><b>${esc(v)}</b></div>`;
+    rc.innerHTML=`<div class="rc-t">${l.rcT}</div><div class="rc-h">jasancho.com · mail</div><hr>`+
+      row(l.rcRef,ref)+row(l.rcDate,when)+row(l.rcFrom,name.slice(0,26))+row(l.rcSub,subj())+`<hr>`+
+      `<div class="rc-r rc-ok"><span>${l.rcSt}</span><b>${l.rcOk}</b></div><p class="rc-m">${l.rcThanks}</p><div class="rc-bar" aria-hidden="true"></div>`;
+    done.hidden=false; requestAnimationFrame(()=>done.classList.add("on"));
+    setTimeout(()=>$("cm-again").focus({preventScroll:true}),900);
+  }
+  $("cm-again").addEventListener("click",()=>{ done.classList.remove("on"); setTimeout(()=>{ done.hidden=true; },350); setState(token?"ready":"verify"); update(); $("cm-name").focus({preventScroll:true}); });
+
+  form.addEventListener("submit", async (ev)=>{
+    ev.preventDefault();
+    let first=null;
+    [["cm-name",".cm-r"],["cm-email",".cm-r"],["cm-msg",".cm-txt"]].forEach(([id,w])=>{ const i=$(id), ok=i.checkValidity()&&i.value.trim().length>=(id==="cm-msg"?10:1); i.closest(w).classList.toggle("bad",!ok); if(!ok&&!first) first=i; });
+    if(first){ setState("bad"); first.focus(); return; }
+    if(!token){ setState(NOKEY?"nokey":"captcha"); return; }
+    setState("sending"); update();
+    const name=$("cm-name").value.trim();
+    try{
+      const r=await fetch(CFG.endpoint,{ method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ name, email:$("cm-email").value.trim(), message:`[${subj()}]\n\n`+msg.value.trim(), website:$("cm-hp").value, token, lang:lang() }) });
+      const d=await r.json().catch(()=>({}));
+      if(r.ok && d.ok){ setState("ok"); receipt(name); form.reset(); }
+      else setState(d.error==="captcha"?"captcha":d.error==="invalid"?"bad":d.error==="send_failed"?"send_failed":"fail");
+    }catch(e){ setState("fail"); }
+    token=""; if(window.turnstile && widget!==null) turnstile.reset(widget); update();
+  });
+  texts(); update();
 })();
 </script>
 </body>

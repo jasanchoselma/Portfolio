@@ -4,4 +4,4 @@ User-agent: *
 Allow: /
 
 # Humano curioso: si has llegado hasta aquí, probablemente nos entendamos.
-# Escríbeme: sanchoselmajoseantonio@gmail.com
+# Escríbeme: https://jasancho.com/#contacto

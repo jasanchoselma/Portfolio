@@ -1,6 +1,6 @@
 /* TEAM */
   Sysadmin, diseño y código: José Antonio Sancho Selma
-  Contacto: sanchoselmajoseantonio [at] gmail.com
+  Contacto: https://jasancho.com/#contacto
   LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368
   GitHub: github.com/jasanchoselma
   Desde: Valencia, España
