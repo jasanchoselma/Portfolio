@@ -2107,7 +2107,7 @@
       <div class="dp3">
         <div class="stage" id="dp-stage" data-bleed="60"></div>
         <div class="dp-row">
-          <div id="dp-journey" data-badge="HTTP · GITHUB PAGES"></div>
+          <div id="dp-journey" data-badge="HTTP · CLOUDFLARE PAGES"></div>
           <div class="dp-card gc" id="dp-wf" data-badge="NAV TIMING · LIVE"></div>
           <div class="dp-card gc" id="dp-meta" data-badge="LINK · JASANCHO.COM"></div>
         </div>
@@ -2413,7 +2413,7 @@ const UI = {
    copied:e=>`[ <b>OK</b> ] ${e} copiado al portapapeles`, copyFail:e=>`Copia el email a mano: ${e}`, practices:"prácticas", weekly:"Curso 2026/27, semana a semana",
    live:["dominio","protocolo","http","carga","peso","último cambio"], local:"vista local", https:"HTTPS · cifrado", cached:"en caché", checking:"consultando…", na:"no disponible",
    ago:[m=>`hace ${m} min`,h=>`hace ${h} h`,d=>`hace ${d} días`],
-   pipe:[["Tu navegador","petición HTTPS"],["DNS · IONOS","jasancho.com → A"],["GitHub Pages","TLS · CDN"],["Repositorio","git push → main"]],
+   pipe:[["Tu navegador","petición HTTPS"],["DNS · Cloudflare","jasancho.com → CNAME"],["Cloudflare Pages","TLS · CDN"],["Repositorio","git push → main"]],
    pipeNotes:["resuelve el dominio","sirve con certificado","publica cada cambio"], pipeFoot:"Sin servidor que mantener: cada git push publica la web y el HTTPS se renueva solo.",
    zones:["LAN · dominio","DMZ · servicios"], langBtn:"EN", langLabel:"Switch to English", termBtnLabel:"Abrir terminal (tecla `)", lead:"",
    bootConn:"Conexión entrante desde", bootDetect:"Detectando unidades…", bootKernel:"Cargando kernel asir-2027", bootSkip:"Pulsa cualquier tecla para saltar",
@@ -2425,7 +2425,7 @@ const UI = {
    copied:e=>`[ <b>OK</b> ] ${e} copied to clipboard`, copyFail:e=>`Copy the email manually: ${e}`, practices:"labs", weekly:"Year 2026/27, week by week",
    live:["domain","protocol","http","load","size","last change"], local:"local preview", https:"HTTPS · encrypted", cached:"cached", checking:"checking…", na:"unavailable",
    ago:[m=>`${m} min ago`,h=>`${h} h ago`,d=>`${d} days ago`],
-   pipe:[["Your browser","HTTPS request"],["DNS · IONOS","jasancho.com → A"],["GitHub Pages","TLS · CDN"],["Repository","git push → main"]],
+   pipe:[["Your browser","HTTPS request"],["DNS · Cloudflare","jasancho.com → CNAME"],["Cloudflare Pages","TLS · CDN"],["Repository","git push → main"]],
    pipeNotes:["resolves the domain","serves with a certificate","publishes every change"], pipeFoot:"No server to maintain: every git push publishes the site and HTTPS renews itself.",
    zones:["LAN · domain","DMZ · services"], langBtn:"ES", langLabel:"Cambiar a español", termBtnLabel:"Open terminal (` key)",
    bootConn:"Incoming connection from", bootDetect:"Detecting drives…", bootKernel:"Loading kernel asir-2027", bootSkip:"Press any key to skip",
@@ -2826,10 +2826,10 @@ function printCV_legacy(){
 
 /* =================== auditoría de esta web =================== */
 const AUDIT=[
- {tag:"TLS", live:"https", es:["HTTPS con certificado de Let's Encrypt","El certificado se emite y se renueva solo cada 90 días. Mira el candado de tu navegador: está emitido para jasancho.com."],
-   en:["HTTPS with a Let's Encrypt certificate","The certificate is issued and renewed automatically every 90 days. Check your browser's padlock: it's issued for jasancho.com."]},
- {tag:"DNS", es:["DNS dual stack: IPv4 e IPv6","Registros A y AAAA hacia GitHub Pages, y www como alias CNAME. La web también es accesible desde redes solo IPv6."],
-   en:["Dual-stack DNS: IPv4 and IPv6","A and AAAA records pointing to GitHub Pages, with www as a CNAME alias. The site is reachable from IPv6-only networks too."]},
+ {tag:"TLS", live:"https", es:["HTTPS con certificado gestionado por Cloudflare","El certificado se emite y se renueva solo, y HSTS obliga al navegador a usar siempre HTTPS durante un año. Mira el candado: está emitido para jasancho.com."],
+   en:["HTTPS with a Cloudflare-managed certificate","The certificate is issued and renewed automatically, and HSTS makes the browser always use HTTPS for a year. Check the padlock: it's issued for jasancho.com."]},
+ {tag:"DNS", es:["DNS en Cloudflare, IPv4 e IPv6","El dominio raíz apunta a Cloudflare Pages con un CNAME aplanado y www es otro dominio del mismo proyecto. Responde por IPv4 e IPv6, y el correo se enruta con MX, SPF y DKIM de Cloudflare."],
+   en:["DNS on Cloudflare, IPv4 and IPv6","The apex domain points to Cloudflare Pages through a flattened CNAME and www is another domain of the same project. It answers over IPv4 and IPv6, and mail is routed with Cloudflare MX, SPF and DKIM."]},
  {tag:"RFC 9116", act:{href:"/.well-known/security.txt",es:"ver archivo",en:"view file"}, es:["security.txt","Indica a los investigadores de seguridad cómo avisarme de un fallo, con fecha de caducidad y URL canónica, como pide el estándar."],
    en:["security.txt","Tells security researchers how to report a vulnerability to me, with an expiry date and canonical URL, as the standard requires."]},
  {tag:"HTTP", live:"headers", act:{href:"https://securityheaders.com/?q=jasancho.com&followRedirects=on",es:"ver la nota",en:"see the grade"}, es:["Cabeceras de seguridad","CSP con hashes (solo se ejecuta el código que yo he publicado), HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy y nosniff, servidas por Cloudflare Pages. La web las comprueba en vivo pidiéndose a sí misma."],
@@ -2846,8 +2846,8 @@ const AUDIT=[
    en:["Automatically bilingual","Detects your browser language, remembers your choice and can be forced with ?lang=es."]},
  {tag:"a11y", live:"a11y", es:["Accesible","Se recorre entera con el teclado, respeta la opción de «reducir movimiento» del sistema y mantiene buen contraste."],
    en:["Accessible","Fully keyboard-navigable, honours the system's “reduce motion” setting and keeps good contrast throughout."]},
- {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. Las tipografías y las librerías (three.js para el 3D, GSAP y Lenis) se sirven desde este mismo dominio: ninguna petición a Google ni a CDNs. La única consulta externa es a la API de GitHub, que ya aloja la web, para mostrar el último cambio."],
-   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Fonts and libraries (three.js for 3D, GSAP and Lenis) are served from this same domain: no requests to Google or CDNs. The only external call goes to the GitHub API, which already hosts the site, to show the last change."]},
+ {tag:"privacy", es:["0 cookies, 0 rastreadores, 0 frameworks","HTML, CSS y JavaScript escritos a mano. Las tipografías y las librerías (three.js para el 3D, GSAP y Lenis) se sirven desde este mismo dominio: ninguna petición a Google ni a CDNs. Las únicas peticiones externas son a la API de GitHub (donde vive el código) para mostrar el último cambio, a mi propio Worker y a la analítica sin cookies de Cloudflare."],
+   en:["0 cookies, 0 trackers, 0 frameworks","Hand-written HTML, CSS and JavaScript. Fonts and libraries (three.js for 3D, GSAP and Lenis) are served from this same domain: no requests to Google or CDNs. The only external requests go to the GitHub API (where the code lives) to show the last change, to my own Worker and to Cloudflare's cookieless analytics."]},
  {tag:"F12", es:["Mensajes para curiosos","Abre las herramientas de desarrollador (F12) o el código fuente: hay un saludo esperándote."],
    en:["Messages for the curious","Open the developer tools (F12) or view the source: there's a greeting waiting for you."]}
 ];
@@ -3007,6 +3007,7 @@ function drawAudit(){
 
   /* ---- cifras de la portada ---- */
   let statsDone=false;
+  window.heroStats=()=>heroStats();
   function heroStats(){
     const pass=AUDIT.filter(c=>auditStatus(c)[1]!=="info").length;
     const items=[[practiceCount,"",LANG==="en"?"labs this year":"prácticas este curso"],[PROJECTS.length,"",LANG==="en"?"services deployed":"servicios desplegados"],[pass,"/"+AUDIT.length,LANG==="en"?"audit checks passed":"checks de auditoría"]];
@@ -3204,8 +3205,8 @@ function drawPipe(){
   const commit=LIVE.commit?`${LIVE.commit.sha}`:(en?"main":"main");
   const st=[
     {ico:"browser",t:en?"Your browser":"Tu navegador",l1:"GET https://jasancho.com",l2:`TLS · ${httpVer()}`,hop:"t = 0"},
-    {ico:"dns",t:"DNS · IONOS",l1:"4×A · 4×AAAA",l2:"www → CNAME",hop:T?`DNS ${ms(T.dns)}`:"DNS"},
-    {ico:"globe",t:"GitHub Pages",l1:"185.199.108–111.153",l2:"CDN · Let's Encrypt",hop:T?`${en?"wait":"espera"} ${ms(T.ttfb)}`:"TLS"},
+    {ico:"dns",t:"DNS · Cloudflare",l1:"CNAME → jasancho.pages.dev",l2:"anycast · IPv4 + IPv6",hop:T?`DNS ${ms(T.dns)}`:"DNS"},
+    {ico:"globe",t:"Cloudflare Pages",l1:en?"edge CDN · TLS 1.3":"CDN en el borde · TLS 1.3",l2:en?"security headers A+":"cabeceras de seguridad A+",hop:T?`${en?"wait":"espera"} ${ms(T.ttfb)}`:"TLS"},
     {ico:"git",t:en?"Repository":"Repositorio",l1:"jasanchoselma/Portfolio",l2:`git push → ${commit}`,hop:"200 OK"}
   ];
   J.innerHTML=`<div class="dj-head"><span>${en?"your request's journey":"ruta de tu petición"}</span><span class="dj-state" id="dj-state">GET / · HTTPS</span></div>
@@ -3220,12 +3221,12 @@ function runJourney(){
   const en=LANG==="en", seq=[]; const go=(fn,d)=>seq.push([fn,d]);
   const lg=$("#dj-log"), hv=httpVer()==="—"?"HTTP/2":httpVer(), log=(c,txt)=>{ if(!lg) return; const d=document.createElement("div"); d.className=c; d.textContent=txt; lg.appendChild(d); while(lg.children.length>8) lg.firstChild.remove(); };
   if(lg) lg.innerHTML="";
-  const LOGS={1:[["d",`* dns: jasancho.com → 185.199.108.153`]],2:[["d",`* tls: TLSv1.3 · cert CN=jasancho.com (Let's Encrypt)`]],3:[["d",`* github pages: jasanchoselma/Portfolio @ main`]]};
+  const LOGS={1:[["d",`* dns: jasancho.com → cloudflare anycast`]],2:[["d",`* tls: TLSv1.3 · cert CN=jasancho.com (Cloudflare)`]],3:[["d",`* cloudflare pages: jasanchoselma/Portfolio @ main`]]};
   pkt.className="dj-pkt"; pkt.style.transition="none"; pkt.style.left="0%"; pkt.style.opacity="1";
   sts[0].classList.add("lit"); state.textContent=en?"→ request sent":"→ petición enviada"; state.className="dj-state";
   log("q",`> GET / ${hv}`); log("q","> host: jasancho.com");
   [1,2,3].forEach(k=>go(()=>{ pkt.style.transition="left .55s cubic-bezier(.5,0,.5,1)"; pkt.style.left=(k/3*100)+"%"; setTimeout(()=>{ sts[k].classList.add("lit"); (LOGS[k]||[]).forEach(([c,x])=>log(c,x)); },500); },600));
-  go(()=>{ state.textContent=en?"← 200 OK · response":"← 200 OK · respuesta"; state.className="dj-state ok"; pkt.classList.add("resp"); sts.forEach(s=>s.classList.add("resp")); log("r",`< ${hv} 200`); log("r","< server: GitHub.com"); log("r","< strict-transport-security: max-age=31556952"); },500);
+  go(()=>{ state.textContent=en?"← 200 OK · response":"← 200 OK · respuesta"; state.className="dj-state ok"; pkt.classList.add("resp"); sts.forEach(s=>s.classList.add("resp")); log("r",`< ${hv} 200`); log("r","< server: cloudflare"); log("r","< strict-transport-security: max-age=31536000"); log("r","< content-security-policy: default-src 'self' …"); },500);
   go(()=>{ pkt.style.transition="left 1.2s cubic-bezier(.5,0,.5,1)"; pkt.style.left="0%"; },300);
   go(()=>{ pkt.style.opacity="0"; state.textContent=en?"✓ page delivered":"✓ página entregada"; },1300);
   let i=0; const step=()=>{ if(i>=seq.length){ journeyTimer=setTimeout(runJourney,3500); return; } const [fn,d]=seq[i++]; fn(); journeyTimer=setTimeout(step,d); };
@@ -3233,10 +3234,10 @@ function runJourney(){
 }
 function drawDNS(){
   const D=$("#dp-dns"); if(!D) return; const en=LANG==="en";
-  const recs=[["A","@","185.199.108.153"],["A","@","185.199.109.153"],["A","@","185.199.110.153"],["A","@","185.199.111.153"],["AAAA","@","2606:50c0:8000–8003::153 ×4"],["CNAME","www","jasanchoselma.github.io"],["AAAA","api","100:: · Cloudflare Worker (proxied)"],["MX","@","route1 · route2 · route3.mx.cloudflare.net"],["TXT","@","v=spf1 include:_spf.mx.cloudflare.net ~all"],["TXT","cf2024-1._domainkey","v=DKIM1; k=rsa; p=MIIBIjANBg…"]];
+  const recs=[["CNAME","@","jasancho.pages.dev (CNAME flattening)"],["CNAME","www","jasancho.pages.dev"],["AAAA","api","100:: · Cloudflare Worker (proxied)"],["MX","@","route1 · route2 · route3.mx.cloudflare.net"],["TXT","@","v=spf1 include:_spf.mx.cloudflare.net ~all"],["TXT","cf2024-1._domainkey","v=DKIM1; k=rsa; p=MIIBIjANBg…"]];
   D.innerHTML=`<h3>// ${en?"DNS zone of":"zona DNS de"} <span>jasancho.com</span></h3>
     <div class="dns-grid"><div>${recs.map(r=>`<div class="rec"><b>${r[0]}</b><span>${r[1]}</span><em>${esc(r[2])}</em></div>`).join("")}</div>
-    <div class="cert">${ICON("lock")}<b>${en?"Valid certificate":"Certificado válido"}</b><span>${en?"Issued for":"Emitido para"}: jasancho.com</span><span>${en?"Issuer":"Emisor"}: Let's Encrypt (YR1)</span><span>${en?"Lifetime: 90 days · automatic renewal":"Validez: 90 días · renovación automática"}</span><span>${en?"Enforce HTTPS: on":"Forzar HTTPS: activado"}</span></div></div>`;
+    <div class="cert">${ICON("lock")}<b>${en?"Valid certificate":"Certificado válido"}</b><span>${en?"Issued for":"Emitido para"}: jasancho.com</span><span>${en?"Issuer":"Emisor"}: Cloudflare (Universal SSL)</span><span>${en?"Automatic renewal":"Renovación automática"}</span><span>HSTS: ${en?"1 year · includeSubDomains":"1 año · includeSubDomains"}</span></div></div>`;
 }
 function fillLive(){
   const W=$("#dp-wf"), M=$("#dp-meta"); if(!W) return; const en=LANG==="en", T=timings(), proto=location.protocol==="https:";
@@ -3264,7 +3265,7 @@ $("#dp-replay").addEventListener("click",runJourney);
 const AU_ICON={TLS:"lock",DNS:"dns","RFC 9116":"shield",OWASP:"bug",UX:"route",web:"heart",CLI:"terminal",CSS:"printer",i18n:"lang",a11y:"a11y",privacy:"eyeoff",F12:"code"};
 const FILES={
  "/.well-known/security.txt":"# Política de divulgación de vulnerabilidades de jasancho.com (RFC 9116)\n# ¿Has encontrado un fallo en esta web? Gracias por avisar antes de publicarlo.\nContact: https://jasancho.com/#contacto\nExpires: 2027-11-06T00:00:00.000Z\nPreferred-Languages: es, en\nCanonical: https://jasancho.com/.well-known/security.txt",
- "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: formulario en jasancho.com/#contacto\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: three.js, GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: GitHub Pages · DNS en IONOS",
+ "/humans.txt":"/* TEAM */\n  Sysadmin, diseño y código: José Antonio Sancho Selma\n  Contacto: formulario en jasancho.com/#contacto\n  LinkedIn: linkedin.com/in/jose-antonio-sancho-selma-705a4b368\n  GitHub: github.com/jasanchoselma\n  Desde: Valencia, España\n\n/* THANKS */\n  Al profesorado de ASIR del CEP Sorolla, por las prácticas que dan contenido a esta web.\n\n/* SITE */\n  Idioma: español\n  Estándares: HTML5, CSS3, JavaScript sin frameworks\n  Librerías: three.js, GSAP y Lenis (autoalojadas)\n  Tipografías: Martian Mono, Geist (autoalojadas, licencia OFL)\n  Alojamiento: Cloudflare Pages (código en GitHub) · DNS en Cloudflare\n\n/* PRIVACIDAD */\n  Analítica: Cloudflare Web Analytics (sin cookies, sin datos personales)",
  "/robots.txt":"# robots.txt de jasancho.com\nUser-agent: *\nAllow: /"
 };
 let auScanned=false, auRunning=false;
@@ -4116,8 +4117,8 @@ function drawPipe(){
   const commit = LIVE.commit ? `${LIVE.commit.sha}` : "main";
   const st = [
     { t:en ? "Your browser" : "Tu navegador", l1:"GET https://jasancho.com", l2:`TLS · ${httpVer()}`, hop:"t = 0" },
-    { t:"DNS · IONOS", l1:"4×A · 4×AAAA", l2:"www → CNAME", hop:T ? `DNS ${ms(T.dns)}` : "DNS" },
-    { t:"GitHub Pages", l1:"185.199.108–111.153", l2:"CDN · Let's Encrypt", hop:T ? `${en ? "wait" : "espera"} ${ms(T.ttfb)}` : "TLS" },
+    { t:"DNS · Cloudflare",l1:"CNAME → jasancho.pages.dev",l2:"anycast · IPv4 + IPv6", hop:T ? `DNS ${ms(T.dns)}` : "DNS" },
+    { t:"Cloudflare Pages",l1:en?"edge CDN · TLS 1.3":"CDN en el borde · TLS 1.3",l2:en?"security headers A+":"cabeceras de seguridad A+", hop:T ? `${en ? "wait" : "espera"} ${ms(T.ttfb)}` : "TLS" },
     { t:en ? "Repository" : "Repositorio", l1:"jasanchoselma/Portfolio", l2:`git push → ${commit}`, hop:"200 OK" }
   ];
   window.DP_LABELS = st.map((s, i) => `<div class="dl"><span class="dl-n">0${i + 1}</span><b>${esc(s.t)}</b><span>${esc(s.l1)}</span><span class="dim">${esc(s.l2)}</span><em>${esc(s.hop)}</em></div>`);
@@ -4135,11 +4136,11 @@ function runJourney(){
   [0, 1, 2, 3].forEach(i => { lit(i, false); lit(i, false, "resp"); });
   if(dp) dp.reset();
   if(reduce){ [0, 1, 2, 3].forEach(i => lit(i, true)); log("q", `> GET / ${hv}`); log("r", `< ${hv} 200`); state.textContent = en ? "✓ page delivered" : "✓ página entregada"; if(dp) dp.done(); return; }
-  const LOGS = { 1:[["d", `* dns: jasancho.com → 185.199.108.153`]], 2:[["d", `* tls: TLSv1.3 · cert CN=jasancho.com (Let's Encrypt)`]], 3:[["d", `* github pages: jasanchoselma/Portfolio @ main`]] };
+  const LOGS = { 1:[["d", `* dns: jasancho.com → cloudflare anycast`]], 2:[["d", `* tls: TLSv1.3 · cert CN=jasancho.com (Cloudflare)`]], 3:[["d", `* cloudflare pages: jasanchoselma/Portfolio @ main`]] };
   lit(0, true); state.textContent = en ? "→ request sent" : "→ petición enviada"; state.className = "dj-state";
   log("q", `> GET / ${hv}`); log("q", "> host: jasancho.com");
   [0, 1, 2].forEach(k => go(() => { if(dp) dp.travel(k, false, .75); setTimeout(() => { if(dp) dp.arrive(k + 1); lit(k + 1, true); (LOGS[k + 1] || []).forEach(([c, x]) => log(c, x)); }, 760); }, 1150));
-  go(() => { state.textContent = en ? "← 200 OK · response" : "← 200 OK · respuesta"; state.className = "dj-state ok"; [0, 1, 2, 3].forEach(i => lit(i, true, "resp")); log("r", `< ${hv} 200`); log("r", "< server: GitHub.com"); log("r", "< strict-transport-security: max-age=31556952"); }, 300);
+  go(() => { state.textContent = en ? "← 200 OK · response" : "← 200 OK · respuesta"; state.className = "dj-state ok"; [0, 1, 2, 3].forEach(i => lit(i, true, "resp")); log("r", `< ${hv} 200`); log("r","< server: cloudflare"); log("r","< strict-transport-security: max-age=31536000"); log("r","< content-security-policy: default-src 'self' …"); }, 300);
   [2, 1, 0].forEach(k => go(() => { if(dp) dp.travel(k, true, .5); }, 760));
   go(() => { if(dp){ dp.arrive(0); dp.done(); } state.textContent = en ? "✓ page delivered" : "✓ página entregada"; }, 400);
   let i = 0; const step = () => { if(i >= seq.length){ journeyTimer = setTimeout(runJourney, 4200); return; } const [fn, d] = seq[i++]; fn(); journeyTimer = setTimeout(step, d); };
@@ -4214,7 +4215,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
   function fastfetch(){
     const logo=["     _____ ","    / ___ \\ ","   / /  / / ","  / /__/ /  "," /_____/    ","  jasancho  "];
     const info=[["",'<span class="tp-u">jasancho</span>@<span class="tp-u">soc</span>'],["","-------------"],
-      ["OS",tr("ASIR 2025–2027 · Valencia","ASIR 2025–2027 · Valencia, Spain")],["Host","jasancho.com · GitHub Pages"],["Kernel",tr("curiosidad 6.x","curiosity 6.x")],
+      ["OS",tr("ASIR 2025–2027 · Valencia","ASIR 2025–2027 · Valencia, Spain")],["Host","jasancho.com · Cloudflare Pages"],["Kernel",tr("curiosidad 6.x","curiosity 6.x")],
       ["Uptime",`${upDays()} ${t("days")}`],["Shell","soc-sh 1.0"],[tr("Servicios","Services"),sumBase()],[tr("Busco","Seeking"),tr("FCT mar–jul 2027","internship Mar–Jul 2027")],
       [tr("Prácticas","Labs"),`${practiceCount} ${tr("este curso","this year")}`]];
     const rows=Math.max(logo.length,info.length); let html="";
@@ -4256,7 +4257,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
       if(a.includes("-f")){ tailOn=true; txt(tr("-- siguiendo el log en vivo (escribe cualquier comando para parar) --","-- following live log (type any command to stop) --"),"dim"); } },
     incident:a=>{ const h=window.fireIncident(a[0]); if(!h) return txt(tr("Ya hay un incidente abierto, o ese servicio no existe/está en curso.","An incident is already open, or that service doesn't exist/is in progress."),"err");
       txt(tr(`Incidente simulado en ${h}. Mira el mapa o sigue el log:`,`Simulated incident on ${h}. Watch the map or follow the log:`),"twarn"); tailOn=true; },
-    ping:a=>{ const h=a[0]||"jasancho.com"; txt(`PING ${h} (185.199.108.153) 56(84) bytes of data.`); let i=0; const go=()=>{ if(i<4){ txt(`64 bytes from ${h}: icmp_seq=${i+1} ttl=57 time=${(12+Math.random()*6).toFixed(1)} ms`); i++; setTimeout(go,350);} else txt(`--- ${h} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`); }; go(); },
+    ping:a=>{ const h=a[0]||"jasancho.com"; txt(`PING ${h} (anycast · Cloudflare) 56(84) bytes of data.`); let i=0; const go=()=>{ if(i<4){ txt(`64 bytes from ${h}: icmp_seq=${i+1} ttl=57 time=${(12+Math.random()*6).toFixed(1)} ms`); i++; setTimeout(go,350);} else txt(`--- ${h} ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss`); }; go(); },
     nmap:()=>txt(tr("Starting Nmap…\nPORT    STATE SERVICE\n80/tcp  open  http\n443/tcp open  https\n\nNada más abierto. Es una web estática: menos superficie de ataque.","Starting Nmap…\nPORT    STATE SERVICE\n80/tcp  open  http\n443/tcp open  https\n\nNothing else open. It's a static site: minimal attack surface.")),
     sudo:a=>{ if(a.join(" ")==="hire jasancho"){ txt(tr("[sudo] contraseña para reclutador: ********\n✓ Permiso concedido. Abriendo canal de contacto…","[sudo] password for recruiter: ********\n✓ Access granted. Opening contact channel…"),"tok"); setTimeout(()=>{ close(); location.hash="#contacto"; },900); }
       else txt(tr("jasancho no está en el archivo sudoers. Este incidente será reportado.","jasancho is not in the sudoers file. This incident will be reported."),"err"); },
@@ -4354,13 +4355,13 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       mLogo:[["about","Acerca de este Macintosh…",""],"-",["monitor","Monitor de red",""],["term","Terminal",""]],
       monitor:"Monitor de red",noTrash:"La Papelera no acepta carpetas del portfolio.",cOpen:"Abrir",cInfo:"Obtener información",cEmpty:"Vaciar Papelera…",cClean:"Ordenar iconos",mailT:"Nuevo mensaje…",aboutM:"Acerca de este Macintosh…",cIcons:"Ver como iconos",cList:"Ver como lista",cNote:"Mostrar nota",
       wp:{auto:"Fondo: según la hora de Valencia",day:"Fondo: día",dusk:"Fondo: atardecer",night:"Fondo: noche"},infoT:"Información",where:"Dónde",created:"Creado",createdD:"1 sept 2025",version:"Versión",comments:"Comentarios",
-      info:{inicio:"El disco de arranque: la portada del portfolio con el laboratorio en 3D.",proyectos:"Las prácticas de ASIR documentadas como incidencias: problema, solución, comandos y diagrama.",despliegue:"Cómo llega esta web hasta ti: DNS, GitHub Pages y el repositorio.",auditoria:"Informes de auditoría de esta misma web: seguridad, accesibilidad y rendimiento.",stack:"Las tecnologías que uso, ordenadas como un rack de servidores.",trayectoria:"Mi formación y experiencia, cajón a cajón.",contacto:"Formulario privado protegido con Cloudflare Turnstile, más LinkedIn y GitHub.",monitor:"Comprueba cada 30 segundos si responden la web, la API y los servicios del laboratorio.",term:"Una shell para recorrer el portfolio con comandos. Prueba con «help».",trash:"Aquí no se tira nada: cada práctica, incluso la que salió mal, enseña algo."},
+      info:{inicio:"El disco de arranque: la portada del portfolio con el laboratorio en 3D.",proyectos:"Las prácticas de ASIR documentadas como incidencias: problema, solución, comandos y diagrama.",despliegue:"Cómo llega esta web hasta ti: DNS, Cloudflare Pages y el repositorio de GitHub.",auditoria:"Informes de auditoría de esta misma web: seguridad, accesibilidad y rendimiento.",stack:"Las tecnologías que uso, ordenadas como un rack de servidores.",trayectoria:"Mi formación y experiencia, cajón a cajón.",contacto:"Formulario privado protegido con Cloudflare Turnstile, más LinkedIn y GitHub.",monitor:"Comprueba cada 30 segundos si responden la web, la API y los servicios del laboratorio.",term:"Una shell para recorrer el portfolio con comandos. Prueba con «help».",trash:"Aquí no se tira nada: cada práctica, incluso la que salió mal, enseña algo."},
       sysSw:"Software del sistema",sysSub:"José Antonio · 2.º de ASIR · Valencia",sysVer:"Versión",memTot:"Memoria total",memFree:"Bloque libre más grande",
       monLoad:"Comprobando servicios…",monSvc:"Servicio",monLat:"Latencia",monSt:"Estado",monTest:"Pruebas",monFrom:"Comprobado desde Cloudflare",monRefresh:"Actualizar",monNA:"SIN DATOS",monErr:"No se pudo contactar con api.jasancho.com",monUp:"EN LÍNEA",monDown:"CAÍDO",monOff:"APAGADO",monSumF:(u,n)=>`${u} de ${n} servicios en línea · el laboratorio se enciende bajo demanda en AWS`,
       mailApp:"Mail",monShort:"Monitor",langApp:"English",
       copied:"Copiado al portapapeles",colName:"Nombre",colDate:"Modificado",colSize:"Tamaño",colKind:"Clase",kFolder:"carpeta",kDisk:"disco",kDoc:"documento PDF",kApp:"aplicación",kTrash:"papelera",
       openFull:"Abrir sección completa",offT:"Ya puedes apagar el ordenador con seguridad.",offOn:"Encender",aboutT:"Acerca de este portfolio",
-      aboutP:["Sistema: jasancho.com · versión 39","Hecho a mano: HTML, CSS y JavaScript","3D: three.js · animación: GSAP y Lenis","Alojado en GitHub Pages · HTTPS de Let's Encrypt"],
+      aboutP:["Sistema: jasancho.com · versión 44","Hecho a mano: HTML, CSS y JavaScript","3D: three.js · animación: GSAP y Lenis","Alojado en Cloudflare Pages · cabeceras de seguridad A+"],
       fd:{proyectos:"Doble clic en un proyecto para abrir su ficha.",stack:"Doble clic en un grupo para verlo en el rack.",trayectoria:"Doble clic en una etapa para abrir su cajón.",auditoria:"Doble clic en un archivo para leerlo.",despliegue:"Los archivos que forman esta web.",contacto:"Doble clic para escribirme o ver mis perfiles."},trashP:"Aquí no tiro nada: cada práctica, incluso la que salió mal, acaba en el portfolio.",ok:"Aceptar",region:"Escritorio",back:"Volver al escritorio",lang:"EN"},
     en:{menu:["File","Edit","View","Special"],hd:"JASANCHO HD",inicio:"whoami",proyectos:"Projects",despliegue:"Deployment",auditoria:"Audit",stack:"Stack",trayectoria:"Background",contacto:"Contact",cv:"CV.pdf",term:"Terminal",trash:"Trash",
       readme:"Read Me — jasancho",items:n=>`${n} items`,free:"112 MB free",open:"Open portfolio",projects:"See projects",note:"Double-click a folder to open it.<br>The □ button at the top left brings you back here.",noteTouch:"Tap a folder to open it.<br>The □ button at the top brings you back here.",
@@ -4372,13 +4373,13 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       mLogo:[["about","About This Macintosh…",""],"-",["monitor","Network monitor",""],["term","Terminal",""]],
       monitor:"Network monitor",noTrash:"The Trash doesn't take portfolio folders.",cOpen:"Open",cInfo:"Get Info",cEmpty:"Empty Trash…",cClean:"Clean up icons",mailT:"New message…",aboutM:"About This Macintosh…",cIcons:"View as icons",cList:"View as list",cNote:"Show note",
       wp:{auto:"Wallpaper: follow Valencia time",day:"Wallpaper: day",dusk:"Wallpaper: sunset",night:"Wallpaper: night"},infoT:"Info",where:"Where",created:"Created",createdD:"1 Sep 2025",version:"Version",comments:"Comments",
-      info:{inicio:"The startup disk: the portfolio home page with the 3D lab.",proyectos:"My ASIR labs written up as incidents: problem, fix, commands and diagram.",despliegue:"How this site reaches you: DNS, GitHub Pages and the repository.",auditoria:"Audit reports of this very site: security, accessibility and performance.",stack:"The technologies I use, laid out like a server rack.",trayectoria:"My education and experience, drawer by drawer.",contacto:"Private form protected by Cloudflare Turnstile, plus LinkedIn and GitHub.",monitor:"Checks every 30 seconds whether the site, the API and the lab services respond.",term:"A shell to explore the portfolio with commands. Try “help”.",trash:"Nothing gets thrown away here: every lab, even the one that went wrong, teaches something."},
+      info:{inicio:"The startup disk: the portfolio home page with the 3D lab.",proyectos:"My ASIR labs written up as incidents: problem, fix, commands and diagram.",despliegue:"How this site reaches you: DNS, Cloudflare Pages and the GitHub repository.",auditoria:"Audit reports of this very site: security, accessibility and performance.",stack:"The technologies I use, laid out like a server rack.",trayectoria:"My education and experience, drawer by drawer.",contacto:"Private form protected by Cloudflare Turnstile, plus LinkedIn and GitHub.",monitor:"Checks every 30 seconds whether the site, the API and the lab services respond.",term:"A shell to explore the portfolio with commands. Try “help”.",trash:"Nothing gets thrown away here: every lab, even the one that went wrong, teaches something."},
       sysSw:"System Software",sysSub:"José Antonio · 2nd year ASIR · Valencia",sysVer:"Version",memTot:"Total Memory",memFree:"Largest Unused Block",
       monLoad:"Checking services…",monSvc:"Service",monLat:"Latency",monSt:"Status",monTest:"Testing",monFrom:"Checked from Cloudflare",monRefresh:"Refresh",monNA:"NO DATA",monErr:"Couldn't reach api.jasancho.com",monUp:"ONLINE",monDown:"DOWN",monOff:"OFF",monSumF:(u,n)=>`${u} of ${n} services online · the lab is powered on demand on AWS`,
       mailApp:"Mail",monShort:"Monitor",langApp:"Español",
       copied:"Copied to clipboard",colName:"Name",colDate:"Modified",colSize:"Size",colKind:"Kind",kFolder:"folder",kDisk:"disk",kDoc:"PDF document",kApp:"application",kTrash:"trash",
       openFull:"Open full section",offT:"It is now safe to switch off your computer.",offOn:"Power on",aboutT:"About this portfolio",
-      aboutP:["System: jasancho.com · version 39","Hand-made: HTML, CSS and JavaScript","3D: three.js · motion: GSAP and Lenis","Hosted on GitHub Pages · HTTPS by Let's Encrypt"],
+      aboutP:["System: jasancho.com · version 44","Hand-made: HTML, CSS and JavaScript","3D: three.js · motion: GSAP and Lenis","Hosted on Cloudflare Pages · A+ security headers"],
       fd:{proyectos:"Double-click a project to open its file.",stack:"Double-click a group to see it in the rack.",trayectoria:"Double-click a stage to open its drawer.",auditoria:"Double-click a file to read it.",despliegue:"The files that make up this site.",contacto:"Double-click to email me or see my profiles."},trashP:"I don't throw anything away: every lab, even the one that went wrong, ends up in the portfolio.",ok:"OK",region:"Desktop",back:"Back to desktop",lang:"ES"}
   };
   const LG=()=>typeof LANG!=="undefined"?LANG:"es"; const L=()=>T[LG()==="en"?"en":"es"];
@@ -4525,6 +4526,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   function note(msg){ if(typeof toast==="function") toast(msg); }
   function focusMail(){ const f=document.getElementById("cmail"); if(f) f.scrollIntoView({block:"center"}); setTimeout(()=>{ const n=document.getElementById("cm-name"); if(n) n.focus({preventScroll:true}); },400); }
   window.deskOpen=(k,after)=>openSection(k,null,after);
+  window.deskRefresh=()=>{ if(root.classList.contains("desk-on")&&!desk.querySelector(".dk-win:not(#dk-readme)")&&!desk.querySelector(".dk-ctx")) render(); };
   function cmd(c){ const l=L();
     if(c==="open") openSection("inicio",desk.querySelector('.dk-ic[data-k="inicio"]'));
     else if(c==="closew"){ const w=[...desk.querySelectorAll(".dk-win:not(.min)")].sort((a,b)=>(+b.style.zIndex||0)-(+a.style.zIndex||0))[0]; if(w) closeWin(w); }
@@ -4921,7 +4923,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
 (function(){ const H=["content-security-policy","strict-transport-security","x-content-type-options","x-frame-options","referrer-policy","permissions-policy"];
   if(location.protocol!=="https:") return;
   fetch(location.origin+"/",{method:"HEAD",cache:"no-store"}).then(r=>{ const found=H.filter(h=>r.headers.has(h)); window.__secHdr={n:found.length,total:H.length,found};
-    try{ if(typeof drawAudit==="function") drawAudit(); }catch(e){} }).catch(()=>{}); })();
+    try{ if(typeof drawAudit==="function") drawAudit(); }catch(e){} try{ if(window.heroStats) window.heroStats(); if(window.deskRefresh) window.deskRefresh(); }catch(e){} }).catch(()=>{}); })();
 </script>
 <script>
 /* Cloudflare Web Analytics: sin cookies ni datos personales. Pega el token de tu sitio (Cloudflare → Analytics & Logs → Web Analytics). */
