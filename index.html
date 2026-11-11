@@ -2009,6 +2009,8 @@
   .cm-box-f small{color:#8C919B} .cm-ts{color:#9399A3} .cm-amber small{color:rgba(255,181,71,.75)} .cm-note{color:#959AA4}
   .mon-h{color:rgba(255,181,71,.72)} .mon-n small{color:#A39B82} .dk-pr{color:#0A5BD6}
   @media print{ #gl,canvas,.aur{display:none!important} html,body{background:#fff!important} }
+  /* v43 · CLS: con #ancla el contenido espera a estar colocado */
+  html.hash-wait main,html.hash-wait body>footer{visibility:hidden}
 </style>
 </head>
 <body>
@@ -2273,7 +2275,8 @@
 <script src="/vendor/ScrollTrigger.min.js"></script>
 <script src="/vendor/lenis.min.js"></script>
 <script type="module" src="/vendor/lab3d.js"></script>
-<script>window.TL_MODE="archive"; /* trayectoria 3D: "archive" = archivador · "board" = placa base */
+<script>if(location.hash.length>1&&location.hash!=="#inicio") document.documentElement.classList.add("hash-wait");
+window.TL_MODE="archive"; /* trayectoria 3D: "archive" = archivador · "board" = placa base */
 
 /* =================== DATOS: edita aquí =================== */
 const PROJECTS = [
@@ -2829,6 +2832,8 @@ const AUDIT=[
    en:["Dual-stack DNS: IPv4 and IPv6","A and AAAA records pointing to GitHub Pages, with www as a CNAME alias. The site is reachable from IPv6-only networks too."]},
  {tag:"RFC 9116", act:{href:"/.well-known/security.txt",es:"ver archivo",en:"view file"}, es:["security.txt","Indica a los investigadores de seguridad cómo avisarme de un fallo, con fecha de caducidad y URL canónica, como pide el estándar."],
    en:["security.txt","Tells security researchers how to report a vulnerability to me, with an expiry date and canonical URL, as the standard requires."]},
+ {tag:"HTTP", live:"headers", act:{href:"https://securityheaders.com/?q=jasancho.com&followRedirects=on",es:"ver la nota",en:"see the grade"}, es:["Cabeceras de seguridad","CSP con hashes (solo se ejecuta el código que yo he publicado), HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy y nosniff, servidas por Cloudflare Pages. La web las comprueba en vivo pidiéndose a sí misma."],
+   en:["Security headers","CSP with hashes (only code I published can run), HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy and nosniff, served by Cloudflare Pages. The site checks them live by requesting itself."]},
  {tag:"OWASP", tryit:true, es:["Entrada saneada contra XSS","El saludo personalizado (?empresa=Nombre) solo acepta letras, números y algunos signos, y se inserta como texto, nunca como HTML. Pruébalo, incluso con código:"],
    en:["Input sanitised against XSS","The personalised greeting (?company=Name) only accepts letters, numbers and a few symbols, and it's inserted as text, never as HTML. Try it, even with code:"]},
  {tag:"UX", act:{href:"/esta-ruta-no-existe",es:"provocar un 404",en:"trigger a 404"}, es:["Página 404 propia","Si una ruta no existe, lanzo un traceroute que termina en «Destination host unreachable» y te devuelve al inicio."],
@@ -2848,6 +2853,7 @@ const AUDIT=[
 ];
 function auditStatus(c){
   if(c.live==="https") return location.protocol==="https:" ? ["PASS",""] : ["LOCAL","info"];
+  if(c.live==="headers") return (window.__secHdr&&window.__secHdr.n>=window.__secHdr.total) ? ["PASS",""] : ["LOCAL","info"];
   if(c.live==="a11y" && reduce) return ["PASS*",""];
   return ["PASS",""];
 }
@@ -3980,6 +3986,7 @@ function auShow(i, fly = true){
   det.querySelectorAll("[data-fn]").forEach(b => b.addEventListener("click", () => { const f = b.dataset.fn;
     if(f === "term" && window.openTerminal) window.openTerminal(); else if(f === "print"){ try{ window.print(); }catch(e){} } else if(f === "lang") $("#btn-lang").click(); }));
   det.querySelectorAll("[data-href]").forEach(b => b.addEventListener("click", () => { const h = b.dataset.href;
+    if(/^https?:/.test(h)) { window.open(h, "_blank", "noopener"); return; }
     if(FILES[h] || h.endsWith(".txt")) viewFile(h); else curtain(`traceroute jasancho.com${h}`, () => { location.href = h; }); }));
   const tf = $("#try-form");
   if(tf) tf.addEventListener("submit", e => { e.preventDefault();
@@ -4896,6 +4903,25 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   });
   texts(); update();
 })();
+</script>
+
+<script>
+/* CLS: al entrar con #ancla, la página se coloca en la sección cuando todo está montado y luego se muestra (sin saltos) */
+(function(){ const R=document.documentElement; if(!R.classList.contains("hash-wait")) return; let ok=false;
+  const done=()=>{ if(ok) return; ok=true; try{ if(window.ScrollTrigger) ScrollTrigger.refresh(); }catch(e){}
+    let id=""; try{ id=decodeURIComponent(location.hash.slice(1)); }catch(e){} const el=id&&document.getElementById(id);
+    const jump=()=>{ if(!el) return; try{ if(typeof lenis!=="undefined"&&lenis&&lenis.scrollTo){ if(lenis.resize) lenis.resize(); lenis.scrollTo(el,{immediate:true,force:true}); } else el.scrollIntoView(); }catch(e){ el.scrollIntoView(); } };
+    jump(); requestAnimationFrame(()=>{ jump(); requestAnimationFrame(()=>R.classList.remove("hash-wait")); });
+    /* si algo crece después (3D, fuentes), vuelve a colocar la sección mientras el visitante no haya tocado nada */
+    let moved=false; const stop=()=>{ moved=true; }; ["wheel","touchstart","keydown","pointerdown"].forEach(t=>addEventListener(t,stop,{once:true,passive:true}));
+    [400,1000,2000].forEach(ms=>setTimeout(()=>{ if(!moved&&el&&Math.abs(el.getBoundingClientRect().top)>40) jump(); },ms)); };
+  const go=()=>setTimeout(done,180); if(document.readyState==="complete") go(); else addEventListener("load",go,{once:true});
+  setTimeout(done,3000); })();
+/* Auditoría: comprobación en vivo de las cabeceras de seguridad (la página se pide a sí misma) */
+(function(){ const H=["content-security-policy","strict-transport-security","x-content-type-options","x-frame-options","referrer-policy","permissions-policy"];
+  if(location.protocol!=="https:") return;
+  fetch(location.origin+"/",{method:"HEAD",cache:"no-store"}).then(r=>{ const found=H.filter(h=>r.headers.has(h)); window.__secHdr={n:found.length,total:H.length,found};
+    try{ if(typeof drawAudit==="function") drawAudit(); }catch(e){} }).catch(()=>{}); })();
 </script>
 <script>
 /* Cloudflare Web Analytics: sin cookies ni datos personales. Pega el token de tu sitio (Cloudflare → Analytics & Logs → Web Analytics). */
