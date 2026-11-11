@@ -2011,6 +2011,17 @@
   @media print{ #gl,canvas,.aur{display:none!important} html,body{background:#fff!important} }
   /* v43 · CLS: con #ancla el contenido espera a estar colocado */
   html.hash-wait main,html.hash-wait body>footer{visibility:hidden}
+/* v45 · ficha con documentación */
+.pj-doc{border-color:rgba(255,197,107,.32)!important}
+.pj-doc p{font-size:13.5px;line-height:1.5;color:var(--muted);margin:0 0 12px}
+.pj-docbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;text-decoration:none}
+.pj-docbtn .ico{width:17px;height:17px;flex:none}
+.pj-docbtn small{font:600 10px/1 var(--mono);letter-spacing:.06em;padding:3px 6px;border:1px solid currentColor;border-radius:4px;opacity:.75}
+.scp-doc{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.scp-doc .ico{width:15px;height:15px;flex:none}
+.scp-act .btn{white-space:nowrap}
+.scp-doc{width:44px;height:44px;padding:0!important;justify-content:center;border-radius:50%;flex:none}
+.scp-doc .ico{width:17px;height:17px}
 </style>
 </head>
 <body>
@@ -2328,6 +2339,14 @@ const PROJECTS = [
     did:["Creé una instancia EC2 con Ubuntu Server y acceso SSH con usuarios propios.","Configuré Apache con HTTPS, SFTP, FTPS y MySQL.","En curso: Docker, WordPress, Nginx Proxy Manager y Moodle sobre la misma instancia."],
     learned:"Grupos de seguridad, límites de la capa gratuita y la diferencia entre probar en una VM y exponer algo a internet.",
     flow:[["Internet","HTTPS · SSH"],["Security Group","AWS"],["EC2 Ubuntu","Apache · Docker"]], dir:[1,1] },
+  { id:"edge", host:"cf-edge", title:"Seguridad perimetral con Cloudflare",
+    short:"DNS, proxy y TLS estricto delante de AWS, formulario sin exponer el correo y cabeceras A+",
+    cats:["Cloud","Seguridad"], area:"Seguridad", status:"ok", doc:"/docs/cloudflare-seguridad-perimetral.pdf",
+    stack:["Cloudflare","Workers","Turnstile","Pages","AWS Security Groups"],
+    problem:"Los servicios del laboratorio en AWS se publicaban con la IP del servidor a la vista y abiertos a todo internet. El portfolio mostraba mi correo y, en GitHub Pages, no podía fijar cabeceras de seguridad.",
+    did:["Migré el DNS de IONOS a Cloudflare y decidí registro a registro qué pasa por el proxy, de forma que la IP del servidor queda oculta.","Activé TLS Full (strict) y cerré el Security Group de AWS para que solo acepte tráfico web desde los rangos de Cloudflare.","Programé un Worker en api.jasancho.com que valida Turnstile y entrega el formulario por Email Routing: mi correo ya no aparece en la web.","Llevé el portfolio a Cloudflare Pages con CSP por hashes y HSTS: nota A+ en securityheaders.com y 12/12 en la auditoría."],
+    learned:"Ocultar la IP no basta si el origen sigue aceptando a todo el mundo: la defensa también se cierra en el servidor, y se comprueba atacándolo uno mismo.",
+    flow:[["Visitante","HTTPS · HTTP/3"],["Cloudflare","proxy · TLS · Worker"],["EC2 + Pages","origen cerrado"]], dir:[1,1] },
   { id:"nft", host:"fw01", title:"Cortafuegos con nftables y DMZ",
     short:"Filtrado y DNAT para publicar servicios desde una DMZ",
     cats:["Redes","Seguridad"], area:"Redes", status:"ok",
@@ -2370,6 +2389,11 @@ const PROJECTS_EN = {
     did:["Created an EC2 instance with Ubuntu Server and SSH access with dedicated users.","Configured Apache with HTTPS, SFTP, FTPS and MySQL.","In progress: Docker, WordPress, Nginx Proxy Manager and Moodle on the same instance."],
     learned:"Security groups, free-tier limits and the difference between testing in a VM and exposing something to the internet.",
     flow:[["Internet","HTTPS · SSH"],["Security Group","AWS"],["EC2 Ubuntu","Apache · Docker"]] },
+  edge:{ title:"Perimeter security with Cloudflare", short:"DNS, proxy and strict TLS in front of AWS, a contact form that hides my email, and A+ headers", area:"Security",
+    problem:"The lab services on AWS were published with the server IP in plain sight and open to the whole internet. The portfolio showed my email and, on GitHub Pages, couldn't set security headers.",
+    did:["Moved DNS from IONOS to Cloudflare and decided record by record what goes through the proxy, so the server IP stays hidden.","Enabled TLS Full (strict) and locked the AWS Security Group so it only accepts web traffic from Cloudflare's ranges.","Wrote a Worker on api.jasancho.com that validates Turnstile and delivers the form through Email Routing: my email no longer appears on the site.","Moved the portfolio to Cloudflare Pages with hash-based CSP and HSTS: A+ on securityheaders.com and 12/12 in the audit."],
+    learned:"Hiding the IP isn't enough if the origin still accepts everyone: the defence has to be closed on the server too, and you check it by attacking it yourself.",
+    flow:[["Visitor","HTTPS · HTTP/3"],["Cloudflare","proxy · TLS · Worker"],["EC2 + Pages","origin locked"]] },
   nft:{ title:"Firewall with nftables and a DMZ", short:"Filtering and DNAT to publish services from a DMZ", area:"Networking",
     problem:"Publishing services to the internet without exposing the internal network.",
     did:["Wrote filtering rules with nftables.","Configured DNAT to forward incoming traffic to servers placed in a DMZ."],
@@ -2380,6 +2404,7 @@ const CAT_EN = {Seguridad:"security",Docker:"docker",Sistemas:"systems",Redes:"n
 
 const NODES = [
   {k:"inet", x:350, y:42,  t:"internet", s:"WAN", cloud:true},
+  {k:"edge", x:470, y:42,  p:"edge"},
   {k:"aws",  x:590, y:42,  p:"aws"},
   {k:"nft",  x:350, y:140, p:"nft"},
   {k:"sw",   x:350, y:240, t:"core-sw", s:"VLAN 10 · 20"},
@@ -2391,7 +2416,7 @@ const NODES = [
   {k:"glpi", x:470, y:432, p:"glpi"},
   {k:"vault",x:590, y:432, p:"vault"}
 ];
-const LINKS = [["inet","nft",1],["inet","aws",1],["nft","sw"],["sw","samba"],["samba","cli"],["sw","dock"],["sw","teleport"],["teleport","dock"],["dock","minio"],["dock","glpi"],["dock","vault"]];
+const LINKS = [["inet","nft",1],["inet","edge",1],["edge","aws",1],["nft","sw"],["sw","samba"],["samba","cli"],["sw","dock"],["sw","teleport"],["teleport","dock"],["dock","minio"],["dock","glpi"],["dock","vault"]];
 const COURSE = { start:"2026-09-07", end:"2027-07-02", blocks:[
   {name:"Servicios", en:"Services", weeks:[["2026-09-07",2],["2026-09-14",4]]},
   {name:"Samba AD", en:"Samba AD", weeks:[["2026-09-21",5],["2026-09-28",5],["2026-10-05",3]]},
@@ -2664,7 +2689,10 @@ const SYSLOG=[];
     ()=>["helpdesk",`glpi-agent: inventory received from ${pick(["PC-AULA-07","UBU-LAB-02","WIN11-03"])}`],
     ()=>["vault",`vaultwarden: login ok user=jasancho 2fa=true`],
     ()=>["ec2-web",`sshd: Invalid user ${pick(["oracle","test","pi","ubnt"])} from ${ip()}`,"wrn"],
-    ()=>["ec2-web",`apache: 200 GET / TLSv1.3 ${ip()}`]
+    ()=>["ec2-web",`apache: 200 GET / TLSv1.3 ${ip()}`],
+    ()=>["cf-edge",`waf: block ${ip()} GET /wp-login.php`,"wrn"],
+    ()=>["cf-edge",`worker: POST /contact 200 turnstile=ok`,"okk"],
+    ()=>["cf-edge",`pages: deploy main ok · headers A+`]
   ];
   window.fireIncident=(k)=>{
     if(incidentOpen) return false;
@@ -2889,7 +2917,7 @@ function drawAudit(){
 /* =================== efectos del mapa y de la web (v5) =================== */
 (function fx(){
   const SWN=N.sw, FW=N.nft, mapEl=$("#map");
-  const IPS={aws:"172.31.24.10",nft:"10.0.0.1",samba:"10.0.10.10",teleport:"10.0.20.5",minio:"10.0.20.11",glpi:"10.0.20.12",vault:"10.0.20.13"};
+  const IPS={aws:"172.31.24.10",nft:"10.0.0.1",samba:"10.0.10.10",teleport:"10.0.20.5",minio:"10.0.20.11",glpi:"10.0.20.12",vault:"10.0.20.13",edge:"anycast"};
   const pickIP=()=>["203.0.113.","198.51.100.","192.0.2."][Math.floor(Math.random()*3)]+(2+Math.floor(Math.random()*250));
   lampEl.sw.setAttribute("fill",C.vio);
 
@@ -2987,7 +3015,7 @@ function drawAudit(){
       if(ts-lastPkt>380){ spawnPkt(); lastPkt=ts; }
       if(ts-lastAtk>nextAtk){ spawnAttack(); lastAtk=ts; nextAtk=900+Math.random()*2300; }
       moveList(pk); moveList(atk,hitFW);
-      for(let i=rings.length-1;i>=0;i--){ const r=rings[i], p=(ts-r.t0)/r.dur; if(p>=1){ r.c.remove(); rings.splice(i,1); continue; }
+      for(let i=rings.length-1;i>=0;i--){ const r=rings[i], p=Math.max(0,(ts-r.t0)/r.dur); if(p>=1){ r.c.remove(); rings.splice(i,1); continue; }
         if(r.text){ r.c.setAttribute("y",(r.y0-14*p).toFixed(1)); r.c.setAttribute("opacity",(1-p).toFixed(2)); }
         else { r.c.setAttribute("r",(r.r0+(r.r1-r.r0)*(1-Math.pow(1-p,3))).toFixed(1)); r.c.setAttribute("stroke-opacity",(r.alpha*(1-p)).toFixed(2)); } }
       if(incStart) $("#sev").textContent=`${t("inc1")} · ${((Date.now()-incStart)/1000).toFixed(1)} s`;
@@ -3021,7 +3049,7 @@ function drawAudit(){
   else new MutationObserver((m,o)=>{ if(bootEl.classList.contains("off")){ o.disconnect(); setTimeout(countUp,450); } }).observe(bootEl,{attributes:true});
 
   /* ---- stack en bento: "usado en" ---- */
-  const STACK_USE=[["samba","glpi"],["nft","samba"],["minio","glpi","vault","teleport"],["aws","glpi"],["teleport","minio","vault"],["aws"]];
+  const STACK_USE=[["samba","glpi"],["nft","samba"],["minio","glpi","vault","teleport"],["aws","glpi"],["teleport","minio","vault","edge"],["aws","edge"]];
   function stackMore(){ document.querySelectorAll("#stackgrid > div").forEach((d,i)=>{
     let m=d.querySelector(".more"); if(!m){ m=document.createElement("div"); m.className="more"; d.appendChild(m); }
     m.innerHTML=`<span>${LANG==="en"?"used in":"usado en"} →</span>`+STACK_USE[i].map(id=>`<button type="button" data-p="${id}">${esc(P(id).host)}</button>`).join("");
@@ -3086,8 +3114,8 @@ function curtain(label,action){
 }
 
 /* ---- datos de proyectos: IP, zona y comandos clave ---- */
-const PIP={teleport:"10.0.20.5",minio:"10.0.20.11",glpi:"10.0.20.12",samba:"10.0.10.10",vault:"10.0.20.13",aws:"172.31.24.10",nft:"10.0.0.1"};
-const PZONE={teleport:"DMZ",minio:"DMZ",glpi:"DMZ",vault:"DMZ",samba:"LAN",aws:"Cloud · AWS",nft:{es:"Perímetro",en:"Perimeter"}};
+const PIP={teleport:"10.0.20.5",minio:"10.0.20.11",glpi:"10.0.20.12",samba:"10.0.10.10",vault:"10.0.20.13",aws:"172.31.24.10",nft:"10.0.0.1",edge:"anycast"};
+const PZONE={teleport:"DMZ",minio:"DMZ",glpi:"DMZ",vault:"DMZ",samba:"LAN",aws:"Cloud · AWS",nft:{es:"Perímetro",en:"Perimeter"},edge:{es:"Borde · Cloudflare",en:"Edge · Cloudflare"}};
 const PCMD={
  teleport:["docker compose up -d","tctl users add jasancho --roles=editor,access --logins=root,ubuntu","tctl tokens add --type=node","tsh login --proxy=teleport.lab.local --user=jasancho","tsh ssh ubuntu@prod01"],
  minio:["docker compose up -d","mc alias set lab https://s3.lab.local admin ********","mc mb --with-lock lab/backups","mc retention set --default COMPLIANCE 30d lab/backups","kopia snapshot create /srv/datos"],
@@ -3095,6 +3123,7 @@ const PCMD={
  samba:["samba-tool domain provision --use-rfc2307 --interactive","samba-tool user add alumno01","realm join lab.local -U administrator","kinit administrator@LAB.LOCAL"],
  vault:["docker run -d --name vaultwarden -v /vw-data:/data vaultwarden/server","docker exec -it vaultwarden /vaultwarden hash","SIGNUPS_ALLOWED=false"],
  aws:["ssh -i lab.pem ubuntu@ec2-web","sudo adduser jasancho","sudo a2enmod ssl && sudo systemctl reload apache2","sudo apt install mysql-server vsftpd"],
+ edge:["nslookup -type=ns jasancho.com 1.1.1.1","curl -sI --http3 https://jasancho.com | grep -iE 'server|strict|content-security'","curl -m 10 https://<ip-origen>   # timeout: el Security Group descarta el paquete","openssl s_client -connect docker.jasancho.com:443 -servername docker.jasancho.com","python3 headers.py && git push origin main   # hashes CSP → _headers → Pages"],
  nft:["nft add table inet filter","nft add chain inet filter input '{ type filter hook input priority 0; policy drop; }'","nft add rule ip nat prerouting iifname eth0 tcp dport 443 dnat to 10.0.20.11","nft list ruleset"]
 };
 
@@ -3146,6 +3175,7 @@ function fillProject(p){
       <aside class="pj-side">
         <div class="pj-card pj-plate"><h4>${en?"SPEC SHEET":"FICHA TÉCNICA"}<span>MODEL ${esc(p.host.toUpperCase())}</span></h4><dl class="pj-dl"><dt>host</dt><dd>${esc(p.host)}</dd><dt>ip</dt><dd>${PIP[p.id]}</dd><dt>${en?"zone":"zona"}</dt><dd>${esc(tx(PZONE[p.id]))}</dd><dt>${en?"area":"área"}</dt><dd>${esc(lp.area)}</dd><dt>${en?"status":"estado"}</dt><dd>${pill(p.status)}</dd></dl></div>
         <div class="pj-card pj-quote"><h4>${t("learned")}</h4><p>${esc(lp.learned)}</p></div>
+        ${p.doc?`<div class="pj-card pj-doc"><h4>// ${en?"documentation":"documentación"}</h4><p>${en?"Full project report: phases, screenshots, tests and incidents. Public version, sensitive data hidden.":"Memoria completa del proyecto: fases, capturas, pruebas e incidencias. Versión pública, con los datos sensibles ocultos."}</p><a class="btn primary pj-docbtn" href="${p.doc}" target="_blank" rel="noopener">${ICON("file")}<span>${en?"View documentation":"Ver documentación"}</span><small>PDF</small></a></div>`:""}
         <div class="pj-card pj-keys"><h4>${t("tech")}</h4><div class="tags">${p.stack.map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>
       </aside>
     </div>
@@ -3337,8 +3367,8 @@ const STACK=[
  {k:"net",icon:"network",color:"#5EC8F2",path:"/net",name:{es:"Redes",en:"Networking"},items:["DHCP + DDNS",{es:"DHCP en 2 VLAN",en:"DHCP on 2 VLANs"},"nftables",{es:"DNAT y DMZ",en:"DNAT and DMZ"},{es:"Proxy inverso Nginx",en:"Nginx reverse proxy"}],use:["nft","samba"]},
  {k:"ctr",icon:"box",color:"#52A5FF",path:"/var/lib/docker",name:{es:"Contenedores",en:"Containers"},items:["Docker","Docker Compose","Nextcloud","OnlyOffice","Odoo","WordPress","LAMP","Moodle"],use:["minio","glpi","vault","teleport"]},
  {k:"srv",icon:"globe",color:"#4FE0A6",path:"/srv",name:{es:"Servicios de red",en:"Network services"},items:[{es:"Apache con HTTPS",en:"Apache with HTTPS"},{es:"Nginx con HTTPS",en:"Nginx with HTTPS"},"Mailcow","Carbonio","SFTP","FTPS","Streaming"],use:["aws","glpi"]},
- {k:"sec",icon:"shield",color:"#FF5C7A",path:"/sec",name:{es:"Seguridad",en:"Security"},items:["Teleport","Vaultwarden","MinIO Object Lock","Kopia","Duplicity","TLS","MFA"],use:["teleport","minio","vault"]},
- {k:"cld",icon:"cloud",color:"#FFC56B",path:"/cloud",name:{es:"Cloud y datos",en:"Cloud and data"},items:["AWS EC2","Ubuntu Server","MySQL","PostgreSQL","MariaDB",{es:"GLPI (inventario)",en:"GLPI (inventory)"}],use:["aws"]}
+ {k:"sec",icon:"shield",color:"#FF5C7A",path:"/sec",name:{es:"Seguridad",en:"Security"},items:["Teleport","Vaultwarden","MinIO Object Lock","Kopia","Duplicity","TLS","MFA","Cloudflare Turnstile","CSP · HSTS"],use:["teleport","minio","vault","edge"]},
+ {k:"cld",icon:"cloud",color:"#FFC56B",path:"/cloud",name:{es:"Cloud y datos",en:"Cloud and data"},items:["AWS EC2","Ubuntu Server","MySQL","PostgreSQL","MariaDB",{es:"GLPI (inventario)",en:"GLPI (inventory)"},"Cloudflare DNS · Pages · Workers"],use:["aws","edge"]}
 ];
 function renderStack(){
   const box=$("#stk"); if(!box) return; const en=LANG==="en";
@@ -3724,7 +3754,7 @@ function auObjects(){
   O[5]=IB({x:130,y:240,w:150,d:58,h:50,c:"#31343B"})+IB({x:170,y:246,w:72,d:6,h:46,z:50,c:"#202227",front:`<span class="scr-f"><p>/* TEAM */</p><p>jasancho</p><p>/* SITE */</p></span>`})+
        IB({x:190,y:322,w:30,d:28,h:28,c:"#6A717B"})+IB({x:192,y:304,w:26,d:20,h:36,z:28,c:"#FF8A5B"})+IB({x:196,y:306,w:18,d:16,h:18,z:64,c:"#F2C6A0"})+IB({x:190,y:348,w:30,d:5,h:40,z:20,c:"#6A717B"})+tag(5,205,270,120);
   // 6 terminal → videowall en el fondo con consola
-  O[6]=IB({x:200,y:-6,w:270,d:10,h:140,z:44,c:"#202227",cls:"gl",front:`<span class="scr-f" style="font-size:9px"><span class="scroll" style="display:block">${Array.from({length:22},(_,k)=>`<p>${["$ status","● 7 servicios activos","$ journalctl -f","teleport: session start","$ open vault","nft: drop 203.0.113.7","$ incident","✓ resuelto en 4s","$ ls proyectos/","teleport minio glpi samba","$ cat security.txt"][k%11]}</p>`).join("")}</span></span>`})+
+  O[6]=IB({x:200,y:-6,w:270,d:10,h:140,z:44,c:"#202227",cls:"gl",front:`<span class="scr-f" style="font-size:9px"><span class="scroll" style="display:block">${Array.from({length:22},(_,k)=>`<p>${["$ status","● 8 servicios activos","$ journalctl -f","teleport: session start","$ open vault","nft: drop 203.0.113.7","$ incident","✓ resuelto en 4s","$ ls proyectos/","teleport minio glpi samba","$ cat security.txt"][k%11]}</p>`).join("")}</span></span>`})+
        IB({x:220,y:40,w:230,d:54,h:48,c:"#31343B"})+IB({x:290,y:52,w:90,d:26,h:4,z:48,c:"#424751"})+tag(6,335,10,200);
   // 7 imprimir → impresora
   O[7]=IB({x:56,y:500,w:90,d:62,h:52,c:"#31343B"})+IB({x:64,y:506,w:74,d:50,h:30,z:52,c:"#DEDEE5",cls:"gl"})+IB({x:78,y:554,w:46,d:16,h:2,z:70,c:"#FFFFFF"})+tag(7,100,530,104);
@@ -3940,7 +3970,7 @@ function prShow(i, fly = true, hoverOnly = false){
     <div class="scp-top"><span class="scp-ico">${ICON(AU_ICON_P[p.area] || "server")}</span><div class="scp-plate"><small><b>RACK-0${i + 1}</b> · ${esc(p.host)}</small><small>${esc(PIP[p.id] || "")} · ${esc(tx(PZONE[p.id] || ""))}</small></div>${pill(p.status)}</div>
     <h3>${esc(lp.title)}</h3><p>${esc(lp.short)}.</p><p class="scp-sub">${esc(lp.problem)}</p>
     <div class="scp-chips">${p.stack.map(s => `<span>${esc(s)}</span>`).join("")}</div>
-    <div class="scp-act"><button type="button" class="btn primary" id="pr-open">${en ? "Open file" : "Abrir ficha"} →</button>
+    <div class="scp-act"><button type="button" class="btn primary" id="pr-open">${en ? "Open file" : "Abrir ficha"} →</button>${p.doc ? `<a class="btn scp-doc" href="${p.doc}" target="_blank" rel="noopener" title="${en ? "Documentation (PDF)" : "Documentación (PDF)"}" aria-label="${en ? "Documentation (PDF)" : "Documentación (PDF)"}">${ICON("file")}</a>` : ""}
       <span class="scp-n"><b>${String(i + 1).padStart(2, "0")}</b>/${String(PROJECTS.length).padStart(2, "0")}</span>
       <button type="button" class="scp-nav" id="pr-prev" aria-label="${en ? "Previous" : "Anterior"}">${ARW_L}</button><button type="button" class="scp-nav" id="pr-next" aria-label="${en ? "Next" : "Siguiente"}">${ARW_R}</button></div>
     <div class="scp-face" aria-hidden="true"><i class="led"></i><i class="led a"></i><span class="scp-vent"></span><span class="scp-badge">JASANCHO · ${esc(p.area || "")}</span></div></div>`;
@@ -4210,7 +4240,7 @@ const fromHash=P(location.hash.slice(1)); if(fromHash) setTimeout(()=>openProjec
     secret:()=>tr("¿Buscando archivos ocultos? Así me gusta.\nPista: prueba 'sudo hire jasancho'.","Looking for hidden files? Good instinct.\nHint: try 'sudo hire jasancho'."),
     cv:()=>tr("cat: cv.pdf: es un archivo binario. Usa 'cv' para descargarlo.","cat: cv.pdf: binary file. Use 'cv' to download it.")
   };
-  const projMD=p=>{ const lp=L(p); return `# ${lp.title}\n${tr("estado","status")}: ${p.status==="ok"?t("active"):t("wip")} · host: ${p.host}\n\n## ${tr("Problema","Problem")}\n${lp.problem}\n\n## ${tr("Qué hice","What I did")}\n${lp.did.map(x=>"- "+x).join("\n")}\n\n## ${tr("Qué aprendí","What I learned")}\n${lp.learned}\n\n## Stack\n${p.stack.join(" · ")}\n\n${tr("→ 'open "+p.id+"' para ver el diagrama","→ 'open "+p.id+"' to see the diagram")}`; };
+  const projMD=p=>{ const lp=L(p); return `# ${lp.title}\n${tr("estado","status")}: ${p.status==="ok"?t("active"):t("wip")} · host: ${p.host}\n\n## ${tr("Problema","Problem")}\n${lp.problem}\n\n## ${tr("Qué hice","What I did")}\n${lp.did.map(x=>"- "+x).join("\n")}\n\n## ${tr("Qué aprendí","What I learned")}\n${lp.learned}\n\n## Stack\n${p.stack.join(" · ")}${p.doc?"\n\n## "+tr("Documentación","Documentation")+"\nhttps://jasancho.com"+p.doc:""}\n\n${tr("→ 'open "+p.id+"' para ver el diagrama","→ 'open "+p.id+"' to see the diagram")}`; };
   const resolve=a=>{ if(!a||a==="~"||a==="/"||a==="~/") return "~"; if(a===".."||a==="../") return "~"; const n=a.replace(/^~\//,"").replace(/\/$/,""); if(n===dirName()) return "~/"+dirName(); if(cwd!=="~"&&n===".") return cwd; return null; };
   function fastfetch(){
     const logo=["     _____ ","    / ___ \\ ","   / /  / / ","  / /__/ /  "," /_____/    ","  jasancho  "];
