@@ -14,4 +14,7 @@
   Estándares: HTML5, CSS3, JavaScript sin frameworks
   Librerías: three.js, GSAP y Lenis (autoalojadas)
   Tipografías: Martian Mono, Geist (autoalojadas, licencia SIL OFL)
-  Alojamiento: GitHub Pages · DNS en IONOS
+  Alojamiento: GitHub Pages · DNS en Cloudflare
+
+/* PRIVACIDAD */
+Analítica: Cloudflare Web Analytics (sin cookies, sin datos personales)
