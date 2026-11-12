@@ -2115,6 +2115,30 @@ a.port:hover i{transform:translateY(-1px)}
 .l3d.au-rep>a:hover{background:#FFD898}
 .l3d.au-rep>a:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){ .l3d.au-l>.tag.just{animation:none} }
+/* v50 · monitor de red: tecla para abrir cada práctica */
+.mon-h,.mon-r{grid-template-columns:14px minmax(0,1fr) 110px 78px 96px 34px}
+.mon-h{grid-template-columns:minmax(0,1fr) 110px 78px 96px 34px}
+.mon-h span:first-child{grid-column:1 / 3}
+.mon-h .mon-hgo{text-align:center}
+.mon-go{justify-self:center;display:grid;place-items:center;width:30px;height:26px;border-radius:5px;color:#FFB547;text-decoration:none;
+  border:1px solid rgba(255,181,71,.35);background:linear-gradient(180deg,rgba(255,181,71,.08),rgba(255,181,71,.02));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 2px 0 rgba(0,0,0,.6);transition:color .15s,border-color .15s,box-shadow .15s,transform .1s,background .15s}
+.mon-go svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px rgba(255,181,71,.55))}
+.mon-go.none{border:0;background:none;box-shadow:none}
+.mon-r.up .mon-go{color:#4FE0A6;border-color:rgba(79,224,166,.38);background:linear-gradient(180deg,rgba(79,224,166,.09),rgba(79,224,166,.02))}
+.mon-r.up .mon-go svg{filter:drop-shadow(0 0 3px rgba(79,224,166,.6))}
+.mon-r.down .mon-go{opacity:.55}
+a.mon-go:hover{color:#0D0B07;background:#4FE0A6;border-color:#4FE0A6;box-shadow:0 0 12px rgba(79,224,166,.55),0 2px 0 rgba(0,0,0,.6)}
+.mon-r.down a.mon-go:hover{background:#FFB547;border-color:#FFB547;box-shadow:0 0 12px rgba(255,181,71,.5);opacity:1}
+a.mon-go:hover svg{filter:none}
+a.mon-go:active{transform:translateY(2px);box-shadow:0 0 0 rgba(0,0,0,.6)}
+a.mon-go:focus-visible{outline:2px solid #FFB547;outline-offset:2px}
+.mon-r:has(a.mon-go:hover){background:rgba(79,224,166,.04)}
+@media (max-width:860px){ .mon-r{grid-template-columns:12px minmax(0,1fr) 64px 66px 30px} .mon-h{grid-template-columns:minmax(0,1fr) 64px 66px 30px} .mon-h span:first-child{grid-column:1} .mon-go{width:28px;height:24px} }
+.mon-r .mon-go.none{visibility:hidden}
+.mon-ms,.mon-st{white-space:nowrap}
+@media (max-width:860px){ .mon-r{grid-template-columns:10px minmax(0,1fr) 62px 60px 28px;gap:7px;padding:8px 10px} .mon-h{grid-template-columns:minmax(0,1fr) 62px 60px 28px;gap:7px;padding:4px 10px 6px 27px;font-size:8.5px;letter-spacing:.1em}
+  .mon-ms{font-size:11.5px} .mon-st{font-size:9px;letter-spacing:.06em} .mon-go{width:26px;height:24px} }
 </style>
 </head>
 <body>
@@ -4494,7 +4518,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       wp:{auto:"Fondo: según la hora de Valencia",day:"Fondo: día",dusk:"Fondo: atardecer",night:"Fondo: noche"},infoT:"Información",where:"Dónde",created:"Creado",createdD:"1 sept 2025",version:"Versión",comments:"Comentarios",
       info:{inicio:"El disco de arranque: la portada del portfolio con el laboratorio en 3D.",proyectos:"Las prácticas de ASIR documentadas como incidencias: problema, solución, comandos y diagrama.",despliegue:"Cómo llega esta web hasta ti: DNS, Cloudflare Pages y el repositorio de GitHub.",auditoria:"Informes de auditoría de esta misma web: seguridad, accesibilidad y rendimiento.",stack:"Las tecnologías que uso, ordenadas como un rack de servidores.",trayectoria:"Mi formación y experiencia, cajón a cajón.",contacto:"Formulario privado protegido con Cloudflare Turnstile, más LinkedIn y GitHub.",monitor:"Comprueba cada 30 segundos si responden la web, la API y los servicios del laboratorio.",term:"Una shell para recorrer el portfolio con comandos. Prueba con «help».",trash:"Aquí no se tira nada: cada práctica, incluso la que salió mal, enseña algo."},
       sysSw:"Software del sistema",sysSub:"José Antonio · 2.º de ASIR · Valencia",sysVer:"Versión",memTot:"Memoria total",memFree:"Bloque libre más grande",
-      monLoad:"Comprobando servicios…",monSvc:"Servicio",monLat:"Latencia",monSt:"Estado",monTest:"Pruebas",monFrom:"Comprobado desde Cloudflare",monRefresh:"Actualizar",monNA:"SIN DATOS",monErr:"No se pudo contactar con api.jasancho.com",monUp:"EN LÍNEA",monDown:"CAÍDO",monOff:"APAGADO",monSumF:(u,n)=>`${u} de ${n} servicios en línea · el laboratorio se enciende bajo demanda en AWS`,
+      monLoad:"Comprobando servicios…",monSvc:"Servicio",monLat:"Latencia",monSt:"Estado",monTest:"Pruebas",monFrom:"Comprobado desde Cloudflare",monRefresh:"Actualizar",monGo:"Abrir",monOpen:"Abrir",monOffT:"apagado: puede tardar o no responder",monNA:"SIN DATOS",monErr:"No se pudo contactar con api.jasancho.com",monUp:"EN LÍNEA",monDown:"CAÍDO",monOff:"APAGADO",monSumF:(u,n)=>`${u} de ${n} servicios en línea · el laboratorio se enciende bajo demanda en AWS`,
       mailApp:"Mail",monShort:"Monitor",langApp:"English",
       copied:"Copiado al portapapeles",colName:"Nombre",colDate:"Modificado",colSize:"Tamaño",colKind:"Clase",kFolder:"carpeta",kDisk:"disco",kDoc:"documento PDF",kApp:"aplicación",kTrash:"papelera",
       openFull:"Abrir sección completa",offT:"Ya puedes apagar el ordenador con seguridad.",offOn:"Encender",aboutT:"Acerca de este portfolio",
@@ -4512,7 +4536,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
       wp:{auto:"Wallpaper: follow Valencia time",day:"Wallpaper: day",dusk:"Wallpaper: sunset",night:"Wallpaper: night"},infoT:"Info",where:"Where",created:"Created",createdD:"1 Sep 2025",version:"Version",comments:"Comments",
       info:{inicio:"The startup disk: the portfolio home page with the 3D lab.",proyectos:"My ASIR labs written up as incidents: problem, fix, commands and diagram.",despliegue:"How this site reaches you: DNS, Cloudflare Pages and the GitHub repository.",auditoria:"Audit reports of this very site: security, accessibility and performance.",stack:"The technologies I use, laid out like a server rack.",trayectoria:"My education and experience, drawer by drawer.",contacto:"Private form protected by Cloudflare Turnstile, plus LinkedIn and GitHub.",monitor:"Checks every 30 seconds whether the site, the API and the lab services respond.",term:"A shell to explore the portfolio with commands. Try “help”.",trash:"Nothing gets thrown away here: every lab, even the one that went wrong, teaches something."},
       sysSw:"System Software",sysSub:"José Antonio · 2nd year ASIR · Valencia",sysVer:"Version",memTot:"Total Memory",memFree:"Largest Unused Block",
-      monLoad:"Checking services…",monSvc:"Service",monLat:"Latency",monSt:"Status",monTest:"Testing",monFrom:"Checked from Cloudflare",monRefresh:"Refresh",monNA:"NO DATA",monErr:"Couldn't reach api.jasancho.com",monUp:"ONLINE",monDown:"DOWN",monOff:"OFF",monSumF:(u,n)=>`${u} of ${n} services online · the lab is powered on demand on AWS`,
+      monLoad:"Checking services…",monSvc:"Service",monLat:"Latency",monSt:"Status",monTest:"Testing",monFrom:"Checked from Cloudflare",monRefresh:"Refresh",monGo:"Open",monOpen:"Open",monOffT:"off: it may take a while or not respond",monNA:"NO DATA",monErr:"Couldn't reach api.jasancho.com",monUp:"ONLINE",monDown:"DOWN",monOff:"OFF",monSumF:(u,n)=>`${u} of ${n} services online · the lab is powered on demand on AWS`,
       mailApp:"Mail",monShort:"Monitor",langApp:"Español",
       copied:"Copied to clipboard",colName:"Name",colDate:"Modified",colSize:"Size",colKind:"Kind",kFolder:"folder",kDisk:"disk",kDoc:"PDF document",kApp:"application",kTrash:"trash",
       openFull:"Open full section",offT:"It is now safe to switch off your computer.",offOn:"Power on",aboutT:"About this portfolio",
@@ -4865,10 +4889,11 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
   const MON_URL="https://api.jasancho.com/status", HIST={}; let monT=null;
   const MON_NAMES={web:"Portfolio",api:"API · Worker",moodle:"Moodle",wordpress:"WordPress",docker:"Docker",proxy:"Proxy",prueba:"Pruebas"};
   const MON_HOSTS={web:"jasancho.com",api:"api.jasancho.com",moodle:"moodle.jasancho.com",wordpress:"wordpress.jasancho.com",docker:"docker.jasancho.com",proxy:"proxy.jasancho.com",prueba:"prueba.jasancho.com"};
+  const MON_LAB=["moodle","wordpress","docker","proxy","prueba"];
   function openMonitor(from){ const l=L(); let w=desk.querySelector("#dk-mon"); if(w){ raise(w); return; }
     desk.insertAdjacentHTML("beforeend",win("dk-mon",l.monitor,`<div class="dk-info"><span id="mon-sum">${l.monLoad}</span><span id="mon-at">—</span></div>
-      <div class="mon-b"><div class="mon-h"><span>${l.monSvc}</span><span>${l.monLat}</span><span>${l.monSt}</span></div>
-      ${Object.keys(MON_NAMES).map(id=>`<div class="mon-r" data-id="${id}"><i class="mon-led"></i><div class="mon-n"><b>${id==="prueba"?l.monTest:MON_NAMES[id]}</b><small>${MON_HOSTS[id]}</small></div><svg class="mon-sp" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><polyline points=""/></svg><span class="mon-ms">----</span><span class="mon-st">···</span></div>`).join("")}</div>
+      <div class="mon-b"><div class="mon-h"><span>${l.monSvc}</span><span>${l.monLat}</span><span>${l.monSt}</span><span class="mon-hgo">${l.monGo}</span></div>
+      ${Object.keys(MON_NAMES).map(id=>`<div class="mon-r" data-id="${id}"><i class="mon-led"></i><div class="mon-n"><b>${id==="prueba"?l.monTest:MON_NAMES[id]}</b><small>${MON_HOSTS[id]}</small></div><svg class="mon-sp" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><polyline points=""/></svg><span class="mon-ms">----</span><span class="mon-st">···</span>${MON_LAB.includes(id)?`<a class="mon-go" href="https://${MON_HOSTS[id]}/" target="_blank" rel="noopener" aria-label="${l.monOpen} ${MON_HOSTS[id]}" title="${l.monOpen} ${MON_HOSTS[id]}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3.5v9.5H13V10"/><path d="M9 2.5h4.5V7"/><path d="M13.5 2.5L7.5 8.5"/></svg></a>`:`<span class="mon-go none" aria-hidden="true"></span>`}</div>`).join("")}</div>
       <footer class="dk-fdf mon-f"><span id="mon-from">${l.monFrom}</span><button type="button" class="btn mon-rf">${l.monRefresh}</button></footer>`,"dk-mon"));
     w=desk.querySelector("#dk-mon"); wire(w); raise(w);
     w.querySelector(".mon-rf").onclick=()=>poll(true);
@@ -4884,7 +4909,7 @@ document.querySelector(".skip-link")?.addEventListener("click",()=>{ const h=doc
     let up=0; d.checks.forEach(c=>{ const r=w.querySelector(`.mon-r[data-id="${c.id}"]`); if(!r) return; const ms=c.id==="api"?rtt:c.ms; if(c.up) up++;
       const h=HIST[c.id]=(HIST[c.id]||[]).concat(c.up?ms:null).slice(-24);
       r.className="mon-r "+(c.up?"up":"down"); r.querySelector(".mon-ms").textContent=c.up?String(Math.min(ms,9999)).padStart(4,"0")+" ms":"----";
-      r.querySelector(".mon-st").textContent=c.up?l.monUp:(c.id==="web"||c.id==="api"?l.monDown:l.monOff); r.title=c.up?`HTTP ${c.code}`:(c.code?`HTTP ${c.code}`:"timeout");
+      r.querySelector(".mon-st").textContent=c.up?l.monUp:(c.id==="web"||c.id==="api"?l.monDown:l.monOff); r.title=c.up?`HTTP ${c.code}`:(c.code?`HTTP ${c.code}`:"timeout"); const go=r.querySelector("a.mon-go"); if(go) go.title=`${l.monOpen} ${MON_HOSTS[c.id]}`+(c.up?"":` · ${l.monOffT}`);
       const vals=h.filter(v=>v!=null), mx=Math.max(80,...vals), n=Math.max(h.length-1,1);
       r.querySelector("polyline").setAttribute("points",h.map((v,i)=>`${(i/n*100).toFixed(1)},${v==null?23:(22-(v/mx)*19).toFixed(1)}`).join(" ")); });
     w.querySelector("#mon-sum").textContent=l.monSumF(up,d.checks.length);
