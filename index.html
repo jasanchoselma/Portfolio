@@ -2916,7 +2916,7 @@ function drawPipe(){
 const LIVE={commit:null,commitState:"checking"};
 (function rearSw(){ const b=document.getElementById("rear-sw"); if(!b) return; b.addEventListener("click",()=>{ b.classList.add("flip"); setTimeout(()=>b.classList.remove("flip"),700);
   b.title=LANG==="en"?"Back to top":"Volver arriba"; if(typeof lenis!=="undefined"&&lenis) lenis.scrollTo(0,{duration:1.2}); else scrollTo({top:0,behavior:reduce?"auto":"smooth"}); }); })();
-window.footStamp=footStamp; function footStamp(){ const en=LANG==="en", d=LIVE.commit?new Date(LIVE.commit.date):new Date(document.lastModified), u=$("#ft-upd"), sn=$("#ft-sn"), l=$("#ft-upd-l"); if(!u) return;
+window.footStamp=footStamp; function footStamp(){ const en=LANG==="en", d=new Date(document.lastModified), u=$("#ft-upd"), sn=$("#ft-sn"), l=$("#ft-upd-l"); if(!u) return;
   u.textContent=isNaN(d)?"—":d.toLocaleDateString(en?"en-GB":"es-ES",{day:"2-digit",month:"short",year:"numeric"}); if(l) l.textContent=en?"last update":"última actualización";
   if(sn) sn.textContent="JASS-"+(LIVE.commit?LIVE.commit.sha.toUpperCase():(isNaN(d)?"2026":d.toISOString().slice(0,10).replace(/-/g,""))); }
 document.addEventListener("DOMContentLoaded",footStamp);
